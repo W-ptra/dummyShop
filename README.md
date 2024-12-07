@@ -1,2 +1,2 @@
 # dummyShop
-Mock up e-commerce shop build using java spring boot
+Mock up e-commerce shop build backend system using java spring boot

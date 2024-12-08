@@ -1,0 +1,31 @@
+package com.dummyShop.dummyShop.controller;
+
+import com.dummyShop.dummyShop.dto.userDTO.LoginUserDTO;
+import com.dummyShop.dummyShop.dto.userDTO.RegisterUserDTO;
+import com.dummyShop.dummyShop.model.Product;
+import com.dummyShop.dummyShop.model.User;
+import com.dummyShop.dummyShop.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("api/auth")
+public class AuthenticationController {
+
+    @Autowired
+    private AuthService authService;
+
+    @PostMapping("/register")
+    public ResponseEntity<Map<String,Object>> register(@RequestBody RegisterUserDTO registerUserDTO){
+        return authService.register(registerUserDTO);
+    }
+
+    @PostMapping("/login")
+    public LoginUserDTO register(@RequestBody LoginUserDTO loginUserDTO){
+        return  loginUserDTO;
+    }
+}

@@ -11,7 +11,7 @@ public class Review {
     private Long id;
 
     private String content;
-    private int star;
+    private Double star;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
@@ -39,11 +39,11 @@ public class Review {
         this.content = content;
     }
 
-    public int getStar() {
+    public Double getStar() {
         return star;
     }
 
-    public void setStar(int star) {
+    public void setStar(Double star) {
         this.star = star;
     }
 

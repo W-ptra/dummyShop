@@ -25,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public LoginUserDTO register(@RequestBody LoginUserDTO loginUserDTO){
-        return  loginUserDTO;
+    public ResponseEntity<Map<String,Object>> register(@RequestBody LoginUserDTO loginUserDTO){
+        return  authService.login(loginUserDTO);
     }
 }

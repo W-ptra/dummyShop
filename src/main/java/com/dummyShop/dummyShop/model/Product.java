@@ -15,6 +15,9 @@ public class Product {
     private String name;
     private String description;
     private Double price;
+    private String image;
+    private Long sold;
+    private Double star;
 
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
@@ -34,14 +37,6 @@ public class Product {
     private List<Review> reviewList;
 
     public Product(){}
-
-    public Product(Long id, String name, String description, Double price, User user) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.user = user;
-    }
 
     public Long getId() {
         return id;
@@ -105,5 +100,29 @@ public class Product {
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Long getSold() {
+        return sold;
+    }
+
+    public void setSold(Long sold) {
+        this.sold = sold;
+    }
+
+    public Double getStar() {
+        return star;
+    }
+
+    public void setStar(Double star) {
+        this.star = star;
     }
 }

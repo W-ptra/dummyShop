@@ -1,6 +1,7 @@
 package com.dummyShop.dummyShop.dto.productDTO;
 
 import com.dummyShop.dummyShop.dto.reviewDTO.ProductReviewDTO;
+import com.dummyShop.dummyShop.model.Product;
 
 import java.util.List;
 
@@ -79,5 +80,22 @@ public class DetailProductDTO {
 
     public void setProductReviewDTOList(List<ProductReviewDTO> productReviewDTOList) {
         this.productReviewDTOList = productReviewDTOList;
+    }
+
+    public static DetailProductDTO convertToDTO(Product product){
+        DetailProductDTO detailProductDTO = new DetailProductDTO();
+        detailProductDTO.setName(product.getName());
+        detailProductDTO.setPrice(product.getPrice());
+        detailProductDTO.setDescription(product.getDescription());
+
+        List<ProductReviewDTO> productReviewDTOList = ProductReviewDTO.convertToDTO(product.getReviewList());
+
+        detailProductDTO.setProductReviewDTOList(productReviewDTOList);
+        detailProductDTO.setSold(product.getSold());
+        detailProductDTO.setStar(product.getStar());
+        detailProductDTO.setImage(product.getImage());
+        detailProductDTO.setSeller(product.getUser().getName());
+
+        return detailProductDTO;
     }
 }

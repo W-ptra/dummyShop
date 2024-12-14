@@ -1,5 +1,7 @@
 package com.dummyShop.dummyShop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -19,9 +21,11 @@ public class TransactionHeader {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @OneToMany(mappedBy = "transactionHeader",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<TransactionDetail> transactionDetailList;
 
     public TransactionHeader(){}

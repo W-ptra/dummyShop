@@ -30,7 +30,17 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.equals("/api/auth/register") || path.equals("/api/auth/login");
+        String method = request.getMethod();
+
+        if ( path.matches("/api/auth/.*") && method.equals("POST")){
+            return true;
+        }
+
+        if ((path.equals("/api/product") || path.matches("/api/product/.*")) && method.equals("GET")){
+            return  true;
+        }
+
+        return false;
     }
 
     @Override

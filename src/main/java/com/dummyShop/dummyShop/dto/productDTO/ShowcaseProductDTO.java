@@ -1,5 +1,9 @@
 package com.dummyShop.dummyShop.dto.productDTO;
 
+import com.dummyShop.dummyShop.model.Product;
+
+import java.util.List;
+
 public class ShowcaseProductDTO {
     private String name;
     private Double price;
@@ -56,5 +60,19 @@ public class ShowcaseProductDTO {
 
     public void setSold(Long sold) {
         this.sold = sold;
+    }
+
+    public static List<ShowcaseProductDTO> convertToDTO(List<Product> productList){
+        return productList.stream()
+                .map( product -> {
+                    ShowcaseProductDTO showcaseProductDTO = new ShowcaseProductDTO();
+                    showcaseProductDTO.setName(product.getName());
+                    showcaseProductDTO.setPrice(product.getPrice());
+                    showcaseProductDTO.setSold(product.getSold());
+                    showcaseProductDTO.setStar(product.getStar());
+                    showcaseProductDTO.setSeller(product.getUser().getName());
+                    showcaseProductDTO.setImage(product.getImage());
+                    return  showcaseProductDTO;
+                }).toList();
     }
 }

@@ -11,6 +11,8 @@ public class TransactionDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int quantity;
+
     @ManyToOne
     @JoinColumn(name = "transaction_header_id",nullable = false)
     @JsonBackReference
@@ -29,6 +31,14 @@ public class TransactionDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public TransactionHeader getTransactionHeader() {

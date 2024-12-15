@@ -17,8 +17,11 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping
-    public ResponseEntity<Map<String,Object>> getAllCart(){
-        return cartService.getAllCart();
+    public ResponseEntity<Map<String,Object>> getAllCart(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return cartService.getAllCart(page,size);
     }
 
     @PostMapping

@@ -10,6 +10,8 @@ import com.dummyShop.dummyShop.repository.ProductRepository;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,14 +34,18 @@ public class ProductService {
     private ResponseEntityBuilder responseEntityBuilder;
 
     public ResponseEntity<Map<String,Object>> getAllProduct(
-            String name
+            String name,
+            int page,
+            int size
     ){
+        Pageable pageable = PageRequest.of(page,size);
+
         List<Product> productList;
 
         if (name != null && !name.isEmpty()){
-            productList = productRepository.getAllProductByName(name);
+            productList = productRepository.getAllProductByName(name,pageable);
         } else {
-            productList = productRepository.findAll();
+            productList = productRepository.getAll(pageable);
         }
 
         List<ShowcaseProductDTO> showcaseProductDTOList = ShowcaseProductDTO.convertToDTO(productList);

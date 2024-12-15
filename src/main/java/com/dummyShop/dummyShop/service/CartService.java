@@ -11,6 +11,8 @@ import com.dummyShop.dummyShop.repository.ProductRepository;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -110,11 +112,17 @@ public class CartService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>> getAllCart(){
+    public ResponseEntity<Map<String,Object>> getAllCart(
+            int page,
+            int size
+    ){
+
+        Pageable pageable = PageRequest.of(page,size);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        List<Cart> cartList = cartRepository.getCartByUserId(userId);
+        List<Cart> cartList = cartRepository.getCartByUserId(userId,pageable);
 
         if(cartList.isEmpty()){
             return responseEntityBuilder

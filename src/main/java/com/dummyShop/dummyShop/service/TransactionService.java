@@ -13,6 +13,8 @@ import com.dummyShop.dummyShop.repository.TransactionHeaderRepository;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -96,12 +98,17 @@ public class TransactionService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>> getAllTransactionByUserId(){
+    public ResponseEntity<Map<String,Object>> getAllTransactionByUserId(
+            int page,
+            int size
+    ){
+        Pageable pageable = PageRequest.of(page,size);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        List<TransactionHeader> transactionHeaderList = transactionHeaderRepository.getAllTransactionByUserId(userId);
+        List<TransactionHeader> transactionHeaderList =
+                transactionHeaderRepository.getAllTransactionByUserId(userId,pageable);
 
         if (transactionHeaderList.isEmpty()){
             return responseEntityBuilder

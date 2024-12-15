@@ -18,9 +18,11 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Map<String,Object>> getAllProduct(
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ){
-        return productService.getAllProduct(search);
+        return productService.getAllProduct(search,page,size);
     }
 
     @GetMapping("/{id}")

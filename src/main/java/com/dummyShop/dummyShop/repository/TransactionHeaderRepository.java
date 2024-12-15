@@ -1,6 +1,7 @@
 package com.dummyShop.dummyShop.repository;
 
 import com.dummyShop.dummyShop.model.TransactionHeader;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ public interface TransactionHeaderRepository extends JpaRepository<TransactionHe
     @Query("SELECT t FROM TransactionHeader t JOIN FETCH t.transactionDetailList" +
             " WHERE t.user.id = :userId")
     List<TransactionHeader> getAllTransactionByUserId(
-      @Param("userId") Long userId
+      @Param("userId") Long userId,
+      Pageable pageable
     );
 }

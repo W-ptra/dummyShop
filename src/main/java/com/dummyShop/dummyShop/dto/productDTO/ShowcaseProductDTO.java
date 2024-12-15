@@ -5,6 +5,7 @@ import com.dummyShop.dummyShop.model.Product;
 import java.util.List;
 
 public class ShowcaseProductDTO {
+    private Long id;
     private String name;
     private Double price;
     private String image;
@@ -62,10 +63,19 @@ public class ShowcaseProductDTO {
         this.sold = sold;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public static List<ShowcaseProductDTO> convertToDTO(List<Product> productList){
         return productList.stream()
                 .map( product -> {
                     ShowcaseProductDTO showcaseProductDTO = new ShowcaseProductDTO();
+                    showcaseProductDTO.setId(product.getId());
                     showcaseProductDTO.setName(product.getName());
                     showcaseProductDTO.setPrice(product.getPrice());
                     showcaseProductDTO.setSold(product.getSold());

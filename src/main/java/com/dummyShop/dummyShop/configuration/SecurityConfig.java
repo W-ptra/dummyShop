@@ -27,11 +27,39 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"api/product","api/product/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(authorize -> {
+                            // authentication
+                            authorize
+                                    .requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll();
+
+                            // seller
+                            // - prroduct
+                            authorize
+                                    .requestMatchers(HttpMethod.POST,"/api/product").hasRole("SELLER")
+                                    .requestMatchers(HttpMethod.PUT,"/api/product/**").hasRole("SELLER")
+                                    .requestMatchers(HttpMethod.DELETE,"/api/product/**").hasRole("SELLER");
+
+                            // buyer
+                            // - cart
+                            authorize
+                                    .requestMatchers(HttpMethod.POST,"/api/cart").hasRole("BUYER")
+                                    .requestMatchers(HttpMethod.PUT,"/api/cart/**").hasRole("BUYER")
+                                    .requestMatchers(HttpMethod.DELETE,"/api/cart/**").hasRole("BUYER");
+
+                            // - review
+                            authorize
+                                    .requestMatchers(HttpMethod.POST,"/api/review").hasRole("BUYER");
+
+                            // public
+                            authorize
+                                    .requestMatchers(HttpMethod.GET,"/api/product","/api/product/**").permitAll()
+                                    .requestMatchers("/error").permitAll();
+
+                            // fallback for other request
+                            authorize
+                                    .anyRequest().authenticated();
+
+                        }
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

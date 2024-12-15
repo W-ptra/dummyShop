@@ -10,6 +10,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
+    private int quantity;
+
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     @JsonBackReference
@@ -44,5 +46,13 @@ public class Cart {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

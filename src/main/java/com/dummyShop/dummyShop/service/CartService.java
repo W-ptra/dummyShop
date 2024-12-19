@@ -27,17 +27,16 @@ public class CartService {
 
     @Autowired
     private CartRepository cartRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
 
-    public ResponseEntity<Map<String,Object>> createCart(CreateCartDTO createCartDTO){
+    public ResponseEntity<Map<String,Object>> createCart(
+            CreateCartDTO createCartDTO
+    ){
 
         boolean isProductIdEmpty =  createCartDTO.getProductId() == null;
         boolean isQuantityZero = createCartDTO.getQuantity() == 0;
@@ -195,7 +194,9 @@ public class CartService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>> deleteCart(Long id){
+    public ResponseEntity<Map<String,Object>> deleteCart(
+            Long id
+    ){
 
         boolean isIdNotValid = id < 1;
         if(isIdNotValid){

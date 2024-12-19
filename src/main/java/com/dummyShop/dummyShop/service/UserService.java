@@ -21,10 +21,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private Hashing hashing;
-
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
 
@@ -44,7 +42,9 @@ public class UserService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>> updateProfile(UpdateProfileUserDTO updateProfileUserDTO){
+    public ResponseEntity<Map<String,Object>> updateProfile(
+            UpdateProfileUserDTO updateProfileUserDTO
+    ){
 
         boolean isNameEmpty = updateProfileUserDTO.getName() == null || updateProfileUserDTO.getName().isEmpty();
         boolean isEmailEmpty = updateProfileUserDTO.getEmail() == null || updateProfileUserDTO.getEmail().isEmpty();
@@ -84,8 +84,9 @@ public class UserService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>>
-        changePassword(ChangePasswordUserDTO changePasswordUserDTO){
+    public ResponseEntity<Map<String,Object>> changePassword(
+            ChangePasswordUserDTO changePasswordUserDTO
+    ){
 
         boolean isPasswordEmpty = changePasswordUserDTO.getPassword() == null || changePasswordUserDTO.getPassword().isEmpty();
         boolean isConfirmPasswordEmpty = changePasswordUserDTO.getConfirmPassword() == null || changePasswordUserDTO.getConfirmPassword().isEmpty();

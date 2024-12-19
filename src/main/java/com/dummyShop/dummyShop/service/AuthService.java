@@ -26,7 +26,9 @@ public class AuthService {
     @Autowired
     private JWT jwt;
 
-    public ResponseEntity<Map<String,Object>> register(RegisterUserDTO registerUserDTO){
+    public ResponseEntity<Map<String,Object>> register(
+            RegisterUserDTO registerUserDTO
+    ){
 
         boolean isNameEmpty = registerUserDTO.getName().isEmpty();
         boolean isEmailEmpty = registerUserDTO.getEmail().isEmpty();
@@ -76,7 +78,9 @@ public class AuthService {
                 );
     }
 
-    public ResponseEntity<Map<String,Object>> login(LoginUserDTO loginUserDTO){
+    public ResponseEntity<Map<String,Object>> login(
+            LoginUserDTO loginUserDTO
+    ){
         Optional<User> user = userRepository.findByEmail(loginUserDTO.getEmail());
         if (user.isEmpty()){
             return responseEntityBuilder

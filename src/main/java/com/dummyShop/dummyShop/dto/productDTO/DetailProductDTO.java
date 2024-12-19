@@ -1,9 +1,13 @@
 package com.dummyShop.dummyShop.dto.productDTO;
 
 import com.dummyShop.dummyShop.dto.reviewDTO.ProductReviewDTO;
+import com.dummyShop.dummyShop.dto.tagDTO.TagDTO;
 import com.dummyShop.dummyShop.model.Product;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DetailProductDTO {
     private String name;
@@ -14,7 +18,10 @@ public class DetailProductDTO {
     private Double star;
     private Long sold;
 
-    private List<ProductReviewDTO> productReviewDTOList;
+    private List<String> tags;
+
+    private List<ProductReviewDTO> reviews;
+
 
     public  DetailProductDTO(){}
 
@@ -74,12 +81,20 @@ public class DetailProductDTO {
         this.sold = sold;
     }
 
-    public List<ProductReviewDTO> getProductReviewDTOList() {
-        return productReviewDTOList;
+    public List<String> getTags() {
+        return tags;
     }
 
-    public void setProductReviewDTOList(List<ProductReviewDTO> productReviewDTOList) {
-        this.productReviewDTOList = productReviewDTOList;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<ProductReviewDTO> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ProductReviewDTO> reviews) {
+        this.reviews = reviews;
     }
 
     public static DetailProductDTO convertToDTO(Product product){
@@ -88,9 +103,28 @@ public class DetailProductDTO {
         detailProductDTO.setPrice(product.getPrice());
         detailProductDTO.setDescription(product.getDescription());
 
-        List<ProductReviewDTO> productReviewDTOList = ProductReviewDTO.convertToDTO(product.getReviewList());
+        List<ProductReviewDTO> productReviewDTOList = new ArrayList<>();
+        Set<Long> seenReviews = new HashSet<>();
 
-        detailProductDTO.setProductReviewDTOList(productReviewDTOList);
+        product.getTransactionDetailList()
+                .forEach(transactionDetail -> {
+                    if (transactionDetail.getReview() != null) {
+
+                        Long reviewId = transactionDetail.getReview().getId();
+                        if (!seenReviews.contains(reviewId)) {
+                            ProductReviewDTO productReviewDTO = new ProductReviewDTO();
+                            productReviewDTO.setContent(transactionDetail.getReview().getContent());
+                            productReviewDTO.setStar(transactionDetail.getReview().getStar());
+                            productReviewDTO.setName(transactionDetail.getTransactionHeader().getUser().getName());
+
+                            productReviewDTOList.add(productReviewDTO);
+                            seenReviews.add(reviewId);
+                        }
+                    }
+                });
+
+        detailProductDTO.setTags(TagDTO.convertToDTO(product.getTagSet()));
+        detailProductDTO.setReviews(productReviewDTOList);
         detailProductDTO.setSold(product.getSold());
         detailProductDTO.setStar(product.getStar());
         detailProductDTO.setImage(product.getImage());

@@ -8,7 +8,11 @@ import java.util.Map;
 
 @Component
 public class ResponseEntityBuilder {
-    public ResponseEntity<Map<String,Object>> createResponse(int status, String message, Object obj){
+    public ResponseEntity<Map<String,Object>> createResponse(
+            int status,
+            String message,
+            Object obj
+    ){
         Map<String,Object> body = new HashMap<>();
         body.put(message,obj);
 

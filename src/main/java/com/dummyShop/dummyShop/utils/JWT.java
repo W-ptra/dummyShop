@@ -30,7 +30,10 @@ public class JWT {
                 return Keys.hmacShaKeyFor(this.secretKey.getBytes());
         }
 
-        public String generateToken(Long id, String role){
+        public String generateToken(
+                Long id,
+                String role
+        ){
                 Map<String,Object> claims = new HashMap<>();
                 claims.put("role",role);
 
@@ -43,7 +46,9 @@ public class JWT {
                         .compact();
         }
 
-        private Claims extractAllClaims(String token){
+        private Claims extractAllClaims(
+                String token
+        ){
                 return Jwts.parserBuilder()
                         .setSigningKey(getSignKey())
                         .build()
@@ -51,12 +56,17 @@ public class JWT {
                         .getBody();
         }
 
-        private <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+        private <T> T extractClaim(
+                String token,
+                Function<Claims,T> claimsResolver
+        ){
                 Claims claims = extractAllClaims(token);
                 return claimsResolver.apply(claims);
         }
 
-        public boolean isTokenValid(String token){
+        public boolean isTokenValid(
+                String token
+        ){
                 try{
                         Claims claims = extractAllClaims(token);
                         return  claims.getExpiration().after(new Date(System.currentTimeMillis()));
@@ -65,11 +75,15 @@ public class JWT {
                 }
         }
 
-        public Long getId(String token){
+        public Long getId(
+                String token
+        ){
                 return Long.valueOf(extractClaim(token, Claims::getSubject));
         }
 
-        public String getRole(String token){
+        public String getRole(
+                String token
+        ){
                 return extractClaim(token, claims -> claims.get("role",String.class));
         }
 }

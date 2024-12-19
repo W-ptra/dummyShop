@@ -17,7 +17,19 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             Pageable pageable
     );
 
-    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.reviewList JOIN FETCH p.user " +
+    @Query("SELECT p FROM Product p WHERE p.user.id = :userId")
+    List<Product> getProductByUserId(
+            @Param("userId") Long id,
+            Pageable pageable
+    );
+
+    @Query("SELECT p FROM Product p " +
+            "LEFT JOIN FETCH p.transactionDetailList td " +
+            "LEFT JOIN FETCH td.review " +
+            "LEFT JOIN FETCH td.transactionHeader th " +
+            "LEFT JOIN FETCH th.user " +
+            "LEFT JOIN FETCH p.user " +
+            "LEFT JOIN FETCH p.tagSet " +
             "WHERE p.id = :id")
     Optional<Product> getProductById(
             @Param("id") Long id

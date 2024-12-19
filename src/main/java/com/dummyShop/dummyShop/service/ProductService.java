@@ -1,14 +1,16 @@
 package com.dummyShop.dummyShop.service;
 
-
 import com.dummyShop.dummyShop.dto.productDTO.CreateAndUpdateProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.DetailProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductDTO;
 import com.dummyShop.dummyShop.model.Product;
+import com.dummyShop.dummyShop.model.Tag;
 import com.dummyShop.dummyShop.model.User;
 import com.dummyShop.dummyShop.repository.ProductRepository;
+import com.dummyShop.dummyShop.repository.TagRepository;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
+import com.dummyShop.dummyShop.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,21 +19,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private TagRepository tagRepository;
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
+    @Autowired
+    private Validation validation;
 
     public ResponseEntity<Map<String,Object>> getAllProduct(
             String name,
@@ -67,6 +69,36 @@ public class ProductService {
                 );
     }
 
+    public ResponseEntity<Map<String,Object>> getProductByUserId(
+            int page,
+            int size
+    ){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.valueOf(authentication.getName());
+
+        Pageable pageable = PageRequest.of(page,size);
+
+        List<Product> productList = productRepository.getProductByUserId(userId,pageable);
+
+        if(productList.isEmpty()){
+            return responseEntityBuilder
+                    .createResponse(
+                            404,
+                            "message",
+                            "products is empty"
+                    );
+        }
+
+        List<ShowcaseProductDTO> showcaseProductDTOList = ShowcaseProductDTO.convertToDTO(productList);
+
+        return responseEntityBuilder
+                .createResponse(
+                        200,
+                        "products",
+                        showcaseProductDTOList
+                );
+    }
+
     public ResponseEntity<Map<String,Object>> getProductById(
             Long id
     ){
@@ -90,7 +122,6 @@ public class ProductService {
                             String.format("product with id %s is not found",id)
                     );
         }
-
         DetailProductDTO detailProductDTO = DetailProductDTO.convertToDTO(product.get());
 
         return responseEntityBuilder
@@ -108,18 +139,18 @@ public class ProductService {
         boolean isDescriptionEmpty = createAndUpdateProductDTO.getDescription() == null || createAndUpdateProductDTO.getDescription().isEmpty();
         boolean isImageEmpty = createAndUpdateProductDTO.getImage() == null || createAndUpdateProductDTO.getImage().isEmpty();
         boolean isPriceEmpty = createAndUpdateProductDTO.getPrice() == null;
-        boolean isPriceValid = createAndUpdateProductDTO.getPrice() < 0 || createAndUpdateProductDTO.getPrice() > 1000000000;
+        boolean isTagEmpty = createAndUpdateProductDTO.getTagDTOList() == null || createAndUpdateProductDTO.getTagDTOList().isEmpty();
 
-        if (isNameEmpty || isDescriptionEmpty || isImageEmpty || isPriceEmpty){
+        if (isNameEmpty || isDescriptionEmpty || isImageEmpty || isPriceEmpty || isTagEmpty){
             return responseEntityBuilder
                     .createResponse(
                             400,
                             "message",
-                            "missing field 'name','price','description' or 'image'"
+                            "missing field name, price, description, image or tags"
                     );
         }
 
-        if(isPriceValid){
+        if(validation.isPriceNotValid(createAndUpdateProductDTO.getPrice())){
             return responseEntityBuilder
                     .createResponse(
                             400,
@@ -128,15 +159,28 @@ public class ProductService {
                     );
         }
 
+        if(validation.isListNotValid(createAndUpdateProductDTO.getTagDTOList())){
+            return responseEntityBuilder
+                    .createResponse(
+                            400,
+                            "message",
+                            "the number of tag exceed the maximum"
+                    );
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
         Optional <User> user = userRepository.findById(userId);
 
+        Set<Tag> tagList = getTagList(createAndUpdateProductDTO.getTagDTOList());
+
         Product product = CreateAndUpdateProductDTO.convertToModel(createAndUpdateProductDTO);
         product.setSold(0L);
         product.setStar(0.0);
         product.setUser(user.get());
+        product.setTagSet(tagList);
+
         product = productRepository.save(product);
 
         return responseEntityBuilder
@@ -251,4 +295,26 @@ public class ProductService {
                         String.format("successfully delete product with id %d",productId)
                 );
     }
+
+    private Set<String> removeDuplicate(List<String> stringList){
+        return new HashSet<>(stringList);
+    }
+
+    private Set<Tag> getTagList(List<String> stringList){
+        Set<Tag> tagList = new HashSet<>();
+
+        tagList = tagRepository.getTagByMultipleName(removeDuplicate(stringList));
+
+        for (String string : stringList){
+            boolean exists = tagList.stream().anyMatch(tag -> tag.getName().equals(string));
+
+            if (!exists) {
+                Tag tag = new Tag();
+                tag.setName(string);
+                tagList.add(tag);
+            }
+        }
+        return tagList;
+    }
+
 }

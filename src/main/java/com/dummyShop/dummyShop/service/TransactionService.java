@@ -20,23 +20,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class TransactionService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private TransactionHeaderRepository transactionHeaderRepository;
-
     @Autowired
     private TransactionDetailRepository transactionDetailRepository;
-
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
 
@@ -130,7 +130,9 @@ public class TransactionService {
                 );
     }
 
-    private Product fetchProductById(Long id){
+    private Product fetchProductById(
+            Long id
+    ){
         Optional<Product> product = productRepository.findById(id);
 
         if (product == null || product.isEmpty()){

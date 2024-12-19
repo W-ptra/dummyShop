@@ -23,12 +23,13 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
 
     @Autowired
     private JWT jwt;
-
     @Autowired
     private ApplicationContext context;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(
+            HttpServletRequest request
+    ){
         String path = request.getRequestURI();
         String method = request.getMethod();
 
@@ -53,7 +54,7 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")){
-            setErrorResponse(response, 400, "Missing or invalid Authorization header");
+            setErrorResponse(response, 401, "Missing or invalid Authorization header");
             return;
         }
 
@@ -62,7 +63,7 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
         try{
 
             if(!jwt.isTokenValid(token)){
-                setErrorResponse(response, 400, "jwt token is invalid");
+                setErrorResponse(response, 401, "jwt token is invalid");
                 return;
             }
 
@@ -83,14 +84,18 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
 
         }
         catch (Exception e){
-            setErrorResponse(response, 400, "jwt token is expired");
+            setErrorResponse(response, 401, "jwt token is expired");
             return;
         }
 
         filterChain.doFilter(request,response);
     }
 
-    private void setErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
+    private void setErrorResponse(
+            HttpServletResponse response,
+            int statusCode,
+            String message
+    ) throws IOException {
         response.setStatus(statusCode);
         response.setContentType("application/json");
         response.getWriter().write("{\"error\": \"" + message + "\"}");

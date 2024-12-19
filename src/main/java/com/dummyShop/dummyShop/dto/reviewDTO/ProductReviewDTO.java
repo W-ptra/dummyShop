@@ -39,7 +39,6 @@ public class ProductReviewDTO {
         return reviewList.stream()
                 .map( review -> {
                     ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-                    productReviewDTO.setName(review.getUser().getName());
                     productReviewDTO.setStar(review.getStar());
                     productReviewDTO.setContent(review.getContent());
                     return  productReviewDTO;

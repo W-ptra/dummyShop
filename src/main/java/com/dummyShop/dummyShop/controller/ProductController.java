@@ -32,6 +32,14 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<Map<String,Object>> getProductByUserId(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return productService.getProductByUserId(page,size);
+    }
+
     @PostMapping
     public ResponseEntity<Map<String,Object>> createProduct(
             @RequestBody CreateAndUpdateProductDTO createAndUpdateProductDTO

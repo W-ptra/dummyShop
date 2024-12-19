@@ -22,17 +22,16 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
 
-    public ResponseEntity<Map<String, Object>> createReview(CreateReviewDTO createReviewDTO){
+    public ResponseEntity<Map<String, Object>> createReview(
+            CreateReviewDTO createReviewDTO
+    ){
         boolean isContentEmpty = createReviewDTO.getContent() == null || createReviewDTO.getContent().isEmpty();
         boolean isStarEmpty = createReviewDTO.getStar() == null;
         boolean isStarNotValid = createReviewDTO.getStar() < 1 || createReviewDTO.getStar() > 5;
@@ -78,7 +77,7 @@ public class ReviewService {
 
         Review review = CreateReviewDTO.convertToModel(createReviewDTO);
         review.setUser(user.get());
-        review.setProduct(product.get());
+        //review.setProduct(product.get());
 
         review = reviewRepository.save(review);
 

@@ -1,6 +1,10 @@
 package com.dummyShop.dummyShop.dto.productDTO;
 
+import com.dummyShop.dummyShop.dto.tagDTO.TagDTO;
 import com.dummyShop.dummyShop.model.Product;
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+import java.util.List;
 
 public class CreateAndUpdateProductDTO {
 
@@ -8,6 +12,8 @@ public class CreateAndUpdateProductDTO {
     private Double price;
     private String description;
     private String image;
+    @JsonAlias("tags")
+    private List<String> tagDTOList;
 
     public CreateAndUpdateProductDTO() {
     }
@@ -44,12 +50,22 @@ public class CreateAndUpdateProductDTO {
         this.image = image;
     }
 
+    public List<String> getTagDTOList() {
+        return tagDTOList;
+    }
+
+    public void setTagDTOList(List<String> tagDTOList) {
+        this.tagDTOList = tagDTOList;
+    }
+
     public static Product convertToModel(CreateAndUpdateProductDTO createAndUpdateProductDTO){
         Product product = new Product();
         product.setName(createAndUpdateProductDTO.getName());
         product.setPrice(createAndUpdateProductDTO.getPrice());
         product.setDescription(createAndUpdateProductDTO.getDescription());
         product.setImage(createAndUpdateProductDTO.getImage());
+
+        //
 
         return product;
     }

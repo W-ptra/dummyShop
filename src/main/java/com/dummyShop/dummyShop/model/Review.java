@@ -1,6 +1,7 @@
 package com.dummyShop.dummyShop.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,10 +20,10 @@ public class Review {
     @JsonBackReference
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id",nullable = false)
+    @OneToOne
+    @JoinColumn(name = "transaction_detail_id")
     @JsonBackReference
-    private Product product;
+    private TransactionDetail transactionDetail;
 
     public Review(){}
 
@@ -58,11 +59,12 @@ public class Review {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+
+    public TransactionDetail getTransactionDetail() {
+        return transactionDetail;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setTransactionDetail(TransactionDetail transactionDetail) {
+        this.transactionDetail = transactionDetail;
     }
 }

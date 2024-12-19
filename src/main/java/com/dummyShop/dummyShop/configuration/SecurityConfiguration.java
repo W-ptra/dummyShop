@@ -15,13 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfiguration {
 
     @Autowired
     private JWTAuthenticationMiddleware jwtAuthenticationMiddleware;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -35,6 +32,7 @@ public class SecurityConfig {
                             // seller
                             // - prroduct
                             authorize
+                                    .requestMatchers(HttpMethod.GET,"/api/product/user").hasRole("SELLER")
                                     .requestMatchers(HttpMethod.POST,"/api/product").hasRole("SELLER")
                                     .requestMatchers(HttpMethod.PUT,"/api/product/**").hasRole("SELLER")
                                     .requestMatchers(HttpMethod.DELETE,"/api/product/**").hasRole("SELLER");
@@ -45,6 +43,11 @@ public class SecurityConfig {
                                     .requestMatchers(HttpMethod.POST,"/api/cart").hasRole("BUYER")
                                     .requestMatchers(HttpMethod.PUT,"/api/cart/**").hasRole("BUYER")
                                     .requestMatchers(HttpMethod.DELETE,"/api/cart/**").hasRole("BUYER");
+
+                            // - transaction
+                            authorize
+                                    .requestMatchers(HttpMethod.GET,"/api/transaction").hasRole("BUYER")
+                                    .requestMatchers(HttpMethod.POST,"/api/transaction").hasRole("BUYER");
 
                             // - review
                             authorize

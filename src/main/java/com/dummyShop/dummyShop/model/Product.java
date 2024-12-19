@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -24,6 +25,15 @@ public class Product {
     @JsonBackReference
     private User user;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "product_tags", // Name of the join table
+            joinColumns = @JoinColumn(name = "product_id"), // Join column for Product
+            inverseJoinColumns = @JoinColumn(name = "tag_id") // Join column for Tag
+    )
+    @JsonBackReference
+    private Set<Tag> tagSet;
+
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Cart> cartList;
@@ -31,10 +41,6 @@ public class Product {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<TransactionDetail> transactionDetailList;
-
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Review> reviewList;
 
     public Product(){}
 
@@ -94,14 +100,6 @@ public class Product {
         this.transactionDetailList = transactionDetailList;
     }
 
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
     public String getImage() {
         return image;
     }
@@ -124,5 +122,13 @@ public class Product {
 
     public void setStar(Double star) {
         this.star = star;
+    }
+
+    public Set<Tag> getTagSet() {
+        return tagSet;
+    }
+
+    public void setTagSet(Set<Tag> tagSet) {
+        this.tagSet = tagSet;
     }
 }

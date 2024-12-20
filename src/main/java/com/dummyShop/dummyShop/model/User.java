@@ -40,10 +40,6 @@ public class User {
     @JsonManagedReference
     private List<Cart> cartList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Review> reviewList;
-
     public User(){}
 
     public User(Long id, String email, String name, String password, String role) {
@@ -124,14 +120,6 @@ public class User {
 
     public void setCartList(List<Cart> cartList) {
         this.cartList = cartList;
-    }
-
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
     }
 
     public String getImage() {

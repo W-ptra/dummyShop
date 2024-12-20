@@ -191,6 +191,7 @@ public class ProductService {
                 );
     }
 
+
     public ResponseEntity<Map<String,Object>> updateProduct(
             Long productId,
             CreateAndUpdateProductDTO createAndUpdateProductDTO
@@ -199,28 +200,18 @@ public class ProductService {
         boolean isDescriptionEmpty = createAndUpdateProductDTO.getDescription() == null || createAndUpdateProductDTO.getDescription().isEmpty();
         boolean isImageEmpty = createAndUpdateProductDTO.getImage() == null || createAndUpdateProductDTO.getImage().isEmpty();
         boolean isPriceEmpty = createAndUpdateProductDTO.getPrice() == null;
-        boolean isPriceNotValid = createAndUpdateProductDTO.getPrice() < 0 || createAndUpdateProductDTO.getPrice() > 1000000000;
-        boolean isIdNotValid = productId < 0;
+        boolean isTagEmpty = createAndUpdateProductDTO.getTagDTOList() == null || createAndUpdateProductDTO.getTagDTOList().isEmpty();
 
-        if (isNameEmpty || isDescriptionEmpty || isImageEmpty || isPriceEmpty){
+        if (isNameEmpty || isDescriptionEmpty || isImageEmpty || isPriceEmpty || isTagEmpty){
             return responseEntityBuilder
                     .createResponse(
                             400,
                             "message",
-                            "missing field 'name','price','description' or 'image'"
+                            "missing field name, price, description, image or tags"
                     );
         }
 
-        if(isIdNotValid){
-            return responseEntityBuilder
-                    .createResponse(
-                            400,
-                            "message",
-                            String.format("product id %d is invalid",productId)
-                    );
-        }
-
-        if(isPriceNotValid){
+        if(validation.isPriceNotValid(createAndUpdateProductDTO.getPrice())){
             return responseEntityBuilder
                     .createResponse(
                             400,
@@ -229,12 +220,21 @@ public class ProductService {
                     );
         }
 
+        if(validation.isListNotValid(createAndUpdateProductDTO.getTagDTOList())){
+            return responseEntityBuilder
+                    .createResponse(
+                            400,
+                            "message",
+                            "the number of tag exceed the maximum"
+                    );
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        Optional<Product> product = productRepository.isProductWithProductIdAndUserIdExist(productId,userId);
+        Optional<Product> getProduct = productRepository.isProductWithProductIdAndUserIdExist(productId,userId);
 
-        boolean isProductExist = product == null || product.isEmpty();
+        boolean isProductExist = getProduct == null || getProduct.isEmpty();
 
         if(isProductExist){
             return responseEntityBuilder
@@ -249,11 +249,24 @@ public class ProductService {
                     );
         }
 
-        product.get().setName(createAndUpdateProductDTO.getName());
-        product.get().setPrice(createAndUpdateProductDTO.getPrice());
-        product.get().setDescription(createAndUpdateProductDTO.getDescription());
+        Product product = getProduct.get();
 
-        productRepository.save(product.get());
+        List<Long> tagIdList = product.getTagSet().stream().map(Tag::getId).toList();
+
+        product.setName(createAndUpdateProductDTO.getName());
+        product.setPrice(createAndUpdateProductDTO.getPrice());
+        product.setDescription(createAndUpdateProductDTO.getDescription());
+        product.setImage(createAndUpdateProductDTO.getImage());
+        product.setTagSet(getTagList(createAndUpdateProductDTO.getTagDTOList()));
+
+        productRepository.save(product);
+
+        tagIdList.forEach(id -> {
+            Optional<Tag> tag = tagRepository.findById(id);
+            if(tag.get().getProductSet().isEmpty()){
+                tagRepository.delete(tag.get());
+            }
+        });
 
         return responseEntityBuilder
                 .createResponse(
@@ -311,6 +324,7 @@ public class ProductService {
             if (!exists) {
                 Tag tag = new Tag();
                 tag.setName(string);
+                tag = tagRepository.save(tag);
                 tagList.add(tag);
             }
         }

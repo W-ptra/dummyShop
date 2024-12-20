@@ -13,10 +13,21 @@ import java.util.Set;
 @Repository
 public interface TagRepository extends JpaRepository<Tag,Long> {
 
+    @Query("SELECT t FROM Tag t")
+    List<Tag> getAll(
+            Pageable pageable
+    );
+
     @Query("SELECT t FROM Tag t WHERE t.name LIKE :name%")
-    List<Tag> getTagByName(
+    List<Tag> getAllTagByName(
       @Param("name") String name,
       Pageable pageable
+    );
+
+    @Query("SELECT t FROM Tag t JOIN FETCH t.productSet " +
+            "WHERE t.name = :name")
+    Tag getTagAndProductList(
+            @Param("name") String name
     );
 
     @Query("SELECT t FROM Tag t WHERE t.name IN (:names)")

@@ -1,5 +1,6 @@
 package com.dummyShop.dummyShop.controller;
 
+import com.dummyShop.dummyShop.configuration.GeneralConfiguration;
 import com.dummyShop.dummyShop.dto.cartDTO.CreateCartDTO;
 import com.dummyShop.dummyShop.dto.cartDTO.UpdateQuantityCartDTO;
 import com.dummyShop.dummyShop.service.CartService;

@@ -41,6 +41,10 @@ public class JWTAuthenticationMiddleware extends OncePerRequestFilter {
             return  true;
         }
 
+        if (path.equals("/api/tag") && method.equals("GET")){
+            return  true;
+        }
+
         return false;
     }
 

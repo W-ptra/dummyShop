@@ -7,13 +7,23 @@ import java.util.Date;
 import java.util.List;
 
 public class ShowTransactionHeaderDTO {
+
+    private Long id;
     private Date date;
     @JsonAlias("list")
-    private List<ShowTransactionDetailDTO> showTransactionDetailDTOList;
+    private List<ShowTransactionDetailDTO> list;
     private Double total;
     private String status;
 
     public ShowTransactionHeaderDTO(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Date getDate() {
         return date;
@@ -31,12 +41,12 @@ public class ShowTransactionHeaderDTO {
         this.total = total;
     }
 
-    public List<ShowTransactionDetailDTO> getShowTransactionDetailDTOList() {
-        return showTransactionDetailDTOList;
+    public List<ShowTransactionDetailDTO> getlist() {
+        return list;
     }
 
-    public void setShowTransactionDetailDTOList(List<ShowTransactionDetailDTO> showTransactionDetailDTOList) {
-        this.showTransactionDetailDTOList = showTransactionDetailDTOList;
+    public void setlist(List<ShowTransactionDetailDTO> showTransactionDetailDTOList) {
+        this.list = showTransactionDetailDTOList;
     }
 
     public String getStatus() {
@@ -53,11 +63,12 @@ public class ShowTransactionHeaderDTO {
         return transactionHeaderList.stream()
                 .map(transaction -> {
                     ShowTransactionHeaderDTO showTransactionHeaderDTO = new ShowTransactionHeaderDTO();
+                    showTransactionHeaderDTO.setId(transaction.getId());
                     showTransactionHeaderDTO.setDate(transaction.getDate());
                     showTransactionHeaderDTO.setStatus(transaction.getStatus());
 
                     showTransactionHeaderDTO
-                            .setShowTransactionDetailDTOList(
+                            .setlist(
                                     ShowTransactionDetailDTO.convertToDTO(
                                             transaction.getTransactionDetailList()
                                     )

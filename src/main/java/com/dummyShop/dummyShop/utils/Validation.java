@@ -21,6 +21,10 @@ public class Validation {
     }
 
     public <T> boolean  isListNotValid(List<T> tList){
-        return tList.size() > generalConfiguration.getLIST_LENGTH_MAX();
+        return tList.size() > generalConfiguration.getLIST_DEFAULT_LENGTH_MAX();
+    }
+
+    public boolean isStarNotValid(Double star){
+        return star < generalConfiguration.getSTAR_DEFAULT_MIN() || star > generalConfiguration.getSTAR_DEFAULT_MAX();
     }
 }

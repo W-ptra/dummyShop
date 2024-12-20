@@ -22,4 +22,8 @@ public class TagDTO {
         return tagSet.stream()
                 .map(tag -> tag.getName()).toList();
     }
+    public static List<String> convertToDTO(List<Tag> tagSet){
+        return tagSet.stream()
+                .map(tag -> tag.getName()).toList();
+    }
 }

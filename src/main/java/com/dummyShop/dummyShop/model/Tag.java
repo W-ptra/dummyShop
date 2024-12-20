@@ -17,9 +17,10 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "tagSet") // References 'tagSet' in Product
+    @ManyToMany(mappedBy = "tagSet")
     @JsonManagedReference
     private Set<Product> productSet;
 

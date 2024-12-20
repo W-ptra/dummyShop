@@ -15,11 +15,6 @@ public class Review {
     private String content;
     private Double star;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
-    @JsonBackReference
-    private User user;
-
     @OneToOne
     @JoinColumn(name = "transaction_detail_id")
     @JsonBackReference
@@ -49,14 +44,6 @@ public class Review {
 
     public void setStar(Double star) {
         this.star = star;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 

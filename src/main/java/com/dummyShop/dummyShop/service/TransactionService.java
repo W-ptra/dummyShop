@@ -84,11 +84,19 @@ public class TransactionService {
             transactionDetailList.add(transactionDetail);
         }
 
-        transactionDetailRepository.saveAll(transactionDetailList);
+        transactionDetailList = transactionDetailRepository.saveAll(transactionDetailList);
         transactionHeader.setTotal(counter);
         transactionHeader.setUser(user.get());
         transactionHeader.setStatus("complete");
         transactionHeader = transactionHeaderRepository.save(transactionHeader);
+
+        transactionDetailList.forEach(transactionDetail -> {
+            Optional<Product> getProduct = productRepository.findById(transactionDetail.getProduct().getId());
+            Product product = getProduct.get();
+            Long total = product.getSold() + transactionDetail.getQuantity();
+            product.setSold(total);
+            productRepository.save(product);
+        });
 
         return responseEntityBuilder
                 .createResponse(

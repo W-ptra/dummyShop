@@ -5,7 +5,7 @@ import com.dummyShop.dummyShop.model.Review;
 public class CreateReviewDTO {
     private String content;
     private Double star;
-    private Long productId;
+    private Long transactionDetailId;
 
     public  CreateReviewDTO(){}
 
@@ -25,18 +25,11 @@ public class CreateReviewDTO {
         this.star = star;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getTransactionDetailId() {
+        return transactionDetailId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public static Review convertToModel(CreateReviewDTO createReviewDTO){
-        Review review = new Review();
-        review.setContent(createReviewDTO.getContent());
-        review.setStar(createReviewDTO.getStar());
-        return review;
+    public void setTransactionDetailId(Long transactionDetailId) {
+        this.transactionDetailId = transactionDetailId;
     }
 }

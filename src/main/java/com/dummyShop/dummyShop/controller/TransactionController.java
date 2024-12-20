@@ -17,8 +17,8 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllTransactionByUserId(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "0") int size
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ){
         return transactionService.getAllTransactionByUserId(page,size);
     }

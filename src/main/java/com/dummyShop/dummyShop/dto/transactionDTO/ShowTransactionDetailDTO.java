@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ShowTransactionDetailDTO {
 
+    private Long id;
     private String name;
     private Double price;
     private String seller;
@@ -15,6 +16,14 @@ public class ShowTransactionDetailDTO {
     private int quantity;
 
     public ShowTransactionDetailDTO(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -60,6 +69,7 @@ public class ShowTransactionDetailDTO {
         return transactionDetailList.stream()
                 .map(transactionDetail -> {
                     ShowTransactionDetailDTO showTransactionDetailDTO = new ShowTransactionDetailDTO();
+                    showTransactionDetailDTO.setId(transactionDetail.getId());
                     showTransactionDetailDTO.setName(transactionDetail.getProduct().getName());
                     showTransactionDetailDTO.setPrice(transactionDetail.getProduct().getPrice());
                     showTransactionDetailDTO.setSeller(transactionDetail.getProduct().getUser().getName());

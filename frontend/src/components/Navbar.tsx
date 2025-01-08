@@ -1,8 +1,15 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 
-function Navbar() {
+interface SearchParams{
+  searchParams?: string;
+}
+
+function Navbar({searchParams}: SearchParams) {
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
+  const [searchName,setSearchName] = useState(searchParams);
+  const navigate = useNavigate();
 
   const navbarDropdown = () => {
     setIsNavbarToggleActive((prev) => !prev);
@@ -11,6 +18,17 @@ function Navbar() {
   const searchbarDropdown = () => {
     setIsSearchbarToggleActive((prev) => !prev);
   };
+  
+  const setSearchNameValue = (event: React.ChangeEvent<HTMLInputElement>) =>{
+    setSearchName(event.target.value)
+  }
+
+  const searching = (event: React.KeyboardEvent<HTMLInputElement>) => {
+
+    if(event.key == "Enter" && searchName){
+      navigate(`/search?name=${searchName}`)
+    }
+  }
 
   useEffect(() => {
     if (isNavbarToggleActive) {
@@ -26,7 +44,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="bg-white fixed left-0 right-0 top-0">
+      <nav className="bg-white fixed left-0 right-0 top-0 z-10">
         <div className="border border-b-black-100">
           <div className="m-4 flex flex-row ">
             <div className="flex basis-1/2 md:basis-1/3 items-center">
@@ -77,7 +95,11 @@ function Navbar() {
 
                 <input
                   type="text"
-                  className="w-full bg-gray-100 p-1 border-2 border-gray-100 focus:border-blue-500 focus:outline-none rounded pl-11 p-1 h-9 transition duration-200 ease-in-out"
+                  className="w-full bg-gray-100 border-2 border-gray-100 focus:border-blue-500 focus:outline-none rounded pl-11 p-1 h-9 transition duration-200 ease-in-out"
+                  value={searchName}
+                  onChange={setSearchNameValue}
+                  onKeyDown={searching}
+                  
                   placeholder="Search.."
                 />
               </div>
@@ -122,7 +144,7 @@ function Navbar() {
           </div>
         </div>
         { isSearchbarToggleActive && (
-        <div className="flex block md:hidden">
+        <div className="flex md:hidden">
           <div className="flex items-center w-full">
                 <svg
                   className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute mx-7"
@@ -143,6 +165,9 @@ function Navbar() {
                 <input
                   type="text"
                   className="w-full m-3 bg-gray-100 border-2 border-gray-100 focus:border-blue-500 focus:outline-none rounded pl-11 p-1 h-9 transition duration-200 ease-in-out"
+                  value={searchName}
+                  onChange={setSearchNameValue}
+                  onKeyDown={searching}
                   placeholder="Search.."
                 />
               </div>
@@ -150,10 +175,10 @@ function Navbar() {
       )}
       </nav>
       {isNavbarToggleActive && (
-        <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0">
-          <div className="basis-1/2 md:basis-1/3 bg-white">
+        <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0 z-20">
+          <div className="basis-2/3 md:basis-1/3 lg:basis-1/4 bg-white">
 
-            <div className="flex items-center mb-3 border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
+            <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer rounded"
                 onClick={navbarDropdown}
@@ -175,7 +200,7 @@ function Navbar() {
                 </svg>
               </div>
               <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local"/>
-              <span className="text-blue-500 font-bold mx-2">
+              <span className="text-blue-500 font-bold mx-2 text-base">
                 DummyShop
               </span>
             </div>
@@ -249,7 +274,7 @@ function Navbar() {
             </ul>
           </div>
           <div
-            className="basis-1/2  md:basis-2/3"
+            className="basis-1/3  md:basis-2/3 lg:basis-3/4"
             onClick={navbarDropdown}
           ></div>
         </div>

@@ -60,7 +60,9 @@ function Search(){
     }
 
     for(let x=(size*(page-1)); x<(size*page);x++){
-        productList.push(list[x])
+        if(list[x]){
+            productList.push(list[x])
+        }
     }
 
     const currentPage1 = {

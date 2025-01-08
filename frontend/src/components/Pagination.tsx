@@ -20,8 +20,8 @@ function Pagination({ currentPage }: CurrentPage) {
     const start = Math.max(1, currentPageIndex - Math.floor(windowSize / 2));
     const end = Math.min(pageTotal, start + windowSize - 1);
     const adjustedStart = Math.max(1, end - windowSize + 1);
-    
-    const counter = [];
+
+    const counter: number[] = [];
     for (let x = adjustedStart; x <= end; x++) {
         counter.push(x);
     }

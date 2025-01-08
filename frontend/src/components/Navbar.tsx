@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
+import ProfileMenu from "./ProfileMenu";
 
 interface SearchParams{
   searchParams?: string;
@@ -8,6 +9,7 @@ interface SearchParams{
 function Navbar({searchParams}: SearchParams) {
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
+  const [isProfileToggleActive, setisProfileToggleActive] = useState(false)
   const [searchName,setSearchName] = useState(searchParams);
   const navigate = useNavigate();
 
@@ -17,6 +19,10 @@ function Navbar({searchParams}: SearchParams) {
 
   const searchbarDropdown = () => {
     setIsSearchbarToggleActive((prev) => !prev);
+  };
+
+  const profileMenuDropdown = () => {
+    setisProfileToggleActive((prev) => !prev);
   };
   
   const setSearchNameValue = (event: React.ChangeEvent<HTMLInputElement>) =>{
@@ -106,9 +112,12 @@ function Navbar({searchParams}: SearchParams) {
             </div>
 
             <div className="flex basis-1/2 md:basis-1/3 flex-row-reverse items-center">
-              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded">
+              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded"
+                onClick={profileMenuDropdown}
+              >
                 <img
                   className="w-5 h-5"
+                  
                   src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
                   alt="user-male-circle--v1"
                 />
@@ -172,7 +181,7 @@ function Navbar({searchParams}: SearchParams) {
                 />
               </div>
         </div>
-      )}
+        )}
       </nav>
       {isNavbarToggleActive && (
         <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0 z-20">
@@ -279,6 +288,11 @@ function Navbar({searchParams}: SearchParams) {
           ></div>
         </div>
       )}
+
+      {isProfileToggleActive && (
+        <ProfileMenu/>
+      )}
+      
 
       
     </>

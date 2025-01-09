@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import ProfileMenu from "./ProfileMenu";
+import CartMenu from "./CartMenu";
 
-interface SearchParams{
+interface SearchParams {
   searchParams?: string;
 }
 
-function Navbar({searchParams}: SearchParams) {
+function Navbar({ searchParams }: SearchParams) {
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
-  const [isProfileToggleActive, setisProfileToggleActive] = useState(false)
-  const [searchName,setSearchName] = useState(searchParams);
+  const [isCartToggleActive, setIsCartToggleActive] = useState(false);
+  const [isProfileToggleActive, setIsProfileToggleActive] = useState(false);
+  const [searchName, setSearchName] = useState(searchParams);
   const navigate = useNavigate();
 
   const navbarDropdown = () => {
@@ -22,17 +24,28 @@ function Navbar({searchParams}: SearchParams) {
   };
 
   const profileMenuDropdown = () => {
-    setisProfileToggleActive((prev) => !prev);
+    if(isCartToggleActive){
+      setIsCartToggleActive(false);
+    }
+    setIsProfileToggleActive((prev) => !prev);
   };
-  
-  const setSearchNameValue = (event: React.ChangeEvent<HTMLInputElement>) =>{
+
+  const cartMenuDropdown = () => {
+    if(isSearchbarToggleActive){
+      setIsSearchbarToggleActive(false);
+    }
+    setIsCartToggleActive((prev) => !prev);
+  }
+
+  const setSearchNameValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(event.target.value)
   }
 
   const searching = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
-    if(event.key == "Enter" && searchName){
-      navigate(`/search?name=${searchName}`)
+    if (event.key == "Enter" && searchName) {
+      navigate(`/search?name=${searchName}`);
+      window.location.reload();
     }
   }
 
@@ -75,10 +88,10 @@ function Navbar({searchParams}: SearchParams) {
                   />
                 </svg>
               </div>
-              <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local"/>
-              <span className="text-blue-500 font-bold mx-2">
-                DummyShop
-              </span>
+                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                <span className="text-blue-500 font-bold mx-2">
+                  DummyShop
+                </span>
             </div>
 
             <div className="basis-1/3 items-center hidden md:flex">
@@ -105,7 +118,7 @@ function Navbar({searchParams}: SearchParams) {
                   value={searchName}
                   onChange={setSearchNameValue}
                   onKeyDown={searching}
-                  
+
                   placeholder="Search.."
                 />
               </div>
@@ -117,17 +130,21 @@ function Navbar({searchParams}: SearchParams) {
               >
                 <img
                   className="w-5 h-5"
-                  
                   src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
                   alt="user-male-circle--v1"
                 />
               </div>
-              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded">
+              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded relative"
+                onClick={cartMenuDropdown}
+              >
                 <img
                   className="w-5 h-5"
                   src="https://img.icons8.com/pulsar-line/48/shopping-cart.png"
                   alt="shopping-cart"
                 />
+                <div className=" flex absolute top-0 right-0 w-5 h-4 rounded-full bg-black text-white items-center justify-center">
+                  <span className="font-semibold text-xs">1</span>
+                </div>
               </div>
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer rounded block md:hidden"
@@ -152,35 +169,35 @@ function Navbar({searchParams}: SearchParams) {
             </div>
           </div>
         </div>
-        { isSearchbarToggleActive && (
-        <div className="flex md:hidden">
-          <div className="flex items-center w-full">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute mx-7"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-
-                <input
-                  type="text"
-                  className="w-full m-3 bg-gray-100 border-2 border-gray-100 focus:border-blue-500 focus:outline-none rounded pl-11 p-1 h-9 transition duration-200 ease-in-out"
-                  value={searchName}
-                  onChange={setSearchNameValue}
-                  onKeyDown={searching}
-                  placeholder="Search.."
+        {isSearchbarToggleActive && (
+          <div className="flex md:hidden">
+            <div className="flex items-center w-full">
+              <svg
+                className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute mx-7"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
-              </div>
-        </div>
+              </svg>
+
+              <input
+                type="text"
+                className="w-full m-3 bg-gray-100 border-2 border-gray-100 focus:border-blue-500 focus:outline-none rounded pl-11 p-1 h-9 transition duration-200 ease-in-out"
+                value={searchName}
+                onChange={setSearchNameValue}
+                onKeyDown={searching}
+                placeholder="Search.."
+              />
+            </div>
+          </div>
         )}
       </nav>
       {isNavbarToggleActive && (
@@ -208,13 +225,13 @@ function Navbar({searchParams}: SearchParams) {
                   />
                 </svg>
               </div>
-              <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local"/>
+              <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
               <span className="text-blue-500 font-bold mx-2 text-base">
                 DummyShop
               </span>
             </div>
             <ul className="items-center ml-4 mr-4 overflow-y-auto h-full">
-            
+
               <li>
                 <a
                   href=""
@@ -290,11 +307,12 @@ function Navbar({searchParams}: SearchParams) {
       )}
 
       {isProfileToggleActive && (
-        <ProfileMenu/>
+        <ProfileMenu />
       )}
-      
 
-      
+      {isCartToggleActive && (
+        <CartMenu/>
+      )}        
     </>
   );
 }

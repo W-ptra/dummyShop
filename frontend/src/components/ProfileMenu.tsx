@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function ProfileMenu(){
+    const navigation = useNavigate();
+
     return (
         <div 
             className="flex flex-col fixed right-3 top-16 h-64 w-1/2 md:w-1/5 z-10 
@@ -6,8 +10,8 @@ function ProfileMenu(){
         >
             <div className="basis-1/4 bg-gray-100">
             <img
-                  className="absolute top-[11%] md:top-[6%] ml-5 w-10 md:w-16 h-10 md:h-16 bg-white rounded-full"
-                  
+                  className="cursor-pointer absolute top-[11%] md:top-[6%] ml-5 w-10 md:w-16 h-10 md:h-16 bg-white rounded-full"
+                  onClick={() => navigation("/profile") }
                   src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
                   alt="user-male-circle--v1"
                 />
@@ -34,7 +38,7 @@ function ProfileMenu(){
                                 Log Out
                         </span>
                     </li>
-                </ul>
+            </ul>
         </div>
     )
 }

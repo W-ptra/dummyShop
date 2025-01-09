@@ -88,10 +88,13 @@ function Navbar({ searchParams }: SearchParams) {
                   />
                 </svg>
               </div>
-                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
-                <span className="text-blue-500 font-bold mx-2">
-                  DummyShop
-                </span>
+              
+                <a href="/" className="flex items-center justify-center">
+                  <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                  <span className="text-blue-500 font-bold mx-2">
+                    DummyShop
+                  </span>
+                </a>
             </div>
 
             <div className="basis-1/3 items-center hidden md:flex">
@@ -203,38 +206,41 @@ function Navbar({ searchParams }: SearchParams) {
       {isNavbarToggleActive && (
         <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0 z-20">
           <div className="basis-2/3 md:basis-1/3 lg:basis-1/4 bg-white">
-
-            <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
-              <div
-                className="p-2 hover:bg-gray-100 cursor-pointer rounded"
-                onClick={navbarDropdown}
-              >
-                <svg
-                  className="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 17 14"
+            <a href="/">
+              <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
+                <div
+                  className="p-2 hover:bg-gray-100 cursor-pointer rounded"
+                  onClick={navbarDropdown}
                 >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M1 1h15M1 7h15M1 13h15"
-                  />
-                </svg>
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 17 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M1 1h15M1 7h15M1 13h15"
+                    />
+                  </svg>
+                </div>
+                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                <span className="text-blue-500 font-bold mx-2 text-base">
+                  DummyShop
+                </span>
               </div>
-              <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
-              <span className="text-blue-500 font-bold mx-2 text-base">
-                DummyShop
-              </span>
-            </div>
+
+            </a>
+
             <ul className="items-center ml-4 mr-4 overflow-y-auto h-full">
 
               <li>
                 <a
-                  href=""
+                  href="/my-product"
                   className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
                 >
                   <img
@@ -247,7 +253,7 @@ function Navbar({ searchParams }: SearchParams) {
               </li>
               <li>
                 <a
-                  href=""
+                  href="/transaction"
                   className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
                 >
                   <img
@@ -260,7 +266,7 @@ function Navbar({ searchParams }: SearchParams) {
               </li>
               <li>
                 <a
-                  href=""
+                  href="/history"
                   className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
                 >
                   <img
@@ -273,7 +279,7 @@ function Navbar({ searchParams }: SearchParams) {
               </li>
               <li>
                 <a
-                  href=""
+                  href="/help"
                   className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
                 >
                   <img
@@ -286,7 +292,7 @@ function Navbar({ searchParams }: SearchParams) {
               </li>
               <li>
                 <a
-                  href=""
+                  href="/setting"
                   className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
                 >
                   <img

@@ -18,30 +18,32 @@ function Profile(){
             <div className="flex flex-col justify-between">
 
                 <div 
-                    className="flex h-[20rem] bg-gray-100 mt-[4.8rem] relative">
+                    className="flex h-[10rem] md:h-[20rem] bg-gray-100 mt-[4.8rem] relative">
                     <img  
                         className="h-full w-full"
                         src={user.banner} alt="" 
                     />
-                    <div className="flex absolute right-16 bottom-5 cursor-pointer gap-3">
+                    <div className="flex absolute right-[2.6rem] md:right-[4.9rem]  bottom-3 md:bottom-5 cursor-pointer gap-3">
                         <div className="bg-gray-500 hover:bg-gray-400 p-1 rounded-full">
-                            <img className="w-8 h-8" src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit.png" alt="edit"/>                
+                            <img className="w-6 h-6 md:w-8 md:h-8" src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit.png" alt="edit"/>                
                         </div>
                         <div className="bg-gray-500 hover:bg-gray-400 p-1 rounded-full">
                             <img className="w-8 h-8" src="https://img.icons8.com/sf-black-filled/64/FFFFFF/delete.png" alt="edit"/>                
                         </div>
                     </div>
 
-                    <div className="mt-[20%] ml-20 absolute bg-white rounded-full">
+                    <div className=" top-[7.5rem] md:top-[16rem]  left-[2rem] md:left-20 absolute bg-white rounded-full">
+
                         <img
-                        className="w-32 h-32"
-                        src={user.image}
-                        alt="user-male-circle--v1"
+                            className="w-20 h-20 md:w-32 md:h-32"
+                            src={user.image}
+                            alt="user-male-circle--v1"
                         />
+                    
                     </div>
 
                 </div>
-                <div className="flex flex-col gap-3 m-20 mb-10">
+                <div className="flex flex-col gap-3 m-10 mt-[4rem] md:mt-24 md:m-20 mb-10">
                     <h4 className="font-semibold">
                         My Profile
                     </h4>
@@ -109,7 +111,7 @@ function Profile(){
                             htmlFor="id" 
                             className="mr-5 font-bold"
                         >
-                            About me: 
+                            About me 
                         </label>
                         <textarea name="" id=""
                             className=" p-2 bg-gray-100 rounded-md focus:border-2 pl-3 focus:outline-none focus:border-blue-500 transition duration-200 ease-in-out"
@@ -126,7 +128,6 @@ function Profile(){
 
                 
             </div>
-
             <Footer/>
         </>
     )

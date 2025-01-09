@@ -1,26 +1,13 @@
 import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
-import NotFound from "./NotFound";
+import Footer from "../components/Footer";
 
-function Search(){
+function MyProduct(){
     const [searchParams] = useSearchParams();
-    const search = searchParams.get("name");
     const page = Number(searchParams.get("page")) || 1;
-    const size = 20;
-
-    if(!search){
-        return (
-            <NotFound/>
-        );
-    }
-
-    useEffect(() => {
-        document.title = "#"+search;
-    },[]);
+    const size = 19;
 
     const obj1 = {
         id: 1,
@@ -47,7 +34,7 @@ function Search(){
     const list = []
     const productList = []
 
-    for(let x=1;x<=110;x++){
+    for(let x=1;x<=130;x++){
         if(x%2===1){
             const cpy = {...obj1}
             cpy.name = `Product ${x}`
@@ -72,13 +59,15 @@ function Search(){
 
     return (
         <>
-            <Navbar searchParams={search} />
-            <Card productList={productList} />
+            <Navbar/>
 
-            <Pagination currentPage={currentPage1} path={"search"} />
+            <Card productList={productList} newCard={true} />
+
+            <Pagination currentPage={currentPage1} path="my-product" />
+
             <Footer/>
         </>
     )
 }
 
-export default Search;
+export default MyProduct

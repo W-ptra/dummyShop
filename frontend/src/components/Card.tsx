@@ -10,12 +10,27 @@ interface Product {
 }
 interface CardProperty {
     productList: Product[];
+    newCard? : boolean;
 }
 
-function Card({ productList }: CardProperty) {
+function Card({ productList, newCard }: CardProperty) {
     return (
         <div className="flex w-full items-center justify-center">
             <div className="mt-20 grid grid-cols-2 md:grid-cols-5 gap-7 gap-y-5 m-5  " >
+                
+                {newCard && (
+                    <a href="/create-update-product">
+                        <div className="bg-gray-100 hover:bg-gray-50 rounded-xl w-[11rem] h-[16.5rem] flex flex-col justify-center items-center cursor-pointer">
+                            <img 
+                                className="w-16 h-16" 
+                                src="https://img.icons8.com/external-glyph-silhouettes-icons-papa-vector/78/9ca3af/external-Plus-interface-glyph-silhouettes-icons-papa-vector.png" 
+                                alt="external-Plus-interface-glyph-silhouettes-icons-papa-vector"
+                            />
+                            <h4 className="text-gray-500 font-extrabold">Add Product</h4>
+                        </div>
+                    </a>                    
+                )}
+                
                 {productList.map((product) => (
                     <div className="h-full flex flex-col gap-1 p-1"
                     >

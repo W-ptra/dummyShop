@@ -4,10 +4,11 @@ interface CurrentPage {
     currentPage: {
         page: number,
         length: number
-    }
+    };
+    path: string;
 }
 
-function Pagination({ currentPage }: CurrentPage) {
+function Pagination({ currentPage,path }: CurrentPage) {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("name");
 
@@ -28,7 +29,11 @@ function Pagination({ currentPage }: CurrentPage) {
 
     return (
         <div className="h-14 flex justify-center mb-10 mt-5">
-            <ul className="flex items-center text-lg md:text-sm font-bold">
+
+            { currentPage.length <  itemsPerPage ? (
+                <></>
+            ) : (
+                <ul className="flex items-center text-lg md:text-sm font-bold">
                 {counter.map((number) => (
 
                     number === currentPage.page ? (                        
@@ -40,7 +45,7 @@ function Pagination({ currentPage }: CurrentPage) {
                             {number}
                         </div>
                     ) : (
-                        <a href={`/search?name=${search}&page=${number}`}>
+                        <a href={`/${path}?name=${search}&page=${number}`}>
                             <div
                                 key={number}
                                 className="w-8 h-8 md:w-9 md:h-9  hover:bg-gray-100 flex rounded-lg justify-center text-center items-center cursor-pointer"
@@ -51,6 +56,9 @@ function Pagination({ currentPage }: CurrentPage) {
                     )
                 ))}
             </ul>
+            )}
+
+            
         </div>
     )
 }

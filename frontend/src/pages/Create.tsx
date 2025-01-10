@@ -23,10 +23,14 @@ function CreateUpdateProduct() {
         setImagePreview("");
     }
 
-    useEffect(()=>{
+    useEffect(() => {
+        document.title = "Create Product";
+    }, []);
+
+    useEffect(() => {
         const imageUpload = document.getElementById("imageUpload");
-        if(imageUpload){
-            if(selectedFile){
+        if (imageUpload) {
+            if (selectedFile) {
                 imageUpload.classList.remove("h-[60vh]");
                 imageUpload.classList.add("h-[90vh]");
             } else {
@@ -34,7 +38,7 @@ function CreateUpdateProduct() {
                 imageUpload.classList.add("h-[60vh]");
             }
         }
-    },[selectedFile]);
+    }, [selectedFile]);
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -52,7 +56,7 @@ function CreateUpdateProduct() {
         setPrice(Number(event.target.value));
     }
 
-    const removeImagePreview = () =>{
+    const removeImagePreview = () => {
         setSelectedFile(null);
         setImagePreview("");
     }
@@ -70,24 +74,24 @@ function CreateUpdateProduct() {
             <Navbar />
             <div className="bg-gray-200 pb-10 mt-16">
 
-                <div 
+                <div
                     className="flex justify-center items-center h-[60vh] bg-slate-700 mb-10"
                     id="imageUpload"
                 >
                     {selectedFile ? (
                         <div className="relative w-96 h-full bg-gray-400 flex justify-center items-center ">
-                            <img 
-                                src={imagePreview} alt={imagePreview} 
+                            <img
+                                src={imagePreview} alt={imagePreview}
                                 className="max-h-full max-w-full"
                             />
-                            <img className="w-12 h-12 absolute top-5 right-5 bg-gray-800 p-1 rounded-full cursor-pointer" 
-                                src="https://img.icons8.com/sf-black-filled/64/FFFFFF/multiply.png" 
+                            <img className="w-12 h-12 absolute top-5 right-5 bg-gray-800 p-1 rounded-full cursor-pointer"
+                                src="https://img.icons8.com/sf-black-filled/64/FFFFFF/multiply.png"
                                 alt="external-cross-essentials-tanah-basah-glyph-tanah-basah"
                                 onClick={removeImagePreview}
-                            />    
+                            />
                         </div>
                     ) : (
-                        <div>
+                        <div className="flex flex-col justify-center items-center">
                             <label
                                 htmlFor="image"
                                 className="bg-blue-500 hover:bg-blue-400 cursor-pointer w-44 h-14 flex justify-center items-center rounded-full"
@@ -98,6 +102,7 @@ function CreateUpdateProduct() {
                                     alt="add-image"
                                 />
                                 <span className="text-base font-extrabold text-white ml-2">Add Image</span>
+
                             </label>
                             <input
                                 type="file"
@@ -106,6 +111,12 @@ function CreateUpdateProduct() {
                                 className="hidden"
                                 onChange={handleFileChange}
                             />
+                            <p className="text-gray-200 mt-3">
+                                PNG / JPEG / JPG
+                            </p>
+                            <p className="text-gray-200">
+                                Max size 30MB
+                            </p>
                         </div>
                     )}
                 </div>
@@ -151,7 +162,7 @@ function CreateUpdateProduct() {
 
                 </div>
                 <div className="flex justify-center items-center mt-5">
-                    <button 
+                    <button
                         className="p-2 px-10 hover:bg-blue-400 bg-blue-500 text-white font-extrabold rounded-lg"
                         onClick={post}
                     >

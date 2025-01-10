@@ -3,11 +3,16 @@ import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
+import { useEffect } from "react";
 
-function MyProduct(){
+function MyProduct() {
     const [searchParams] = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
     const size = 19;
+
+    useEffect(() => {
+        document.title = "My Product";
+    }, []);
 
     const obj1 = {
         id: 1,
@@ -34,32 +39,32 @@ function MyProduct(){
     const list = []
     const productList = []
 
-    for(let x=1;x<=130;x++){
-        if(x%2===1){
-            const cpy = {...obj1}
+    for (let x = 1; x <= 130; x++) {
+        if (x % 2 === 1) {
+            const cpy = { ...obj1 }
             cpy.name = `Product ${x}`
             list.push(cpy)
         } else {
-            const cpy = {...obj2}
+            const cpy = { ...obj2 }
             cpy.name = `Product ${x}`
             list.push(cpy)
         }
     }
 
-    for(let x=(size*(page-1)); x<(size*page);x++){
-        if(list[x]){
+    for (let x = (size * (page - 1)); x < (size * page); x++) {
+        if (list[x]) {
             productList.push(list[x])
         }
     }
 
     const currentPage1 = {
-        page:page,
-        length:list.length
+        page: page,
+        length: list.length
     }
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             <div className="mt-24 mx-2 md:mx-20">
                 <h1 className="text-lg font-extrabold">
@@ -71,7 +76,7 @@ function MyProduct(){
 
             <Pagination currentPage={currentPage1} path="my-product" />
 
-            <Footer/>
+            <Footer />
         </>
     )
 }

@@ -6,19 +6,33 @@ import MyProduct from "./pages/MyProduct"
 import Create from "./pages/Create"
 import NotFound from "./pages/NotFound"
 import Product from "./pages/Product"
+import Transaction from "./pages/Transaction"
+import Cart from "./pages/Cart"
+import Help from "./pages/Help"
+import Setting from "./pages/Setting"
+import Checkout from "./pages/Checkout"
+import History from "./pages/History"
+import UpdateDelete from "./pages/UpdateDelete"
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/about" element={ <h1>about</h1> } />
-        <Route path="/search" element={ <Search/> } />
-        <Route path="/profile" element={ <Profile/> } />
-        <Route path="/my-product" element={ <MyProduct/> } />
-        <Route path="/create-update-product" element={ <Create/> } />
-        <Route path="/product/:id" element={ <Product/> } />
-        <Route path="*" element={ <NotFound/> } />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<h1>about</h1>} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-product" element={<MyProduct />} />
+        <Route path="/create-product" element={<Create />} />
+        <Route path="/update-delete-product/:id" element={<UpdateDelete />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/transaction" element={<Transaction />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/setting" element={<Setting />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )

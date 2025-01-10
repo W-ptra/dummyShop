@@ -19,7 +19,7 @@ function Card({ productList, newCard }: CardProperty) {
             <div className="grid mx-2 md:mx-20 grid-cols-2 md:grid-cols-5 gap-1 md:gap-7 gap-y-5 m-5" >
                 
                 {newCard && (
-                    <a href="/create-update-product">
+                    <a href="/create-product">
                         <div className="bg-gray-100 hover:bg-gray-50 rounded-xl w-[11rem] h-[16.5rem] flex flex-col justify-center items-center cursor-pointer">
                             <img 
                                 className="w-16 h-16" 

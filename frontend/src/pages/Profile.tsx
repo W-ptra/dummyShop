@@ -1,7 +1,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useEffect } from "react";
 
 function Profile(){
+
+    useEffect(() => {
+            document.title = "Profile";
+        },[]);
 
     const user = {
         id: 1,

@@ -21,24 +21,28 @@ function CartMenu(){
             <ul className="flex flex-col m-5 mb-0 gap-0">
 
                 {list.map( (obj) => (
-                    <li className="p-1 md:p-2 flex justify-between rounded hover:bg-gray-100 cursor-pointer items-center" key={obj.id}>
-                        <div className="flex items-center">
-                            <img className="w-10 h-10 mr-2 rounded" src={obj.image} alt="" />
-                            <span className="text-[0.7rem] md:text-base font-extrabold">
-                                {obj.name}
+                    <a href={`/product/${obj.id}`}>
+                        <li className="p-1 md:p-2 flex justify-between rounded hover:bg-gray-100 cursor-pointer items-center" key={obj.id}>
+                            <div className="flex items-center">
+                                <img className="w-10 h-10 mr-2 rounded" src={obj.image} alt="" />
+                                <span className="text-[0.7rem] md:text-base font-extrabold">
+                                    {obj.name}
+                                </span>
+                            </div>
+                            <span className=" text-[0.7rem] md:text-sm font-bold">
+                                {"$"+obj.price}
                             </span>
-                        </div>
-                        <span className=" text-[0.7rem] md:text-sm font-bold">
-                            {"$"+obj.price}
-                        </span>
-                    </li>
+                        </li>
+                    </a>
                 ) )}
             </ul>
-            <div className="flex cursor-pointer m-5 mt-0 p-2 border border-black rounded hover:bg-gray-100 justify-center">
-                <span>
-                    Go to Cart
-                </span>
-            </div>
+            <a href="/cart" className="flex justify-center">
+                <button className="flex cursor-pointer m-5 mt-0 p-2 px-6 rounded bg-blue-500 hover:bg-blue-400 justify-center">
+                    <span className="text-white font-bold">
+                        Go to Cart
+                    </span>
+                </button>
+            </a>
         </div>
     )
 }

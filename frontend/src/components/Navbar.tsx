@@ -24,14 +24,14 @@ function Navbar({ searchParams }: SearchParams) {
   };
 
   const profileMenuDropdown = () => {
-    if(isCartToggleActive){
+    if (isCartToggleActive) {
       setIsCartToggleActive(false);
     }
     setIsProfileToggleActive((prev) => !prev);
   };
 
   const cartMenuDropdown = () => {
-    if(isSearchbarToggleActive){
+    if (isSearchbarToggleActive) {
       setIsSearchbarToggleActive(false);
     }
     setIsCartToggleActive((prev) => !prev);
@@ -88,13 +88,13 @@ function Navbar({ searchParams }: SearchParams) {
                   />
                 </svg>
               </div>
-              
-                <a href="/" className="flex items-center justify-center">
-                  <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
-                  <span className="text-blue-500 font-bold mx-2">
-                    DummyShop
-                  </span>
-                </a>
+
+              <a href="/" className="flex items-center justify-center">
+                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                <span className="text-blue-500 font-bold mx-2">
+                  DummyShop
+                </span>
+              </a>
             </div>
 
             <div className="basis-1/3 items-center hidden md:flex">
@@ -206,8 +206,7 @@ function Navbar({ searchParams }: SearchParams) {
       {isNavbarToggleActive && (
         <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0 z-20">
           <div className="basis-2/3 md:basis-1/3 lg:basis-1/4 bg-white">
-            <a href="/">
-              <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
+          <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
                 <div
                   className="p-2 hover:bg-gray-100 cursor-pointer rounded"
                   onClick={navbarDropdown}
@@ -228,13 +227,13 @@ function Navbar({ searchParams }: SearchParams) {
                     />
                   </svg>
                 </div>
-                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
-                <span className="text-blue-500 font-bold mx-2 text-base">
-                  DummyShop
-                </span>
+                <a className="flex items-center justify-center" href="/">
+                  <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                  <span className="text-blue-500 font-bold mx-2 text-base">
+                    DummyShop
+                  </span>
+                </a>
               </div>
-
-            </a>
 
             <ul className="items-center ml-4 mr-4 overflow-y-auto h-full">
 
@@ -317,8 +316,8 @@ function Navbar({ searchParams }: SearchParams) {
       )}
 
       {isCartToggleActive && (
-        <CartMenu/>
-      )}        
+        <CartMenu />
+      )}
     </>
   );
 }

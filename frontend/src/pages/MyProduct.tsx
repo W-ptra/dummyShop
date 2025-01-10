@@ -61,6 +61,12 @@ function MyProduct(){
         <>
             <Navbar/>
 
+            <div className="mt-24 mx-2 md:mx-20">
+                <h1 className="text-lg font-extrabold">
+                    My Products
+                </h1>
+            </div>
+
             <Card productList={productList} newCard={true} />
 
             <Pagination currentPage={currentPage1} path="my-product" />

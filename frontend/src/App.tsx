@@ -3,7 +3,9 @@ import Home from "./pages/Home"
 import Search from "./pages/Search"
 import Profile from "./pages/Profile"
 import MyProduct from "./pages/MyProduct"
-import CreateUpdateProduct from "./pages/Create"
+import Create from "./pages/Create"
+import NotFound from "./pages/NotFound"
+import Product from "./pages/Product"
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
         <Route path="/search" element={ <Search/> } />
         <Route path="/profile" element={ <Profile/> } />
         <Route path="/my-product" element={ <MyProduct/> } />
-        <Route path="/create-update-product" element={ <CreateUpdateProduct/> } />
+        <Route path="/create-update-product" element={ <Create/> } />
+        <Route path="/product/:id" element={ <Product/> } />
+        <Route path="*" element={ <NotFound/> } />
       </Routes>
     </Router>
   )

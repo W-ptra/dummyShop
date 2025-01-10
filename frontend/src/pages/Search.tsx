@@ -73,8 +73,23 @@ function Search(){
     return (
         <>
             <Navbar searchParams={search} />
-            <Card productList={productList} />
 
+            <div className=" mx-2 md:mx-20 mt-24">
+                <h1 className="text-lg font-extrabold">
+                    Search result of 
+                    <span className="">
+                        {' "'+search+'"'}    
+                    </span> 
+                </h1>
+                <h4 className="">
+                    <span className="font-semibold">
+                        {list.length + " "}
+                    </span>
+                    Products found
+                </h4>
+            </div>
+
+            <Card productList={productList} />
             <Pagination currentPage={currentPage1} path={"search"} />
             <Footer/>
         </>

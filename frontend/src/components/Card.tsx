@@ -20,7 +20,7 @@ function Card({ productList, newCard }: CardProperty) {
                 
                 {newCard && (
                     <a href="/create-product">
-                        <div className="bg-gray-100 hover:bg-gray-50 rounded-xl w-[11rem] h-[16.5rem] flex flex-col justify-center items-center cursor-pointer">
+                        <div className="bg-gray-100 hover:bg-gray-50 rounded-xl py-[5.5rem] flex flex-col justify-center items-center cursor-pointer">
                             <img 
                                 className="w-16 h-16" 
                                 src="https://img.icons8.com/external-glyph-silhouettes-icons-papa-vector/78/9ca3af/external-Plus-interface-glyph-silhouettes-icons-papa-vector.png" 

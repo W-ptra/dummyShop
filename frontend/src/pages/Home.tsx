@@ -134,7 +134,7 @@ function Home(){
             </div>
             <div className="grid mx-2 md:mx-20 grid-cols-2 md:grid-cols-4 gap-7 gap-y-5 m-5 mb-10">
                 {topSeller.map((seller)=>(
-                    <div className="bg-gray-100 h-[16rem] w-[11rem] md:w-[15rem] rounded-xl flex flex-col cursor-pointer">
+                    <div className="bg-gray-100 rounded-xl flex flex-col cursor-pointer">
                         <div className="basis-3/5 relative flex">
                             <img 
                                 className="h-full w-full rounded-t-xl rounded-none"

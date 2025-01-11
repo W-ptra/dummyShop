@@ -262,20 +262,7 @@ function Navbar({ searchParams }: SearchParams) {
                   />
                   <span className="ml-4 text-gray-700">Transaction</span>
                 </a>
-              </li>
-              <li>
-                <a
-                  href="/history"
-                  className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
-                >
-                  <img
-                    className="w-6 h-6"
-                    src="https://img.icons8.com/ios/50/time-machine--v1.png"
-                    alt="time-machine--v1"
-                  />
-                  <span className="ml-4 text-gray-700">History</span>
-                </a>
-              </li>
+              </li>              
               <li>
                 <a
                   href="/help"

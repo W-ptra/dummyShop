@@ -1,13 +1,26 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+type Product = {
+    id:         number,
+    name:       string,
+    price:      number,
+    image:      string,
+    quantity:   number
+}
 
 function Cart() {
-    useEffect(() => {
-        document.title = "Cart";
-    }, []);
 
-    const cart = [
+    // const product = {
+    //     id:1,
+    //     name: "trouser by H&M",
+    //     price: 12.9,
+    //     image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
+    //     quantity: 4
+    // }
+
+    const [cart] = useState<Product[]>([
         {
             id:1,
             name: "trouser by H&M",
@@ -28,8 +41,22 @@ function Cart() {
             price: 12.9,
             image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
             quantity: 4
+        },
+        {
+            id:4,
+            name: "trouser by H&M",
+            price: 12.9,
+            image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
+            quantity: 4
         }
-    ];
+    ]);
+
+    const [selectedProduct,setSelectedProduct] = useState<Product[]>([]);
+
+
+    useEffect(() => {
+        document.title = "Cart";
+    }, []);
 
     return (
         <>
@@ -49,9 +76,12 @@ function Cart() {
                 ):(
                     <>
                         <div className="bg-white mb-3 p-2 rounded flex">
-                            <div className="basis-2/6 flex justify-center">
-                            
-                                <span className="text-sm md:text-base">
+                            <div className="basis-2/6 flex">
+                                <div className="basis-1/5 flex justify-center items-center">
+                                    <input className="w-4 h-4" type="checkbox" name="" id="all" />
+                                    <label htmlFor="all"></label>
+                                </div>
+                                <span className="text-sm md:text-base basis-4/5 flex justify-center font-semibold">
                                     Product
                                 </span>
                             </div>
@@ -76,30 +106,33 @@ function Cart() {
                                 </span>
                             </div>
                         </div>
-                        <div className="bg-white px-2 pb-10 pt-2 rounded">
+                        <div className="bg-white px-1 pb-10 pt-2 rounded">
                             
                             {cart.map((product)=>(
                                 <div className="flex p-1 md:p-2 py-5 items-center justify-evenly border border-white border-b-gray-500">
                                     
-                                    <div className="basis-2/6 flex justify-center items-center">
-                                        <input 
-                                            type="checkbox" 
-                                            name="" 
-                                            id={`${product.id}`}
-                                            className="mr-1 md:mr-3 w-4 h-4"
-                                        />
-                                        <label 
-                                            className="flex"
-                                            htmlFor={`${product.id}`}
-                                        >
+                                    <div className="basis-2/6 flex items-center">
+                                        <div className="basis-1/5 flex justify-center items-center">
                                             
-                                        </label>  
+                                            <input 
+                                                type="checkbox" 
+                                                name="" 
+                                                id={`${product.id}`}
+                                                className="mr-1 md:mr-3 w-4 h-4"
+                                            />
+                                            <label 
+                                                className="flex"
+                                                htmlFor={`${product.id}`}
+                                            >
+                                                
+                                            </label>  
+                                        </div>
                                         <img 
                                                 src={product.image} 
                                                 alt="" 
-                                                className=" w-10 h-10 md:w-20 md:h-20 rounded"
+                                                className=" w-10 h-10 md:w-20 md:h-20 rounded basis-1/6"
                                         /> 
-                                        <h2 className="ml-0.5 md:ml-2 font-bold text-gray-500 text-xs md:text-base">
+                                        <h2 className="ml-0.5 md:ml-2 font-bold text-gray-500 text-xs md:text-base basis-3/6">
                                             {product.name}    
                                         </h2>                                     
                                     </div>

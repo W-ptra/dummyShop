@@ -11,7 +11,6 @@ import Cart from "./pages/Cart"
 import Help from "./pages/Help"
 import Setting from "./pages/Setting"
 import Checkout from "./pages/Checkout"
-import History from "./pages/History"
 import UpdateDelete from "./pages/UpdateDelete"
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
         <Route path="/transaction" element={<Transaction />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/help" element={<Help />} />
-        <Route path="/history" element={<History />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

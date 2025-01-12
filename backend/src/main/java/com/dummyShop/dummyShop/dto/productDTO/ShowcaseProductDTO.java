@@ -1,6 +1,9 @@
 package com.dummyShop.dummyShop.dto.productDTO;
 
+import com.dummyShop.dummyShop.dto.tagDTO.TagDTO;
+import com.dummyShop.dummyShop.dto.userDTO.SellerUserDTO;
 import com.dummyShop.dummyShop.model.Product;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -8,10 +11,14 @@ public class ShowcaseProductDTO {
     private Long id;
     private String name;
     private Double price;
+    private String description;
     private String image;
-    private String seller;
     private Double star;
     private Long sold;
+    @JsonProperty("seller")
+    private SellerUserDTO sellerUserDTO;
+    @JsonProperty("tags")
+    private List<String> tagDTOList;
 
     public ShowcaseProductDTO(){}
 
@@ -21,10 +28,6 @@ public class ShowcaseProductDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
     }
 
     public void setPrice(Double price) {
@@ -39,24 +42,8 @@ public class ShowcaseProductDTO {
         this.image = image;
     }
 
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
-    }
-
-    public Double getStar() {
-        return star;
-    }
-
     public void setStar(Double star) {
         this.star = star;
-    }
-
-    public Long getSold() {
-        return sold;
     }
 
     public void setSold(Long sold) {
@@ -67,8 +54,44 @@ public class ShowcaseProductDTO {
         return id;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public Double getStar() {
+        return star;
+    }
+
+    public Long getSold() {
+        return sold;
+    }
+
+    public SellerUserDTO getSellerUserDTO() {
+        return sellerUserDTO;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setSellerUserDTO(SellerUserDTO sellerUserDTO) {
+        this.sellerUserDTO = sellerUserDTO;
+    }
+
+    public List<String> getTagDTOList() {
+        return tagDTOList;
+    }
+
+    public void setTagDTOList(List<String> tagDTOList) {
+        this.tagDTOList = tagDTOList;
     }
 
     public static List<ShowcaseProductDTO> convertToDTO(List<Product> productList){
@@ -80,8 +103,13 @@ public class ShowcaseProductDTO {
                     showcaseProductDTO.setPrice(product.getPrice());
                     showcaseProductDTO.setSold(product.getSold());
                     showcaseProductDTO.setStar(product.getStar());
-                    showcaseProductDTO.setSeller(product.getUser().getName());
                     showcaseProductDTO.setImage(product.getImage());
+                    showcaseProductDTO.setDescription(product.getDescription());
+                    showcaseProductDTO.setTagDTOList(TagDTO.convertToDTO(product.getTagSet()));
+
+
+                    showcaseProductDTO.setSellerUserDTO(SellerUserDTO.convertToDTO(product.getUser()));
+
                     return  showcaseProductDTO;
                 }).toList();
     }

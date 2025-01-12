@@ -1,9 +1,15 @@
+interface Seller {
+    id: number;
+    image: string;
+    name: string;
+}
+
 interface Product {
     id: number;
     name: string;
     description: string;
     image: string;
-    seller: string;
+    seller: Seller;
     price: number;
     star: number;
     sold: number;
@@ -32,7 +38,7 @@ function Card({ productList, newCard }: CardProperty) {
                 )}
                 
                 {productList.map((product) => (
-                    <a href={`/product/${product.id}`}>
+                    <a href={`/product/${product.id}`} key={product.id}>
                         <div className="h-full flex flex-col gap-1 p-1"
                         >
                             <div className="relative  flex w-full h-full cursor-pointer">
@@ -65,14 +71,14 @@ function Card({ productList, newCard }: CardProperty) {
                                     <span>{product.sold + " sold"}</span>                                
                                 </p>
                                 
-                                <p className="flex items-center">
+                                <p className="flex items-center" key={product.seller.id}>
                                     <img
-                                        className="w-6 h-6 cursor-pointer"
-                                        src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
+                                        className="w-8 h-8 cursor-pointer rounded-full"
+                                        src={product.seller.image}
                                         alt="user-male-circle--v1"
                                     />
-                                    <span className="ml-1 text-base cursor-pointer">
-                                        {product.seller}
+                                    <span className="ml-1 text-base cursor-pointer font-bold">
+                                        {product.seller.name}
                                     </span>
                                 </p>
                             </div>

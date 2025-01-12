@@ -37,7 +37,7 @@ public class UserService {
 
         return responseEntityBuilder
                 .createResponse(200,
-                        "message",
+                        "user",
                         profileUserDTO
                 );
     }

@@ -2,6 +2,7 @@ package com.dummyShop.dummyShop.dto.productDTO;
 
 import com.dummyShop.dummyShop.dto.reviewDTO.ProductReviewDTO;
 import com.dummyShop.dummyShop.dto.tagDTO.TagDTO;
+import com.dummyShop.dummyShop.dto.userDTO.SellerUserDTO;
 import com.dummyShop.dummyShop.model.Product;
 
 import java.util.ArrayList;
@@ -115,7 +116,8 @@ public class DetailProductDTO {
                             ProductReviewDTO productReviewDTO = new ProductReviewDTO();
                             productReviewDTO.setContent(transactionDetail.getReview().getContent());
                             productReviewDTO.setStar(transactionDetail.getReview().getStar());
-                            productReviewDTO.setName(transactionDetail.getTransactionHeader().getUser().getName());
+                            //productReviewDTO.setName(transactionDetail.getTransactionHeader().getUser().getName());
+                            productReviewDTO.setSellerUserDTO(SellerUserDTO.convertToDTO(transactionDetail.getTransactionHeader().getUser()));
 
                             productReviewDTOList.add(productReviewDTO);
                             seenReviews.add(reviewId);

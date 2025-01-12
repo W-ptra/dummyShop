@@ -2,11 +2,7 @@ package com.dummyShop.dummyShop.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -26,7 +22,9 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String role;
+
     private String image;
+    private String banner;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -128,5 +126,13 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 }

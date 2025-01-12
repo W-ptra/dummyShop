@@ -4,8 +4,10 @@ import com.dummyShop.dummyShop.model.User;
 
 public class ProfileUserDTO {
     private Long id;
-    private String email;
     private String name;
+    private String email;
+    private String image;
+    private String banner;
     private String role;
 
     public ProfileUserDTO(){}
@@ -16,10 +18,6 @@ public class ProfileUserDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {
@@ -34,8 +32,28 @@ public class ProfileUserDTO {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
     public String getRole() {
         return role;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public void setRole(String role) {
@@ -47,16 +65,9 @@ public class ProfileUserDTO {
         profileUserDTO.setId(user.getId());
         profileUserDTO.setEmail(user.getEmail());
         profileUserDTO.setName(user.getName());
+        profileUserDTO.setImage(user.getImage());
+        profileUserDTO.setBanner(user.getBanner());
         profileUserDTO.setRole(user.getRole());
         return profileUserDTO;
-    }
-
-    public static User ConvertToModel(ProfileUserDTO profileUserDTO){
-        User user = new User();
-        user.setId(profileUserDTO.getId());
-        user.setEmail(profileUserDTO.getEmail());
-        user.setName(user.getName());
-        user.setRole(user.getRole());
-        return user;
     }
 }

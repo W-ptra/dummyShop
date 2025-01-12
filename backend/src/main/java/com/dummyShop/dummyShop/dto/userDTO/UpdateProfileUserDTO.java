@@ -1,5 +1,7 @@
 package com.dummyShop.dummyShop.dto.userDTO;
 
+import com.dummyShop.dummyShop.model.User;
+
 public class UpdateProfileUserDTO {
     private String name;
     private String email;
@@ -21,4 +23,5 @@ public class UpdateProfileUserDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

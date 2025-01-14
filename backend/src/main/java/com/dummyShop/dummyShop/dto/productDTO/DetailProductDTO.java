@@ -116,7 +116,6 @@ public class DetailProductDTO {
                             ProductReviewDTO productReviewDTO = new ProductReviewDTO();
                             productReviewDTO.setContent(transactionDetail.getReview().getContent());
                             productReviewDTO.setStar(transactionDetail.getReview().getStar());
-                            //productReviewDTO.setName(transactionDetail.getTransactionHeader().getUser().getName());
                             productReviewDTO.setSellerUserDTO(SellerUserDTO.convertToDTO(transactionDetail.getTransactionHeader().getUser()));
 
                             productReviewDTOList.add(productReviewDTO);

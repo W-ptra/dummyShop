@@ -1,5 +1,6 @@
 package com.dummyShop.dummyShop.service;
 
+import com.dummyShop.dummyShop.configuration.GeneralConfiguration;
 import com.dummyShop.dummyShop.dto.cartDTO.CreateCartDTO;
 import com.dummyShop.dummyShop.dto.cartDTO.DetailCartDTO;
 import com.dummyShop.dummyShop.dto.cartDTO.UpdateQuantityCartDTO;
@@ -33,6 +34,8 @@ public class CartService {
     private ProductRepository productRepository;
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
+    @Autowired
+    private GeneralConfiguration generalConfiguration;
 
     public ResponseEntity<Map<String,Object>> createCart(
             CreateCartDTO createCartDTO
@@ -112,9 +115,10 @@ public class CartService {
     }
 
     public ResponseEntity<Map<String,Object>> getAllCart(
-            int page,
-            int size
+            int page
     ){
+
+        int size = generalConfiguration.getPAGINATION_SIZE();
 
         Pageable pageable = PageRequest.of(page,size);
 

@@ -17,10 +17,23 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             Pageable pageable
     );
 
+    @Query("SELECT COUNT(p) FROM Product p")
+    Long getTotalLengthAllProduct();
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.name LIKE %:name%")
+    Long getTotalLengthAllProductByName(
+            @Param("name") String name
+    );
+
     @Query("SELECT p FROM Product p WHERE p.user.id = :userId")
     List<Product> getProductByUserId(
             @Param("userId") Long id,
             Pageable pageable
+    );
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.user.id = :userId")
+    Long getTotalLengthAllProductByUserId(
+            @Param("userId") Long id
     );
 
     @Query("SELECT p FROM Product p " +

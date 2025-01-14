@@ -19,10 +19,9 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<Map<String,Object>> getAllCart(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") int page
     ){
-        return cartService.getAllCart(page,size);
+        return cartService.getAllCart(page);
     }
 
     @PostMapping

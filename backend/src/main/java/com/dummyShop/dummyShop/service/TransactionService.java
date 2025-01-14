@@ -1,5 +1,6 @@
 package com.dummyShop.dummyShop.service;
 
+import com.dummyShop.dummyShop.configuration.GeneralConfiguration;
 import com.dummyShop.dummyShop.dto.transactionDTO.CreateTransactionDetailDTO;
 import com.dummyShop.dummyShop.dto.transactionDTO.CreateTransactionHeaderDTO;
 import com.dummyShop.dummyShop.dto.transactionDTO.ShowTransactionHeaderDTO;
@@ -39,6 +40,8 @@ public class TransactionService {
     private TransactionDetailRepository transactionDetailRepository;
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
+    @Autowired
+    private GeneralConfiguration generalConfiguration;
 
     public ResponseEntity<Map<String,Object>> createTransaction(
             CreateTransactionHeaderDTO createTransactionHeaderDTO
@@ -107,9 +110,10 @@ public class TransactionService {
     }
 
     public ResponseEntity<Map<String,Object>> getAllTransactionByUserId(
-            int page,
-            int size
+            int page
     ){
+        int size = generalConfiguration.getPAGINATION_SIZE();
+
         Pageable pageable = PageRequest.of(page,size);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

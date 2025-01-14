@@ -19,10 +19,9 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Map<String,Object>> getAllProduct(
             @RequestParam(required = false) String search,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") int page
     ){
-        return productService.getAllProduct(search,page,size);
+        return productService.getAllProduct(search,page);
     }
 
     @GetMapping("/{id}")
@@ -34,10 +33,9 @@ public class ProductController {
 
     @GetMapping("/user")
     public ResponseEntity<Map<String,Object>> getProductByUserId(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") int page
     ){
-        return productService.getProductByUserId(page,size);
+        return productService.getProductByUserId(page);
     }
 
     @PostMapping

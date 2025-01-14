@@ -1,8 +1,10 @@
 package com.dummyShop.dummyShop.service;
 
+import com.dummyShop.dummyShop.configuration.GeneralConfiguration;
 import com.dummyShop.dummyShop.dto.productDTO.CreateAndUpdateProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.DetailProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductDTO;
+import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductPaginationDTO;
 import com.dummyShop.dummyShop.model.Product;
 import com.dummyShop.dummyShop.model.Tag;
 import com.dummyShop.dummyShop.model.User;
@@ -34,23 +36,28 @@ public class ProductService {
     private ResponseEntityBuilder responseEntityBuilder;
     @Autowired
     private Validation validation;
+    @Autowired
+    private GeneralConfiguration generalConfiguration;
 
     public ResponseEntity<Map<String,Object>> getAllProduct(
             String name,
-            int page,
-            int size
+            int page
     ){
+        int size = generalConfiguration.getPAGINATION_SIZE();
         Pageable pageable = PageRequest.of(page,size);
 
         List<Product> productList;
+        Long totalLength;
 
         if (name != null && !name.isEmpty()){
             productList = productRepository.getAllProductByName(name,pageable);
+            totalLength = productRepository.getTotalLengthAllProductByName(name);
         } else {
             productList = productRepository.getAll(pageable);
+            totalLength = productRepository.getTotalLengthAllProduct();
         }
 
-        List<ShowcaseProductDTO> showcaseProductDTOList = ShowcaseProductDTO.convertToDTO(productList);
+        ShowcaseProductPaginationDTO showcaseProductPaginationDTO = ShowcaseProductPaginationDTO.convertToDTO(productList,totalLength);
 
         if (productList.isEmpty()){
             return responseEntityBuilder
@@ -65,16 +72,17 @@ public class ProductService {
                 .createResponse(
                         200,
                         "products",
-                        showcaseProductDTOList
+                        showcaseProductPaginationDTO
                 );
     }
 
     public ResponseEntity<Map<String,Object>> getProductByUserId(
-            int page,
-            int size
+            int page
     ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
+
+        int size = generalConfiguration.getPAGINATION_SIZE();
 
         Pageable pageable = PageRequest.of(page,size);
 
@@ -89,13 +97,15 @@ public class ProductService {
                     );
         }
 
-        List<ShowcaseProductDTO> showcaseProductDTOList = ShowcaseProductDTO.convertToDTO(productList);
+        Long productTotalLength = productRepository.getTotalLengthAllProductByUserId(userId);
+        ShowcaseProductPaginationDTO showcaseProductPaginationDTO = ShowcaseProductPaginationDTO
+                .convertToDTO(productList,productTotalLength);
 
         return responseEntityBuilder
                 .createResponse(
                         200,
                         "products",
-                        showcaseProductDTOList
+                        showcaseProductPaginationDTO
                 );
     }
 

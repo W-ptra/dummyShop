@@ -3,7 +3,6 @@ package com.dummyShop.dummyShop.service;
 import com.dummyShop.dummyShop.configuration.GeneralConfiguration;
 import com.dummyShop.dummyShop.dto.productDTO.CreateAndUpdateProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.DetailProductDTO;
-import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductPaginationDTO;
 import com.dummyShop.dummyShop.model.Product;
 import com.dummyShop.dummyShop.model.Tag;
@@ -43,7 +42,7 @@ public class ProductService {
             String name,
             int page
     ){
-        int size = generalConfiguration.getPAGINATION_SIZE();
+        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
         Pageable pageable = PageRequest.of(page,size);
 
         List<Product> productList;
@@ -82,7 +81,7 @@ public class ProductService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        int size = generalConfiguration.getPAGINATION_SIZE();
+        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
 
         Pageable pageable = PageRequest.of(page,size);
 

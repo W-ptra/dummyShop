@@ -10,7 +10,7 @@ interface CurrentPage {
 
 function Pagination({ currentPage,path }: CurrentPage) {
     const [searchParams] = useSearchParams();
-    const search = searchParams.get("name");
+    const search = searchParams.get("query");
 
     const itemsPerPage = 20;
     const pageTotal = Math.ceil(currentPage.length / itemsPerPage);
@@ -45,7 +45,7 @@ function Pagination({ currentPage,path }: CurrentPage) {
                             {number}
                         </div>
                     ) : (
-                        <a href={`/${path}?name=${search}&page=${number}`}>
+                        <a href={`/${path}?query=${search}&page=${number-1}`}>
                             <div
                                 key={number}
                                 className="w-8 h-8 md:w-9 md:h-9  hover:bg-gray-100 flex rounded-lg justify-center text-center items-center cursor-pointer"

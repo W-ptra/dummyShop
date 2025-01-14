@@ -1,97 +1,108 @@
 import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import NotFound from "./NotFound";
+import loadingIcon from "../assets/icons8-loading.gif"
 
-function Search(){
+function Search() {
     const [searchParams] = useSearchParams();
-    const search = searchParams.get("name");
-    const page = Number(searchParams.get("page")) || 1;
-    const size = 20;
+    const search = searchParams.get("query");
+    //const page = Number(searchParams.get("page")) || 0;
 
-    if(!search){
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [page, _] = useState(Number(searchParams.get("page")) || 0);
+    const [totalProductLength, setTotalProductLength] = useState(0);
+
+    if (!search) {
         return (
-            <NotFound/>
+            <NotFound />
         );
     }
 
     useEffect(() => {
-        document.title = "#"+search;
-    },[]);
+        const fetchData = async () => {
+            try {
+                //console.log(search,page);
+                const response = await fetch(`http://127.0.0.1:8080/api/product?search=${search}&page=${page}`);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                const result = await response.json();
+                console.log(result);
+                setData(result);
+                setTotalProductLength(result.products.totalLength);
+                console.log(page, totalProductLength);
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('An unknown error occurred.');
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const obj1 = {
-        id: 1,
-        name: "Product 1",
-        description: "description 1",
-        image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-        seller: "juan",
-        price: 20.75,
-        star: 2,
-        sold: 1
-    }
+        fetchData();
+    }, []);
 
-    const obj2 = {
-        id: 2,
-        name: "Product 2",
-        description: "description 2",
-        image: "https://img.freepik.com/free-vector/manga-frames-design_603843-1157.jpg",
-        seller: "juan",
-        price: 15.15,
-        star: 4.7,
-        sold: 2
-    }
-
-    const list = []
-    const productList = []
-
-    for(let x=1;x<=110;x++){
-        if(x%2===1){
-            const cpy = {...obj1}
-            cpy.name = `Product ${x}`
-            list.push(cpy)
-        } else {
-            const cpy = {...obj2}
-            cpy.name = `Product ${x}`
-            list.push(cpy)
-        }
-    }
-
-    for(let x=(size*(page-1)); x<(size*page);x++){
-        if(list[x]){
-            productList.push(list[x])
-        }
-    }
-
-    const currentPage1 = {
-        page:page,
-        length:list.length
-    }
+    useEffect(() => {
+        document.title = "#" + search;
+    }, []);
 
     return (
         <>
             <Navbar searchParams={search} />
 
-            <div className=" mx-2 md:mx-20 mt-24">
-                <h1 className="text-lg font-extrabold">
-                    Search result of 
-                    <span className="">
-                        {' "'+search+'"'}    
-                    </span> 
-                </h1>
-                <h4 className="">
-                    <span className="font-semibold">
-                        {list.length + " "}
-                    </span>
-                    Products found
-                </h4>
-            </div>
+            {data ? (
+                <>
+                    <div className=" mx-2 md:mx-20 mt-24">
+                        <h1 className="text-lg font-extrabold">
+                            Search result of
+                            <span className="">
+                                {' "' + search + '"'}
+                            </span>
+                        </h1>
+                        <h4 className="">
+                            <span className="font-semibold">
+                                {data.products.totalLength + " "}
+                            </span>
+                            Products found
+                        </h4>
+                    </div>
+                    <Card productList={data.products.list} />
+                    <Pagination currentPage={{ page: page + 1, length: totalProductLength }} path={"search"} />
+                </>
+            ) : loading? (
+                <div className="mx-2 md:mx-20 mt-24 flex justify-center items-center py-40">
+                    <img 
+                        src={loadingIcon} 
+                        alt={loadingIcon} 
+                        className="w-44 h-44"
+                    />
+                </div>
+            ) : (
+                <>
+                    <div className="bg-gray-100 mt-18 pt-[40vh] pb-[40vh] flex flex-col justify-center items-center">
+                        <img className="w-20 h-20" src="https://img.icons8.com/dotty/80/6b7280/quest.png" alt="quest" />
+                        <h1 className="text-lg font-extrabold text-gray-500">
+                        Products with query
+                            <span className="">
+                                {' "' + search + '" was not Found'}
+                            </span>
+                        </h1>
+                        
+                    </div>
+                </>
+            )}
 
-            <Card productList={productList} />
-            <Pagination currentPage={currentPage1} path={"search"} />
-            <Footer/>
+
+            <Footer />
         </>
     )
 }

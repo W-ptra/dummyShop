@@ -13,12 +13,14 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8080/api/product?page=2');
+                const response = await fetch('http://127.0.0.1:8080/api/product?page=1');
                 if (!response.ok) {
                   throw new Error(`Error: ${response.status}`);
                 }
                 const result = await response.json();
-                console.log(result)
+                //console.log(result)
+                // const trimedResult = result.slice(0,10);
+                // console.log(result.slice(0,10));
                 setData(result);
               } catch (err) {
                 if (err instanceof Error) {
@@ -116,7 +118,7 @@ function Home() {
                 </h2>
             </div>
             {data && (
-                <Card productList={data.products} />
+                <Card productList={data.products.list.slice(0,10)} />
             )}
 
             <div className="flex mx-2 md:mx-20 mt-10 md:mt-16">
@@ -125,7 +127,7 @@ function Home() {
                 </h2>
             </div>
             {data && (
-                <Card productList={data.products} />
+                <Card productList={data.products.list.slice(0,10)} />
             )}
 
             <div className="flex mx-2 md:mx-20 mt-10 md:mt-16">

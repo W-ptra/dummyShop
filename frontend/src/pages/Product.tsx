@@ -40,40 +40,6 @@ function Product() {
         document.title = `Product ${id}`;
     }, []);
 
-    const product = {
-        name: "trouser by H&M",
-        price: 12.9,
-        description: "great trouser, cool aaa aaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaa",
-        image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-        seller: "jojon jojon",
-        star: 4,
-        sold: 2,
-        tags: [
-            "juanP2",
-            "kopiHItam1",
-            "samsel",
-            "samsul",
-            "jiji",
-            "bobon",
-            "p",
-            "hehe"
-        ],
-        reviews: [
-            {
-                name: "mulki",
-                image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                content: "i mean its alright aaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa",
-                star: 4
-            },
-            {
-                name: "mulki",
-                image: "https://img.freepik.com/free-photo/medium-shot-anime-characters-hugging_23-2150970815.jpg",
-                content: "i mean its alright",
-                star: 4
-            }
-        ]
-    }
-
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuantity(Number(event.target.value));
     }

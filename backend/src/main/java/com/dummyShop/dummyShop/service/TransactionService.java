@@ -112,7 +112,7 @@ public class TransactionService {
     public ResponseEntity<Map<String,Object>> getAllTransactionByUserId(
             int page
     ){
-        int size = generalConfiguration.getPAGINATION_SIZE();
+        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
 
         Pageable pageable = PageRequest.of(page,size);
 

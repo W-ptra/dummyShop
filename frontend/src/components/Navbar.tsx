@@ -44,7 +44,7 @@ function Navbar({ searchParams }: SearchParams) {
   const searching = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
     if (event.key == "Enter" && searchName) {
-      navigate(`/search?name=${searchName}`);
+      navigate(`/search?query=${searchName}`);
       window.location.reload();
     }
   }

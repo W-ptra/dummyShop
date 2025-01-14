@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GeneralConfiguration {
 
-    private final int PAGINATION_SIZE = 20;
+    private final int PAGINATION_MAX_SIZE = 20;
 
     private final Double PRICE_DEFAULT_MIN = 1.0;
     private final Double PRICE_DEFAULT_MAX = 999999.99;
@@ -48,7 +48,7 @@ public class GeneralConfiguration {
         return STAR_DEFAULT_MAX;
     }
 
-    public int getPAGINATION_SIZE() {
-        return PAGINATION_SIZE;
+    public int getPAGINATION_MAX_SIZE() {
+        return PAGINATION_MAX_SIZE;
     }
 }

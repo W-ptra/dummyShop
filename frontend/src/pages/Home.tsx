@@ -2,25 +2,25 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
+import process from "process"
 
 function Home() {
+    const API = process.env.REACT_APP_API || "192.168.0.101:8080";
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        console.log(process)
         const fetchData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8080/api/product?page=1');
+                console.log(API);
+                const response = await fetch(`http://${API}/api/product?page=0&size=10`);
                 if (!response.ok) {
                   throw new Error(`Error: ${response.status}`);
                 }
                 const result = await response.json();
-                //console.log(result)
-                // const trimedResult = result.slice(0,10);
-                // console.log(result.slice(0,10));
                 setData(result);
               } catch (err) {
                 if (err instanceof Error) {
@@ -118,7 +118,7 @@ function Home() {
                 </h2>
             </div>
             {data && (
-                <Card productList={data.products.list.slice(0,10)} />
+                <Card productList={data.products.list} />
             )}
 
             <div className="flex mx-2 md:mx-20 mt-10 md:mt-16">

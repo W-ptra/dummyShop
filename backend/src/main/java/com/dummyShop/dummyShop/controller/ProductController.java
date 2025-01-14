@@ -20,7 +20,7 @@ public class ProductController {
     public ResponseEntity<Map<String,Object>> getAllProduct(
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "20") int size
     ){
         return productService.getAllProduct(search,page,size);
     }
@@ -35,7 +35,7 @@ public class ProductController {
     @GetMapping("/user")
     public ResponseEntity<Map<String,Object>> getProductByUserId(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "20") int size
     ){
         return productService.getProductByUserId(page,size);
     }

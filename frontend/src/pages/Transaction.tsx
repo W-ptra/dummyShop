@@ -1,9 +1,16 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReviewInput from "../components/ReviewInput";
 
 function Transaction() {
+
+    const [reviewMenu,setReviewMenu] = useState(false);
+
+    const handleReviewMenuChange = () => {
+        setReviewMenu((prev)=>!prev);
+    }
+
     useEffect(() => {
         document.title = "Transaction";
     }, []);
@@ -13,6 +20,7 @@ function Transaction() {
             date: "2024-12-15T13:09:28.415+00:00",
             list: [
                 {
+                    id:1,
                     name: "trouser by H&M",
                     price: 12.9,
                     seller: "bimbab",
@@ -20,6 +28,7 @@ function Transaction() {
                     quantity: 2
                 },
                 {
+                    id:2,
                     name: "trouser by H&M",
                     price: 12.9,
                     seller: "bimbab",
@@ -111,8 +120,8 @@ function Transaction() {
             <Navbar />
             <div className="mt-20 mb-5 mx-3 md:mx-20">
                 { transactions.map((transaction)=>(
-                    <div className="flex flex-col bg-gray-100 my-5 px-2 md:px-5 py-5 rounded-md">
-                        <div className="pb-5">
+                    <div className="flex flex-col my-5 py-5">
+                        <div className="px-5 py-4 bg-gray-100 rounded-[1rem]">
                             <h4 className="flex flex-col md:flex-row justify-between ">
                                 <span className="font-semibold">
                                     {formatDate(transaction.date)}
@@ -129,8 +138,8 @@ function Transaction() {
                         </div>
                         <div className="flex flex-col">
                             {transaction.list.map((product)=>(
-                                <div className="bg-white my-1 rounded-lg">
-                                    <div className="flex p-2 mx-5 my-2 border border-white border-b-gray-300">
+                                <div className="bg-gray-100 rounded-[1.5rem] mt-1">
+                                    <div className="flex p-2 mx-5 my-2 border border-gray-100 border-b-gray-700">
                                         <div className="flex items-center gap-5 basis-5/6">
                                             <img 
                                                 src={product.image}
@@ -148,7 +157,11 @@ function Transaction() {
                                         </div>                                    
                                     </div>
                                     <div className="flex justify-end mt-2">
-                                        <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1.5 px-5 mx-5 mb-4 rounded-lg text-sm">
+                                        <button 
+                                            className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1.5 px-5 mx-5 mb-4 rounded-lg text-sm"
+                                            onClick={handleReviewMenuChange}
+                                            data-product-id={1}
+                                        >
                                             Review
                                         </button>
                                     </div>
@@ -156,8 +169,8 @@ function Transaction() {
                                 
                             ))}
                         </div>
-                        <div className="pt-5 flex flex-col">
-                            <h4 className="flex justify-end mr-5">
+                        <div className="py-5 flex flex-col bg-gray-100 mt-1 rounded-[1rem]">
+                            <h4 className="flex justify-end mr-5 space-x-1">
                                 <span>
                                     Total:
                                 </span>
@@ -170,7 +183,10 @@ function Transaction() {
                     </div>
                 ))}
             </div>
-            <ReviewInput/>
+            { reviewMenu && (
+                <ReviewInput setReviewMenu={setReviewMenu}/>
+            ) }
+            
             <Footer />
         </>
     )

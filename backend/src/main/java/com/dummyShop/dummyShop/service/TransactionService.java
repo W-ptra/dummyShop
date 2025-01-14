@@ -110,9 +110,12 @@ public class TransactionService {
     }
 
     public ResponseEntity<Map<String,Object>> getAllTransactionByUserId(
-            int page
+            int page,
+            int size
     ){
-        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
+        if(size > generalConfiguration.getPAGINATION_MAX_SIZE()){
+            size = 20;
+        }
 
         Pageable pageable = PageRequest.of(page,size);
 

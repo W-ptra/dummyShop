@@ -6,11 +6,14 @@ import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import NotFound from "./NotFound";
 import loadingIcon from "../assets/icons8-loading.gif"
+import process from "process"
 
 function Search() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("query");
     //const page = Number(searchParams.get("page")) || 0;
+    
+    const API = process.env.REACT_APP_API || "192.168.0.101:8080";
 
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -28,7 +31,7 @@ function Search() {
         const fetchData = async () => {
             try {
                 //console.log(search,page);
-                const response = await fetch(`http://127.0.0.1:8080/api/product?search=${search}&page=${page}`);
+                const response = await fetch(`http://${API}/api/product?search=${search}&page=${page}`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
                 }
@@ -90,7 +93,7 @@ function Search() {
                 <>
                     <div className="bg-gray-100 mt-18 pt-[40vh] pb-[40vh] flex flex-col justify-center items-center">
                         <img className="w-20 h-20" src="https://img.icons8.com/dotty/80/6b7280/quest.png" alt="quest" />
-                        <h1 className="text-lg font-extrabold text-gray-500">
+                        <h1 className="md:text-lg font-extrabold text-gray-500 text-sm">
                         Products with query
                             <span className="">
                                 {' "' + search + '" was not Found'}
@@ -100,7 +103,6 @@ function Search() {
                     </div>
                 </>
             )}
-
 
             <Footer />
         </>

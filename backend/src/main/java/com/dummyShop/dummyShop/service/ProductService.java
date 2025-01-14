@@ -40,9 +40,12 @@ public class ProductService {
 
     public ResponseEntity<Map<String,Object>> getAllProduct(
             String name,
-            int page
+            int page,
+            int size
     ){
-        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
+        if(size > generalConfiguration.getPAGINATION_MAX_SIZE()){
+            size = 20;
+        }
         Pageable pageable = PageRequest.of(page,size);
 
         List<Product> productList;
@@ -76,12 +79,15 @@ public class ProductService {
     }
 
     public ResponseEntity<Map<String,Object>> getProductByUserId(
-            int page
+            int page,
+            int size
     ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        int size = generalConfiguration.getPAGINATION_MAX_SIZE();
+        if(size > generalConfiguration.getPAGINATION_MAX_SIZE()){
+            size = 20;
+        }
 
         Pageable pageable = PageRequest.of(page,size);
 

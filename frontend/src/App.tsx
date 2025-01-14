@@ -12,8 +12,10 @@ import Help from "./pages/Help"
 import Setting from "./pages/Setting"
 import Checkout from "./pages/Checkout"
 import UpdateDelete from "./pages/UpdateDelete"
+import process from "process"
 
 function App() {
+  //const API = process.env.REACT_APP_API;
   return (
     <Router>
       <Routes>

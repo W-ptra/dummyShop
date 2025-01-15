@@ -3,12 +3,11 @@ import Footer from "../components/Footer"
 import NotFound from "./NotFound";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import process from "process"
 
 function Product() {
+    const API = import.meta.env.VITE_API;
     const { id } = useParams<{ id?: string }>();
     const [quantity, setQuantity] = useState(1);
-    const API = process.env.REACT_APP_API || "192.168.0.101:8080";
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

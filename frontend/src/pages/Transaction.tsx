@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { useEffect, useState } from "react";
-import ReviewInput from "../components/ReviewInput";
+import ReviewInput from "../components/ReviewMenu";
 
 function Transaction() {
 
@@ -10,6 +10,15 @@ function Transaction() {
     const handleReviewMenuChange = () => {
         setReviewMenu((prev)=>!prev);
     }
+
+    useEffect(()=>{
+        if(reviewMenu){
+            document.body.style.overflow = "hidden";
+            return;
+        }
+
+        document.body.style.overflow = "auto";
+    },[reviewMenu])
 
     useEffect(() => {
         document.title = "Transaction";

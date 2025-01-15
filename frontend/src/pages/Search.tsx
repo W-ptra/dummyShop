@@ -6,21 +6,19 @@ import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import NotFound from "./NotFound";
 import loadingIcon from "../assets/icons8-loading.gif"
-import process from "process"
 
 function Search() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("query");
-    //const page = Number(searchParams.get("page")) || 0;
     
-    const API = process.env.REACT_APP_API || "192.168.0.101:8080";
+    const API = import.meta.env.VITE_API;
 
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, _] = useState(Number(searchParams.get("page")) || 0);
     const [totalProductLength, setTotalProductLength] = useState(0);
-
+    
     if (!search) {
         return (
             <NotFound />
@@ -30,7 +28,6 @@ function Search() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                //console.log(search,page);
                 const response = await fetch(`http://${API}/api/product?search=${search}&page=${page}`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);

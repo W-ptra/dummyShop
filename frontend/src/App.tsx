@@ -12,14 +12,17 @@ import Help from "./pages/Help"
 import Setting from "./pages/Setting"
 import Checkout from "./pages/Checkout"
 import UpdateDelete from "./pages/UpdateDelete"
-import process from "process"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
 
 function App() {
-  //const API = process.env.REACT_APP_API;
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/about" element={<h1>about</h1>} />
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Profile />} />

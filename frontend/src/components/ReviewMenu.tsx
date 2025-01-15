@@ -13,7 +13,7 @@ function ReviewInput({setReviewMenu}: ReviewInputProps){
             <div className="fixed z-20 left-0 right-0 top-0 bottom-0 bg-black opacity-15">
 
             </div>
-            <div className="flex flex-col justify-stretch bg-white rounded-lg z-30 fixed left-20 right-20 top-20 bottom-20">
+            <div className="flex flex-col justify-stretch bg-white rounded-lg z-30 fixed left-2 md:left-20 right-2 md:right-20 top-20 bottom-20">
                 <div className="flex justify-center basis-3/5 bg-gray-100 rounded-t-lg items-center">
                     <img 
                         src="https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg" 

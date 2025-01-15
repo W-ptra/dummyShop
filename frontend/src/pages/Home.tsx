@@ -2,17 +2,15 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
-import process from "process"
 
 function Home() {
-    const API = process.env.REACT_APP_API || "192.168.0.101:8080";
+    const API = import.meta.env.VITE_API;
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log(process)
         const fetchData = async () => {
             try {
                 console.log(API);

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 function Login() {
-    const API = import.meta.env.VITE_API;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("$");
     const [isInputEmpty,setIsInputEmpty] = useState(false);
@@ -26,7 +25,32 @@ function Login() {
             return;
         }
 
-        // api call
+        try{
+            const payload = {
+                email,
+                password
+            }
+            const data = {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(payload)
+            }
+            console.log(payload);
+            const respond = await fetch(`/api/auth/login`,data);
+            if(!respond.ok){
+                setErrorMessage("Failed to register");
+                throw new Error("Failed to register");
+            }
+            const result = await respond.json();
+            console.log(result);
+            console.log(result.token);
+            localStorage.setItem("token",result.token);
+            console.log("local: "+localStorage.getItem("token"));
+        } catch (err: any){
+            console.log(err)
+        }
 
         setIsInputEmpty(false);
     }

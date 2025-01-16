@@ -11,14 +11,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:7000/")
 public class AuthenticationController {
 
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
-    @CrossOrigin(origins = "http://localhost:7000/")
+    @CrossOrigin(origins = "http://localhost:7000")
     public ResponseEntity<Map<String,Object>> register(
             @RequestBody RegisterUserDTO registerUserDTO
     ){
@@ -26,7 +25,6 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    @CrossOrigin( origins = "http://localhost:7000/")
     public ResponseEntity<Map<String,Object>> register(
             @RequestBody LoginUserDTO loginUserDTO
     ){

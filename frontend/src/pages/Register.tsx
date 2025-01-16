@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-    const API = import.meta.env.VITE_API;
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
-    const [role,setRole] = useState("");
+    const [role,setRole] = useState("buyer");
     const [password,setPassword] = useState("");
     const [confirmPassword,setConfirmPassword] = useState("");
     const [isInputEmpty,setIsInputEmpty] = useState(false);
@@ -14,7 +13,7 @@ function Register() {
     useEffect(() => {
         document.title = "Register";
     }, []);
-
+    
     const nameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>{
         setName(event.target.value)
     }
@@ -62,16 +61,16 @@ function Register() {
                 },
                 body:JSON.stringify(payload)
             }
-            const respond = await fetch(`http://${API}/api/auth/register`,data);
+            const respond = await fetch(`/api/auth/register`,data);
             if(!respond.ok){
                 setErrorMessage("Failed to register");
                 throw new Error("Failed to register");
             }
             const result = await respond.json();
-            console.log(result);
-            //navigate("/login");
-        } catch (err){
+            navigate("/login");
+        } catch (err: any){
             setIsInputEmpty(true);
+            
             return;
         }
 

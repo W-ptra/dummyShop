@@ -17,7 +17,7 @@ public class AuthenticationController {
     private AuthService authService;
 
     @PostMapping("/register")
-    @CrossOrigin(origins = "http://localhost:7000")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Map<String,Object>> register(
             @RequestBody RegisterUserDTO registerUserDTO
     ){

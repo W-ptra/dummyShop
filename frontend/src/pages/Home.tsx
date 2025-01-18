@@ -99,7 +99,7 @@ function Home() {
             </div>
             <div className="flex mx-2 md:mx-20 justify-evenly mt-5 flex-wrap">
                 {popularTag.map((tag) => (
-                    <a href={`/search?name=${tag}`}>
+                    <a href={`/search?query=${tag}`}>
                         <span
                             style={{ backgroundColor: generatePastelColor() }}
                             className=" px-4 py-1 rounded-md flex flex-wrap m-1 font-bold text-base cursor-pointer text-white"

@@ -7,13 +7,25 @@ interface SearchParams {
   searchParams?: string;
 }
 
+type ProductCart = {
+  id: number,
+  name: string,
+  price: number,
+  image: string,
+  quantity: number
+}
+
 function Navbar({ searchParams }: SearchParams) {
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
   const [isCartToggleActive, setIsCartToggleActive] = useState(false);
   const [isProfileToggleActive, setIsProfileToggleActive] = useState(false);
   const [searchName, setSearchName] = useState(searchParams);
+  const [cart, setCart] = useState<ProductCart[]>([]);
+  const [cartLength,setCartLength] = useState(0);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const navbarDropdown = () => {
     setIsNavbarToggleActive((prev) => !prev);
@@ -30,10 +42,29 @@ function Navbar({ searchParams }: SearchParams) {
     setIsProfileToggleActive((prev) => !prev);
   };
 
-  const cartMenuDropdown = () => {
+  const cartMenuDropdown = async () => {
     if (isSearchbarToggleActive) {
       setIsSearchbarToggleActive(false);
     }
+    const fetchData = async () => {
+      try {
+        const data = {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+
+        const request = await fetch(`/api/cart/first4`, data);
+        const respond = await request.json();
+        setCart(respond.carts);
+        console.log(respond);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+    fetchData();
     setIsCartToggleActive((prev) => !prev);
   }
 
@@ -60,6 +91,30 @@ function Navbar({ searchParams }: SearchParams) {
       document.body.style.overflow = "";
     };
   }, [isNavbarToggleActive]);
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      if(localStorage.getItem("token")){
+        try {
+          const data = {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+  
+          const request = await fetch(`/api/cart/length`, data);
+          const respond = await request.json();
+          setCartLength(respond.length);
+          console.log(respond);
+        } catch (err: any) {
+          console.log(err);
+        }
+      }
+    };
+    fetchData();
+  },[])
 
   return (
     <>
@@ -137,18 +192,26 @@ function Navbar({ searchParams }: SearchParams) {
                   alt="user-male-circle--v1"
                 />
               </div>
-              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded relative"
-                onClick={cartMenuDropdown}
-              >
-                <img
-                  className="w-5 h-5"
-                  src="https://img.icons8.com/pulsar-line/48/shopping-cart.png"
-                  alt="shopping-cart"
-                />
-                <div className=" flex absolute top-0 right-0 w-5 h-4 rounded-full bg-black text-white items-center justify-center">
-                  <span className="font-semibold text-xs">1</span>
+              {role === "buyer" && (
+                <div className="p-2 hover:bg-gray-100 cursor-pointer rounded relative"
+                  onClick={cartMenuDropdown}
+                >
+                  <img
+                    className="w-5 h-5"
+                    src="https://img.icons8.com/pulsar-line/48/shopping-cart.png"
+                    alt="shopping-cart"
+                  />
+                  {cartLength !== 0 && (
+                    <div className=" flex absolute top-0 right-0 w-5 h-4 rounded-full bg-black text-white items-center justify-center">
+                      
+                      <span className="font-semibold text-xs">
+                          {cartLength}
+                        </span>
+                    </div>                      
+                  )}
                 </div>
-              </div>
+              )}
+
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer rounded block md:hidden"
                 onClick={searchbarDropdown}
@@ -206,50 +269,52 @@ function Navbar({ searchParams }: SearchParams) {
       {isNavbarToggleActive && (
         <div className="flex bg-black bg-opacity-20 fixed bottom-0 top-0 left-0 right-0 z-20">
           <div className="basis-2/3 md:basis-1/3 lg:basis-1/4 bg-white">
-          <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
-                <div
-                  className="p-2 hover:bg-gray-100 cursor-pointer rounded"
-                  onClick={navbarDropdown}
+            <div className="flex items-center border border-t-white border-x-white border-b-black-100 pb-4 mr-4 mb-4 mt-5 ml-4">
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer rounded"
+                onClick={navbarDropdown}
+              >
+                <svg
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 17 14"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 17 14"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M1 1h15M1 7h15M1 13h15"
-                    />
-                  </svg>
-                </div>
-                <a className="flex items-center justify-center" href="/">
-                  <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
-                  <span className="text-blue-500 font-bold mx-2 text-base">
-                    DummyShop
-                  </span>
-                </a>
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15"
+                  />
+                </svg>
               </div>
+              <a className="flex items-center justify-center" href="/">
+                <img className="w-9 h-9 ml-2" src="https://img.icons8.com/ios-filled/50/228BE6/shop-local.png" alt="shop-local" />
+                <span className="text-blue-500 font-bold mx-2 text-base">
+                  DummyShop
+                </span>
+              </a>
+            </div>
 
             <ul className="items-center ml-4 mr-4 overflow-y-auto h-full">
+              {role === "seller" && (
+                <li>
+                  <a
+                    href="/my-product"
+                    className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
+                  >
+                    <img
+                      className="w-6 h-6"
+                      src="https://img.icons8.com/ios/50/market-square.png"
+                      alt="market-square"
+                    />
+                    <span className="ml-4 text-gray-700">My Product</span>
+                  </a>
+                </li>
+              )}
 
-              <li>
-                <a
-                  href="/my-product"
-                  className="flex px-2 pt-4 pb-4 hover:rounded cursor-pointer hover:bg-gray-100"
-                >
-                  <img
-                    className="w-6 h-6"
-                    src="https://img.icons8.com/ios/50/market-square.png"
-                    alt="market-square"
-                  />
-                  <span className="ml-4 text-gray-700">My Product</span>
-                </a>
-              </li>
               <li>
                 <a
                   href="/transaction"
@@ -262,7 +327,7 @@ function Navbar({ searchParams }: SearchParams) {
                   />
                   <span className="ml-4 text-gray-700">Transaction</span>
                 </a>
-              </li>              
+              </li>
               <li>
                 <a
                   href="/help"
@@ -303,7 +368,7 @@ function Navbar({ searchParams }: SearchParams) {
       )}
 
       {isCartToggleActive && (
-        <CartMenu />
+        <CartMenu cartProducts={cart}/>
       )}
     </>
   );

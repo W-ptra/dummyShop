@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 
 function ProfileMenu(){
     const navigation = useNavigate();
-
+    const logOut = () =>{
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.reload();
+      }
     return (
         <div 
             className="flex flex-col fixed right-3 top-16 h-64 w-1/2 md:w-1/5 z-10 
@@ -29,7 +33,9 @@ function ProfileMenu(){
                     <li className="font-normal text-xs text-black pl-1">
                         Balance: $20
                     </li>
-                    <li className="flex p-0.5 rounded items-center hover:bg-gray-100 cursor-pointer">
+                    <li className="flex p-0.5 rounded items-center hover:bg-gray-100 cursor-pointer"
+                        onClick={logOut}
+                    >
                         <img className="w-5 h-5" 
                             src="https://img.icons8.com/windows/32/exit.png" alt="exit"
                         />

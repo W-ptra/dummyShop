@@ -1,5 +1,6 @@
 package com.dummyShop.dummyShop.service;
 
+import com.dummyShop.dummyShop.dto.userDTO.LoginTokenAndRole;
 import com.dummyShop.dummyShop.dto.userDTO.LoginUserDTO;
 import com.dummyShop.dummyShop.dto.userDTO.RegisterUserDTO;
 import com.dummyShop.dummyShop.model.User;
@@ -105,11 +106,15 @@ public class AuthService {
                 user.get().getRole()
         );
 
+        LoginTokenAndRole loginTokenAndRole = new LoginTokenAndRole();
+        loginTokenAndRole.setToken(token);
+        loginTokenAndRole.setRole(user.get().getRole());
+
         return responseEntityBuilder
                 .createResponse(
                         200,
-                        "token",
-                        token
+                        "success",
+                        loginTokenAndRole
                 );
     }
 }

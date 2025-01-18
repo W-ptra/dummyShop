@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Product = {
     id:         number,
@@ -11,58 +12,61 @@ type Product = {
 }
 
 function Cart() {
-
-    // const product = {
-    //     id:1,
-    //     name: "trouser by H&M",
-    //     price: 12.9,
-    //     image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-    //     quantity: 4
-    // }
-
-    const [cart] = useState<Product[]>([
-        {
-            id:1,
-            name: "trouser by H&M",
-            price: 12.9,
-            image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-            quantity: 4
-        },
-        {
-            id:2,
-            name: "trouser by H&M",
-            price: 12.9,
-            image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-            quantity: 4
-        },
-        {
-            id:3,
-            name: "trouser by H&M",
-            price: 12.9,
-            image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-            quantity: 4
-        },
-        {
-            id:4,
-            name: "trouser by H&M",
-            price: 12.9,
-            image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-            quantity: 4
-        }
-    ]);
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    //const role = localStorage.getItem("role");
 
     const [selectedProduct,setSelectedProduct] = useState<Product[]>([]);
 
+    const isAuthenticated = ():boolean =>{
+        return localStorage.getItem("token") === null || localStorage.getItem("role") === null;
+    }
+
+    const [cart,setCart] = useState<Product[]>([]);
+
+    const calculateTotal = (list: Product[]) => {
+        let total = 0;
+        list.forEach(element => total += (element.price*element.quantity));
+        return total;
+    }
 
     useEffect(() => {
         document.title = "Cart";
     }, []);
 
+    useEffect(()=>{
+        if(isAuthenticated()){
+            navigate("/login");
+        }
+    },[navigate]);
+
+    useEffect( () => {
+        const fetchData = async () => {
+            try{
+                const data = {
+                    method:"GET",
+                    headers:{
+                        "Authorization":`Bearer ${token}`,
+                        "Content-Type":"application/json"
+                    }
+                }
+    
+                const request = await fetch(`/api/cart`,data);
+                const respond = await request.json();
+                setCart(respond.carts);
+                console.log(respond);
+            } catch (err:any){
+                console.log(err);
+            }
+        };
+        fetchData();
+    },[]);
+
     return (
         <>
             <Navbar />
             <div className="pt-20 px-2 md:px-20 pb-5 bg-gray-100 flex flex-col">
-                {cart.length === 0?(
+                {cart === undefined?(
                     <div className="mt-20 mb-20 h-[55vh] flex flex-col justify-center items-center">
                         <img 
                             className="w-20 h-20" 
@@ -149,7 +153,7 @@ function Cart() {
                                     </div>
                                     <div className="basis-1/6 flex justify-center text-gray-500">
                                         <h2 className="font-bold text-sm md:text-base">
-                                            $900
+                                            {"$"+product.price*product.quantity}
                                         </h2>
                                     </div>
                                     <div className="basis-1/6 flex justify-center">
@@ -163,7 +167,10 @@ function Cart() {
                             ))}
                             <div className="flex justify-center md:justify-end mt-10 mr-0 md:mr-10 items-center">
                                 <h2 className="mr-2 md:mr-0">
-                                    Total {"(3 Products):"}  <span className="font-bold md:ml-1 mr-0 md:mr-5 text-lg">$2000</span>
+                                    Total {`(${cart.length} Products):`}  
+                                    <span className="font-bold md:ml-1 mr-0 md:mr-5 text-lg">
+                                        {"$"+calculateTotal(cart)}
+                                    </span>
                                 </h2>
                                 <button className=" bg-blue-500 hover:bg-blue-400 px-10 py-2 rounded-md font-bold text-white">
                                     Checkout

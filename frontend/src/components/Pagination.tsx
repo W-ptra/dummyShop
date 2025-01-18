@@ -33,25 +33,25 @@ function Pagination({ currentPage,path }: CurrentPage) {
             { currentPage.length <  itemsPerPage ? (
                 <></>
             ) : (
-                <ul className="flex items-center text-lg md:text-sm font-bold">
+                <ul className="flex items-center text-lg md:text-sm font-bold" key={currentPage.length}>
                 {counter.map((number) => (
 
                     number === currentPage.page ? (                        
-                        <div
+                        <li
                             key={number}
                             
                             className="w-8 h-8 md:w-9 md:h-9 bg-black text-white flex rounded-lg justify-center text-center items-center cursor-pointer"
                         >
                             {number}
-                        </div>
+                        </li>
                     ) : (
                         <a href={`/${path}?query=${search}&page=${number-1}`}>
-                            <div
+                            <li
                                 key={number}
                                 className="w-8 h-8 md:w-9 md:h-9  hover:bg-gray-100 flex rounded-lg justify-center text-center items-center cursor-pointer"
                             >
                                 {number}
-                            </div>                            
+                            </li>                            
                         </a>
                     )
                 ))}

@@ -19,6 +19,17 @@ public interface CartRepository extends JpaRepository<Cart,Long> {
             Pageable pageable
     );
 
+    @Query("SELECT c FROM Cart c WHERE c.user.id = :userId ORDER BY c.id DESC")
+    public List<Cart> getCartByUserIdLimit4(
+            @Param("userId") Long userId,
+            Pageable pageable
+    );
+
+    @Query("SELECT COUNT(c) FROM Cart c WHERE c.user.id = :userId")
+    public Long getCartLengthByUserId(
+            @Param("userId") Long userId
+    );
+
     @Query("SELECT c FROM Cart c WHERE c.product.id = :productId AND c.user.id = :userId")
     public Optional<Cart> getCartByProductIdAndUserId(
             @Param("productId") Long productId,

@@ -25,6 +25,18 @@ public class CartController {
         return cartService.getAllCart(page,size);
     }
 
+    @GetMapping("/first4")
+    public ResponseEntity<Map<String,Object>> getFirst4Cart(
+    ){
+        return cartService.getFirst4Cart();
+    }
+
+    @GetMapping("/length")
+    public ResponseEntity<Map<String,Object>> getCartLength(
+    ){
+        return cartService.getCartLengthByUserId();
+    }
+
     @PostMapping
     public ResponseEntity<Map<String,Object>> createCart(
             @RequestBody CreateCartDTO createCartDTO

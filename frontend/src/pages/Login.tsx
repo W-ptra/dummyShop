@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("$");
     const [isInputEmpty,setIsInputEmpty] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "Login";
@@ -46,8 +48,12 @@ function Login() {
             const result = await respond.json();
             console.log(result);
             console.log(result.token);
-            localStorage.setItem("token",result.token);
-            console.log("local: "+localStorage.getItem("token"));
+            localStorage.setItem("token",result.success.token);
+            localStorage.setItem("role",result.success.role);
+            // console.log("local: "+localStorage.getItem("token"));
+            // console.log("role: "+localStorage.getItem("role"));
+            
+            navigate("/");
         } catch (err: any){
             console.log(err)
         }

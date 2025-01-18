@@ -137,7 +137,7 @@ function Product() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="flex justify-evenly mt-2 pb-7  border border-white border-b-gray-400">
+                                    <div className="flex justify-evenly mt-2">
                                         <button className="bg-blue-500 rounded flex w-[10rem] h-10 hover:bg-blue-400 justify-center items-center ml-5 mr-2.5 basis-1/2">
                                             <img className="w-5 h-5"
                                                 src="https://img.icons8.com/sf-regular-filled/48/FFFFFF/add-shopping-cart.png"
@@ -152,6 +152,19 @@ function Product() {
                                                 Buy
                                             </span>
                                         </button>
+                                        
+                                    </div>
+                                    
+                                    <div className="my-2 px-5 pb-1 flex border border-white border-b-gray-400" key={data.product.seller.id}>
+                                        <img 
+                                            src={data.product.seller.image} alt="" 
+                                            className="w-16 h-16 rounded-full bg-gray-100" 
+                                        />
+                                        <div className="flex flex-col justify-center items-center">
+                                            <h4 className="font-bold ml-5">
+                                                {data.product.seller.name}
+                                            </h4>
+                                        </div>
                                     </div>
 
                                     <div className="mx-5 mt-2 mb-5">

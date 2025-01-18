@@ -148,6 +148,47 @@ public class CartService {
                 );
     }
 
+    public ResponseEntity<Map<String,Object>> getFirst4Cart(){
+        Pageable pageable = PageRequest.of(0,4);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.valueOf(authentication.getName());
+
+        List<Cart> cartList = cartRepository.getCartByUserIdLimit4(userId,pageable);
+
+        if(cartList.isEmpty()){
+            return responseEntityBuilder
+                    .createResponse(
+                            404,
+                            "message",
+                            "cart is empty"
+                    );
+        }
+
+        List<DetailCartDTO> detailCartDTOList = DetailCartDTO.convertToDTO(cartList);
+
+        return responseEntityBuilder
+                .createResponse(
+                        200,
+                        "carts",
+                        detailCartDTOList
+                );
+    }
+
+    public ResponseEntity<Map<String,Object>> getCartLengthByUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.valueOf(authentication.getName());
+
+        Long length = cartRepository.getCartLengthByUserId(userId);
+
+        return responseEntityBuilder
+                .createResponse(
+                        200,
+                        "length",
+                        length
+                );
+    }
+
     public ResponseEntity<Map<String,Object>> updateCartQuantity(
             Long id,
             UpdateQuantityCartDTO updateQuantityCartDTO

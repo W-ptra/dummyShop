@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import ProfileMenu from "./ProfileMenu";
 import CartMenu from "./CartMenu";
+import { get } from "../utils/RequestAPI";
 
 interface SearchParams {
   searchParams?: string;
@@ -15,17 +16,27 @@ type ProductCart = {
   quantity: number
 }
 
+type UserProfile = {
+  id: number,
+  email:string,
+  name:string,
+  role:string,
+  image:string,
+  banner:string
+}
+
 function Navbar({ searchParams }: SearchParams) {
+  const [token] = useState(localStorage.getItem("token"))
+  const [role] = useState(localStorage.getItem("role"))
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
   const [isCartToggleActive, setIsCartToggleActive] = useState(false);
   const [isProfileToggleActive, setIsProfileToggleActive] = useState(false);
   const [searchName, setSearchName] = useState(searchParams);
-  const [cart, setCart] = useState<ProductCart[]>([]);
+  const [userProfile,setUserProfile] = useState<UserProfile|null>(null);
+  const [cart, setCart] = useState<ProductCart[]|null>(null);
   const [cartLength,setCartLength] = useState(0);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
 
   const navbarDropdown = () => {
     setIsNavbarToggleActive((prev) => !prev);
@@ -46,26 +57,22 @@ function Navbar({ searchParams }: SearchParams) {
     if (isSearchbarToggleActive) {
       setIsSearchbarToggleActive(false);
     }
+    setIsCartToggleActive((prev) => !prev);
+    if(token === null){
+      console.log(token)
+      return;
+    }
+    
     const fetchData = async () => {
-      try {
-        const data = {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        }
 
-        const request = await fetch(`/api/cart/first4`, data);
-        const respond = await request.json();
-        setCart(respond.carts);
-        console.log(respond);
-      } catch (err: any) {
-        console.log(err);
+      const cart = await get("/api/cart/first4",token);
+      if(cart === undefined){
+        console.log("error");
+        return;
       }
+      setCart(cart.carts);
     };
     fetchData();
-    setIsCartToggleActive((prev) => !prev);
   }
 
   const setSearchNameValue = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,26 +101,40 @@ function Navbar({ searchParams }: SearchParams) {
 
   useEffect(()=>{
     const fetchData = async () => {
-      if(localStorage.getItem("token")){
-        try {
-          const data = {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json"
-            }
-          }
-  
-          const request = await fetch(`/api/cart/length`, data);
-          const respond = await request.json();
-          setCartLength(respond.length);
-          console.log(respond);
-        } catch (err: any) {
-          console.log(err);
-        }
+
+      if(token === null){
+        return;
       }
+
+      const result = await get("/api/cart/length",token)
+        if(result === undefined){
+          return;
+        }
+        setCartLength(result.length);
     };
     fetchData();
+  },[])
+
+  useEffect(()=>{
+
+    async function getProfile(){
+      if(token === null){
+        return;
+      }
+      const result = await get("/api/user/profile",token);
+      console.log(result);
+      if(result === undefined){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+
+        
+
+        return;
+      }
+      setUserProfile(result.user);
+      console.log(userProfile)
+    }
+    getProfile();
   },[])
 
   return (
@@ -183,16 +204,18 @@ function Navbar({ searchParams }: SearchParams) {
             </div>
 
             <div className="flex basis-1/2 md:basis-1/3 flex-row-reverse items-center">
-              <div className="p-2 hover:bg-gray-100 cursor-pointer rounded"
-                onClick={profileMenuDropdown}
-              >
-                <img
-                  className="w-5 h-5"
-                  src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
-                  alt="user-male-circle--v1"
-                />
-              </div>
-              {role === "buyer" && (
+              {userProfile && (
+                <div className="p-2 hover:bg-gray-100 cursor-pointer rounded"
+                  onClick={profileMenuDropdown}
+                >
+                  <img
+                    className="w-5 h-5"
+                    src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
+                    alt="user-male-circle--v1"
+                  />
+                </div>
+              )}
+              {role === "buyer" && userProfile  && (
                 <div className="p-2 hover:bg-gray-100 cursor-pointer rounded relative"
                   onClick={cartMenuDropdown}
                 >
@@ -210,6 +233,14 @@ function Navbar({ searchParams }: SearchParams) {
                     </div>                      
                   )}
                 </div>
+              )}
+
+              { !userProfile && (
+                <a href="/login">
+                  <div className="p-2 px-5 ml-1 bg-blue-500 text-white font-semibold hover:bg-blue-400 cursor-pointer rounded">
+                      Login
+                  </div>
+                </a>
               )}
 
               <div
@@ -363,8 +394,8 @@ function Navbar({ searchParams }: SearchParams) {
         </div>
       )}
 
-      {isProfileToggleActive && (
-        <ProfileMenu />
+      {isProfileToggleActive && userProfile &&(
+        <ProfileMenu UserProfile={userProfile}/>
       )}
 
       {isCartToggleActive && (

@@ -6,7 +6,7 @@ interface Product {
 }
 
 interface CartProducts {
-    cartProducts: Product[];
+    cartProducts: Product[]|null;
 }
 
 function CartMenu({ cartProducts }: CartProducts) {
@@ -18,7 +18,7 @@ function CartMenu({ cartProducts }: CartProducts) {
         >
             <ul className="flex flex-col m-5 mb-0 gap-0">
 
-                {cartProducts === undefined ? (
+                {cartProducts == null ? (
                     <div className="flex justify-center items-center mt-24">
                         <img src="https://img.icons8.com/dotty/80/6b7280/quest.png" alt="" className="w-14 h-14"/>
                         <h4 className="font-semibold">

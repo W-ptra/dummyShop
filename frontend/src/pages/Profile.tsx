@@ -1,20 +1,49 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { get } from "../utils/RequestAPI";
+
+type UserProfile = {
+    id: number,
+    email:string,
+    name:string,
+    role:string,
+    image:string,
+    banner:string
+  }
 
 function Profile(){
 
+    const [token] = useState(localStorage.getItem("token"));
+    const [user,setUser] = useState<UserProfile|null>(null);
+    const navigate = useNavigate();
     useEffect(() => {
             document.title = "Profile";
         },[]);
 
-    const user = {
-        id: 1,
-        name: "ahmad",
-        email: "sebastian@yahoo.com",
-        role: "buyer",
-        banner: "https://img.freepik.com/free-vector/winter-countryside-landscape-with-snow-fields_107791-12827.jpg",
-        image: "https://img.icons8.com/ios/50/user-male-circle--v1.png"
+    useEffect(()=>{
+        async function getProfile(){
+            if(token === "" || token === null){
+                navigate('/login');
+                return;
+            }
+
+            const result = await get("/api/user/profile",token);
+            if(result === undefined){
+                localStorage.removeItem("role");
+                localStorage.removeItem("token");
+                navigate("/login");
+                return;
+            }
+            //console.log(result)
+            setUser(result.user);
+        }
+        getProfile();
+    },[]);
+    
+    const updateProfile = async() => {
+        
     }
 
     return (
@@ -26,13 +55,13 @@ function Profile(){
                     className="flex h-[10rem] md:h-[20rem] bg-gray-100 mt-[4.8rem] relative">
                     <img  
                         className="h-full w-full"
-                        src={user.banner} alt="" 
+                        src={user?.banner} alt="" 
                     />
                     <div className="flex absolute right-[2.6rem] md:right-[4.9rem]  bottom-3 md:bottom-5 cursor-pointer gap-3">
-                        <div className="bg-gray-500 hover:bg-gray-400 p-1 rounded-full">
+                        <div className="bg-gray-500 hover:bg-gray-400 w-10 h-10 rounded-full flex items-center justify-center">
                             <img className="w-6 h-6 md:w-8 md:h-8" src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit.png" alt="edit"/>                
                         </div>
-                        <div className="bg-gray-500 hover:bg-gray-400 p-1 rounded-full">
+                        <div className="bg-gray-500 hover:bg-gray-400  w-10 h-10 flex items-center justify-center rounded-full">
                             <img className="w-8 h-8" src="https://img.icons8.com/sf-black-filled/64/FFFFFF/delete.png" alt="edit"/>                
                         </div>
                     </div>
@@ -40,8 +69,8 @@ function Profile(){
                     <div className=" top-[7.5rem] md:top-[16rem]  left-[2rem] md:left-20 absolute bg-white rounded-full">
 
                         <img
-                            className="w-20 h-20 md:w-32 md:h-32"
-                            src={user.image}
+                            className="w-20 h-20 md:w-32 md:h-32 rounded-full"
+                            src={user?.image}
                             alt="user-male-circle--v1"
                         />
                     
@@ -62,7 +91,7 @@ function Profile(){
                         </label>
                         <input 
                             type="text"  
-                            value={user.id}
+                            value={user?.id}
                             className=" p-2 bg-gray-100 rounded-md pl-3"
                             disabled={true}
                         />
@@ -77,7 +106,7 @@ function Profile(){
                         </label>
                         <input 
                             type="text"  
-                            value={user.name}
+                            value={user?.name}
                             className=" p-2 bg-gray-100 rounded-md focus:border-2 pl-3 focus:outline-none focus:border-blue-500 transition duration-200 ease-in-out"
                         />
                     </div>
@@ -91,7 +120,7 @@ function Profile(){
                         </label>
                         <input 
                             type="text"  
-                            value={user.email}
+                            value={user?.email}
                             className=" p-2 bg-gray-100 rounded-md focus:border-2 pl-3 focus:outline-none focus:border-blue-500 transition duration-200 ease-in-out"
                         />
                     </div>
@@ -105,7 +134,7 @@ function Profile(){
                         </label>
                         <input 
                             type="text"  
-                            value={user.role}
+                            value={user?.role}
                             className=" p-2 bg-gray-100 rounded-md pl-3"
                             disabled={true}
                         />

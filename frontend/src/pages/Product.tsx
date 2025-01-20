@@ -1,36 +1,27 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import NotFound from "./NotFound";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { get, post } from "../utils/RequestAPI";
 
 function Product() {
-    const API = import.meta.env.VITE_API;
     const { id } = useParams<{ id?: string }>();
+    const [token] = useState(localStorage.getItem("token"));
     const [quantity, setQuantity] = useState(1);
     const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
+    const navigate = useNavigate();
+    useEffect(() => {        
         const fetchData = async () => {
-            try {
-                const response = await fetch(`http://${API}/api/product/${id}`);
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-                const result = await response.json();
-                console.log(result)
-                setData(result);
-            } catch (err) {
-                if (err instanceof Error) {
-                    setError(err.message);
-                } else {
-                    setError('An unknown error occurred.');
-                }
-            } finally {
-                setLoading(false);
+            const result = await get(`/api/product/${id}`);
+            
+            if(result === undefined){
+                setError("failed to retrive product")
+                return;
             }
+            console.log(result);
+            setData(result);
         };
 
         fetchData();
@@ -52,6 +43,25 @@ function Product() {
         if (quantity > 1) {
             setQuantity(quantity - 1)
         }
+    }
+
+    const addToCart = async () => {
+        
+        if(token === null){
+            navigate("/login");
+            return;
+        }
+
+        const payload = {
+            productId:id,
+            quantity
+        }
+        const result = await post("/api/cart",token,payload);
+        if(result === undefined){
+            console.log("failed to add to cart");
+            return;
+        }
+        window.location.reload();
     }
 
     return (
@@ -138,7 +148,10 @@ function Product() {
                                         </div>
                                     </div>
                                     <div className="flex justify-evenly mt-2">
-                                        <button className="bg-blue-500 rounded flex w-[10rem] h-10 hover:bg-blue-400 justify-center items-center ml-5 mr-2.5 basis-1/2">
+                                        <button 
+                                            className="bg-blue-500 rounded flex w-[10rem] h-10 hover:bg-blue-400 justify-center items-center ml-5 mr-2.5 basis-1/2"
+                                            onClick={addToCart}    
+                                        >
                                             <img className="w-5 h-5"
                                                 src="https://img.icons8.com/sf-regular-filled/48/FFFFFF/add-shopping-cart.png"
                                                 alt="add-shopping-cart"

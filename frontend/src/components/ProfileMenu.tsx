@@ -1,6 +1,19 @@
 import { useNavigate } from "react-router-dom";
 
-function ProfileMenu(){
+type profile = {
+    id: number,
+    email:string,
+    name:string,
+    role:string,
+    image:string,
+    banner:string
+  }
+
+interface userProfile{
+    UserProfile:profile|null;
+}
+
+function ProfileMenu({UserProfile}:userProfile){
     const navigation = useNavigate();
     const logOut = () =>{
         localStorage.removeItem("token");
@@ -13,25 +26,31 @@ function ProfileMenu(){
             bg-white border-2 rounded-xl border-black-100"
         >
             <div className="basis-1/4 bg-gray-100">
+            
+            {UserProfile?.banner && (
+                <img 
+                    src={UserProfile.banner} alt="" 
+                    className="w-[30rem] h-[4rem] rounded-none rounded-t-xl"
+                />
+            )}
+
             <img
-                  className="cursor-pointer absolute top-[11%] md:top-[6%] ml-5 w-10 md:w-16 h-10 md:h-16 bg-white rounded-full"
+                  className="cursor-pointer absolute top-[14%] md:top-[11%] ml-5 w-14 md:w-16 h-14 md:h-16 bg-white rounded-full"
                   onClick={() => navigation("/profile") }
-                  src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
+                  src={UserProfile?.image ? UserProfile.image : "https://img.icons8.com/ios/50/user-male-circle--v1.png"}
+                  
                   alt="user-male-circle--v1"
                 />
             </div>
             <ul className="basis-3/4 flex flex-col mt-9 mb-5 ml-5 mr-5 justify-between">
                     <li className="font-extrabold text-lg pl-1">
-                        Juan
+                        {UserProfile?.name}
                     </li>
                     <li className="font-bold text-xs text-gray-500 pl-1">
-                        User Id: 1
+                        User Id: {UserProfile?.id}
                     </li>
                     <li className="font-normal text-xs text-black pl-1">
-                        Age: 20
-                    </li>
-                    <li className="font-normal text-xs text-black pl-1">
-                        Balance: $20
+                        Role: {UserProfile?.role}
                     </li>
                     <li className="flex p-0.5 rounded items-center hover:bg-gray-100 cursor-pointer"
                         onClick={logOut}

@@ -22,6 +22,8 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String role;
+    @Column(nullable = true)
+    private String about;
 
     private String image;
     private String banner;
@@ -130,6 +132,14 @@ public class User {
 
     public String getBanner() {
         return banner;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public void setBanner(String banner) {

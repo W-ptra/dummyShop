@@ -6,6 +6,7 @@ public class UpdateProfileUserDTO {
     private String name;
     private String email;
 
+
     public UpdateProfileUserDTO(){}
 
     public String getName() {

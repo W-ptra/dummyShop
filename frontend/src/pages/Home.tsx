@@ -2,33 +2,22 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
+import {get} from "../utils/RequestAPI";
 
 function Home() {
-    const API = import.meta.env.VITE_API;
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                console.log(API);
-                const response = await fetch(`http://${API}/api/product?page=0&size=10`);
-                if (!response.ok) {
-                  throw new Error(`Error: ${response.status}`);
-                }
-                const result = await response.json();
-                setData(result);
-              } catch (err) {
-                if (err instanceof Error) {
-                  setError(err.message);
-                } else {
-                  setError('An unknown error occurred.');
-                }
-              } finally {
-                setLoading(false);
-              }
+            const data = await get("/api/product?page=0&size=10")
+            if(!data){
+                setError('An unknown error occurred.');
+                return;
+            }
+            setData(data);
         };
 
         fetchData();
@@ -78,6 +67,7 @@ function Home() {
 
     const truncateText = (text: string, max: number, min: number): string => {
         const maxLength = screenWidth < 768 ? min : max;
+
         return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
     };
 

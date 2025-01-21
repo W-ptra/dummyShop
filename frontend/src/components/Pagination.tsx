@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom"
 interface CurrentPage {
     currentPage: {
         page: number,
-        length: number
+        length: number,
+        size:number
     };
     path: string;
 }
@@ -12,7 +13,7 @@ function Pagination({ currentPage,path }: CurrentPage) {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("query");
 
-    const itemsPerPage = 20;
+    const itemsPerPage = currentPage.size;
     const pageTotal = Math.ceil(currentPage.length / itemsPerPage);
 
     const currentPageIndex = currentPage.page;
@@ -45,7 +46,7 @@ function Pagination({ currentPage,path }: CurrentPage) {
                             {number}
                         </li>
                     ) : (
-                        <a href={`/${path}?query=${search}&page=${number-1}`}>
+                        <a href={`/${path}?query=${search}&page=${number-1}&size=${currentPage.size}`}>
                             <li
                                 key={number}
                                 className="w-8 h-8 md:w-9 md:h-9  hover:bg-gray-100 flex rounded-lg justify-center text-center items-center cursor-pointer"

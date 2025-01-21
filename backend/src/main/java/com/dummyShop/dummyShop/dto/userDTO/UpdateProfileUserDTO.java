@@ -4,8 +4,7 @@ import com.dummyShop.dummyShop.model.User;
 
 public class UpdateProfileUserDTO {
     private String name;
-    private String email;
-
+    private String about;
 
     public UpdateProfileUserDTO(){}
 
@@ -17,12 +16,11 @@ public class UpdateProfileUserDTO {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAbout() {
+        return about;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAbout(String about) {
+        this.about = about;
     }
-
 }

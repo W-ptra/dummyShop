@@ -32,12 +32,13 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<Map<String,Object>> getProductByUserId(
+    @GetMapping("/seller/{id}")
+    public ResponseEntity<Map<String,Object>> getProductBySellerId(
+            @PathVariable Long id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ){
-        return productService.getProductByUserId(page,size);
+        return productService.getProductByUserId(page,size,id);
     }
 
     @PostMapping

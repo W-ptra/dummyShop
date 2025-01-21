@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-    @Query("SELECT p FROM Product p JOIN FETCH p.user WHERE p.name LIKE %:name%")
+    @Query("SELECT p FROM Product p JOIN FETCH p.user JOIN p.tagSet t WHERE t.name IN :name OR p.name IN :name ")
     List<Product> getAllProductByName(
-            @Param("name") String name,
+            @Param("name") List<String> name,
             Pageable pageable
     );
 

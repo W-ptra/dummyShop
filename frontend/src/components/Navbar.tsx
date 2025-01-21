@@ -32,7 +32,7 @@ function Navbar({ searchParams }: SearchParams) {
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
   const [isCartToggleActive, setIsCartToggleActive] = useState(false);
   const [isProfileToggleActive, setIsProfileToggleActive] = useState(false);
-  const [searchName, setSearchName] = useState(searchParams);
+  const [searchName, setSearchName] = useState(searchParams?.replaceAll("@","#").replaceAll("-"," "));
   const [userProfile,setUserProfile] = useState<UserProfile|null>(null);
   const [cart, setCart] = useState<ProductCart[]|null>(null);
   const [cartLength,setCartLength] = useState(0);
@@ -82,7 +82,7 @@ function Navbar({ searchParams }: SearchParams) {
   const searching = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
     if (event.key == "Enter" && searchName) {
-      navigate(`/search?query=${searchName}`);
+      navigate(`/search?query=${searchName.replaceAll("#","@").replaceAll(" ","-")}`);
       window.location.reload();
     }
   }
@@ -122,17 +122,10 @@ function Navbar({ searchParams }: SearchParams) {
         return;
       }
       const result = await get("/api/user/profile",token);
-      console.log(result);
       if(result === undefined){
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-
-        
-
         return;
       }
       setUserProfile(result.user);
-      console.log(userProfile)
     }
     getProfile();
   },[])
@@ -198,7 +191,7 @@ function Navbar({ searchParams }: SearchParams) {
                   onChange={setSearchNameValue}
                   onKeyDown={searching}
 
-                  placeholder="Search.."
+                  placeholder="Search.. ex: #cheap hat"
                 />
               </div>
             </div>

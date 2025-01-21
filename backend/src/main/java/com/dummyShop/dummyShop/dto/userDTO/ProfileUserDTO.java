@@ -9,6 +9,7 @@ public class ProfileUserDTO {
     private String image;
     private String banner;
     private String role;
+    private String about;
 
     public ProfileUserDTO(){}
 
@@ -60,6 +61,14 @@ public class ProfileUserDTO {
         this.role = role;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
     public static ProfileUserDTO ConvertToDTO(User user){
         ProfileUserDTO profileUserDTO = new ProfileUserDTO();
         profileUserDTO.setId(user.getId());
@@ -68,6 +77,7 @@ public class ProfileUserDTO {
         profileUserDTO.setImage(user.getImage());
         profileUserDTO.setBanner(user.getBanner());
         profileUserDTO.setRole(user.getRole());
+        profileUserDTO.setAbout(user.getAbout());
         return profileUserDTO;
     }
 }

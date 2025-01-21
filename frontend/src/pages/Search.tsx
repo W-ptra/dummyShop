@@ -10,8 +10,6 @@ import loadingIcon from "../assets/icons8-loading.gif"
 function Search() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("query");
-    
-    const API = import.meta.env.VITE_API;
 
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -28,7 +26,7 @@ function Search() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://${API}/api/product?search=${search}&page=${page}`);
+                const response = await fetch(`/api/product?search=${search}&page=${page}&size=${20}`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
                 }
@@ -52,7 +50,7 @@ function Search() {
     }, []);
 
     useEffect(() => {
-        document.title = "#" + search;
+        document.title = search.replaceAll("@","#").replaceAll("-"," ");
     }, []);
 
     return (
@@ -65,7 +63,7 @@ function Search() {
                         <h1 className="text-lg font-extrabold">
                             Search result of
                             <span className="">
-                                {' "' + search + '"'}
+                                {' "' + search.replaceAll("@","#").replaceAll("-"," ") + '"'}
                             </span>
                         </h1>
                         <h4 className="">
@@ -76,12 +74,12 @@ function Search() {
                         </h4>
                     </div>
                     <Card productList={data.products.list} />
-                    <Pagination currentPage={{ page: page + 1, length: totalProductLength }} path={"search"} />
+                    <Pagination currentPage={{ page: page + 1, length: totalProductLength,size:20 }} path={"search"} />
                 </>
             ) : loading? (
                 <div className="mx-2 md:mx-20 mt-24 flex justify-center items-center py-40">
                     <img 
-                        src={loadingIcon} 
+                        src={loadingIcon}
                         alt={loadingIcon} 
                         className="w-44 h-44"
                     />

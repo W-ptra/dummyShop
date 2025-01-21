@@ -1,66 +1,64 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { get } from "../utils/RequestAPI";
+import loadingIcon from "../assets/icons8-loading.gif"
 
 function MyProduct() {
     const [searchParams] = useSearchParams();
-    const page = Number(searchParams.get("page")) || 1;
-    const size = 19;
+
+    const [products,setProducts] = useState<any>(null);
+    const [token] = useState(localStorage.getItem("token"));
+    const [role] = useState(localStorage.getItem("role"));
+    const [page, _] = useState(Number(searchParams.get("page")) || 0);
+    const [totalProductLength, setTotalProductLength] = useState(0);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "My Product";
+
+        if(token === null || token === ""){
+            navigate("/login");
+            return;
+        }
+
+        if(role !== "seller"){
+            navigate("/")
+            return;
+        }
+
+        async function getProducts(){
+            if(token === null || token === ""){
+                return;
+            }
+            const userResult = await get("/api/user/profile",token);
+            
+            if(userResult === undefined){
+                localStorage.removeItem("role");
+                localStorage.removeItem("token");
+                navigate("/login");
+                return;
+            }
+            const result = await get(`/api/product/seller/${userResult.user.id}?page=${page}&size=${19}`);
+            
+            if(result === undefined){
+                localStorage.removeItem("role");
+                localStorage.removeItem("token");
+                navigate("/login");
+                return;
+            }
+            setProducts(result)
+            setTotalProductLength(result.products.totalLength)
+            console.log(products,totalProductLength);
+        }
+
+        getProducts();
+
     }, []);
-
-    const obj1 = {
-        id: 1,
-        name: "Product 1",
-        description: "description 1",
-        image: "https://img.freepik.com/free-vector/cute-astronaut-samurai-with-kitsune-mask-katana-sword-cartoon-vector-icon-illustration-science_138676-9360.jpg",
-        seller: "juan",
-        price: 20.75,
-        star: 2,
-        sold: 1
-    }
-
-    const obj2 = {
-        id: 2,
-        name: "Product 2",
-        description: "description 2",
-        image: "https://img.freepik.com/free-vector/manga-frames-design_603843-1157.jpg",
-        seller: "juan",
-        price: 15.15,
-        star: 4.7,
-        sold: 2
-    }
-
-    const list = []
-    const productList = []
-
-    for (let x = 1; x <= 130; x++) {
-        if (x % 2 === 1) {
-            const cpy = { ...obj1 }
-            cpy.name = `Product ${x}`
-            list.push(cpy)
-        } else {
-            const cpy = { ...obj2 }
-            cpy.name = `Product ${x}`
-            list.push(cpy)
-        }
-    }
-
-    for (let x = (size * (page - 1)); x < (size * page); x++) {
-        if (list[x]) {
-            productList.push(list[x])
-        }
-    }
-
-    const currentPage1 = {
-        page: page,
-        length: list.length
-    }
 
     return (
         <>
@@ -72,9 +70,21 @@ function MyProduct() {
                 </h1>
             </div>
 
-            <Card productList={productList} newCard={true} />
+            {products ?(
+                <>
+                    <Card productList={products.products.list} newCard={true} />
+                    <Pagination currentPage={{ page: page + 1, length: totalProductLength,size:19 }} path="my-product" />
+                </>
+            ):(
+                <div className="mx-2 md:mx-20 mt-24 flex justify-center items-center py-40">
+                    <img 
+                        src={loadingIcon} 
+                        alt={loadingIcon} 
+                        className="w-44 h-44"
+                    />
+                </div>
+            )}
 
-            <Pagination currentPage={currentPage1} path="my-product" />
 
             <Footer />
         </>

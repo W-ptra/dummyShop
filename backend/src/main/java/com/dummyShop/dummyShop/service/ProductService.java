@@ -5,6 +5,7 @@ import com.dummyShop.dummyShop.dto.productDTO.CreateAndUpdateProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.DetailProductDTO;
 import com.dummyShop.dummyShop.dto.productDTO.ShowcaseProductPaginationDTO;
 import com.dummyShop.dummyShop.model.Product;
+import com.dummyShop.dummyShop.model.QueryGeneration;
 import com.dummyShop.dummyShop.model.Tag;
 import com.dummyShop.dummyShop.model.User;
 import com.dummyShop.dummyShop.repository.ProductRepository;
@@ -37,6 +38,8 @@ public class ProductService {
     private Validation validation;
     @Autowired
     private GeneralConfiguration generalConfiguration;
+    @Autowired
+    QueryGeneration queryGeneration;
 
     public ResponseEntity<Map<String,Object>> getAllProduct(
             String name,
@@ -52,8 +55,9 @@ public class ProductService {
         Long totalLength;
 
         if (name != null && !name.isEmpty()){
-            productList = productRepository.getAllProductByName(name,pageable);
-            totalLength = productRepository.getTotalLengthAllProductByName(name);
+            List<String> keywordSplit = Arrays.asList(name.split("-"));
+            productList = queryGeneration.findByNameContainingKeywords(keywordSplit,page,size);
+            totalLength = queryGeneration.getLengthfindByNameContainingKeywords(keywordSplit);
         } else {
             productList = productRepository.getAll(pageable);
             totalLength = productRepository.getTotalLengthAllProduct();
@@ -80,18 +84,16 @@ public class ProductService {
 
     public ResponseEntity<Map<String,Object>> getProductByUserId(
             int page,
-            int size
+            int size,
+            Long id
     ){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = Long.valueOf(authentication.getName());
-
         if(size > generalConfiguration.getPAGINATION_MAX_SIZE()){
             size = 20;
         }
 
         Pageable pageable = PageRequest.of(page,size);
 
-        List<Product> productList = productRepository.getProductByUserId(userId,pageable);
+        List<Product> productList = productRepository.getProductByUserId(id,pageable);
 
         if(productList.isEmpty()){
             return responseEntityBuilder
@@ -102,7 +104,7 @@ public class ProductService {
                     );
         }
 
-        Long productTotalLength = productRepository.getTotalLengthAllProductByUserId(userId);
+        Long productTotalLength = productRepository.getTotalLengthAllProductByUserId(id);
         ShowcaseProductPaginationDTO showcaseProductPaginationDTO = ShowcaseProductPaginationDTO
                 .convertToDTO(productList,productTotalLength);
 

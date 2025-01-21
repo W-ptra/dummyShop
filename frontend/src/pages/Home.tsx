@@ -17,6 +17,7 @@ function Home() {
                 setError('An unknown error occurred.');
                 return;
             }
+            console.log(data)
             setData(data);
         };
 

@@ -47,25 +47,25 @@ public class UserService {
     ){
 
         boolean isNameEmpty = updateProfileUserDTO.getName() == null || updateProfileUserDTO.getName().isEmpty();
-        boolean isEmailEmpty = updateProfileUserDTO.getEmail() == null || updateProfileUserDTO.getEmail().isEmpty();
+        boolean isAboutEmpty = updateProfileUserDTO.getAbout() == null || updateProfileUserDTO.getAbout().isEmpty();
 
-        if (isNameEmpty || isEmailEmpty){
+        if (isNameEmpty || isAboutEmpty){
             return responseEntityBuilder
                     .createResponse(400,
                             "message",
-                            "field 'name' and 'email' can't empty"
+                            "field 'name' and 'about' can't empty"
                     );
         }
 
-        boolean isEmailExist = userRepository.isExistsByEmail(updateProfileUserDTO.getEmail());
+        //boolean isEmailExist = userRepository.isExistsByEmail(updateProfileUserDTO.getEmail());
 
-        if (isEmailExist){
-            return responseEntityBuilder
-                    .createResponse(400,
-                            "message",
-                            String.format("email %s already registered",updateProfileUserDTO.getEmail())
-                    );
-        }
+//        if (isEmailExist){
+//            return responseEntityBuilder
+//                    .createResponse(400,
+//                            "message",
+//                            String.format("email %s already registered",updateProfileUserDTO.getEmail())
+//                    );
+//        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long id = Long.valueOf(authentication.getName());
@@ -73,7 +73,8 @@ public class UserService {
         User user = userRepository.findById(id).get();
 
         user.setName(updateProfileUserDTO.getName());
-        user.setEmail(updateProfileUserDTO.getEmail());
+        //user.setEmail(updateProfileUserDTO.getEmail());
+        user.setAbout(updateProfileUserDTO.getAbout());
 
         userRepository.save(user);
 

@@ -35,6 +35,7 @@ function Navbar({ searchParams }: SearchParams) {
   const [searchName, setSearchName] = useState(searchParams?.replaceAll("@","#").replaceAll("-"," "));
   const [userProfile,setUserProfile] = useState<UserProfile|null>(null);
   const [cart, setCart] = useState<ProductCart[]|null>(null);
+  const [randomQuery,setRandomQuery] = useState("");
   const [cartLength,setCartLength] = useState(0);
   const navigate = useNavigate();
 
@@ -86,6 +87,22 @@ function Navbar({ searchParams }: SearchParams) {
       window.location.reload();
     }
   }
+
+  useEffect(()=>{
+    const exampleQuery = [
+      "hat #cheap",
+      "#elegant #stylish",
+      "jacket vintage bomber winter",
+      "colorfull #rugged",
+      "shoes running #durable #timeless",
+      "dress",
+      "scarf",
+      "leather Necklace",
+      "cardigan"
+    ];
+    setRandomQuery(exampleQuery[Math.floor(Math.random() * exampleQuery.length)]);
+  },[]);
+  
 
   useEffect(() => {
     if (isNavbarToggleActive) {
@@ -191,7 +208,7 @@ function Navbar({ searchParams }: SearchParams) {
                   onChange={setSearchNameValue}
                   onKeyDown={searching}
 
-                  placeholder="Search.. ex: #cheap hat"
+                  placeholder={randomQuery}
                 />
               </div>
             </div>
@@ -284,7 +301,7 @@ function Navbar({ searchParams }: SearchParams) {
                 value={searchName}
                 onChange={setSearchNameValue}
                 onKeyDown={searching}
-                placeholder="Search.."
+                placeholder={randomQuery}
               />
             </div>
           </div>

@@ -4,9 +4,15 @@ import Card from "../components/Card";
 import { useEffect, useState } from "react";
 import {get} from "../utils/RequestAPI";
 
+type Tag = {
+    name:string;
+    total:number;
+}
+
 function Home() {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [data, setData] = useState<any>(null);
+    const [tags,setTags] = useState<Tag[]|null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
@@ -23,6 +29,17 @@ function Home() {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        async function getTags(){
+            const result = await get("/api/tag");
+            if(result === undefined){
+                return;
+            }
+            setTags(result.tags);
+        }
+        getTags();
+    },[])
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,10 +64,6 @@ function Home() {
         const b = randomColorValue();
         return `rgb(${r}, ${g}, ${b})`;
     }
-
-    const popularTag = [
-        "cheap", "delicous", "durable", "test", "ant", "motor oil", "tissue", "plant", "animal", "table"
-    ]
 
     const topSeller = []
 
@@ -89,13 +102,13 @@ function Home() {
                 </h2>
             </div>
             <div className="flex mx-2 md:mx-20 justify-evenly mt-5 flex-wrap">
-                {popularTag.map((tag) => (
-                    <a href={`/search?query=${tag}`}>
+                { tags && tags.map((tag) => (
+                    <a href={`/search?query=@${tag.name}`}>
                         <span
                             style={{ backgroundColor: generatePastelColor() }}
                             className=" px-4 py-1 rounded-md flex flex-wrap m-1 font-bold text-base cursor-pointer text-white"
                         >
-                            {"#" + tag}
+                            {"#" + tag.name}
                         </span>
                     </a>
                 ))}

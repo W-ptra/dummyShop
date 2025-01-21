@@ -4,6 +4,7 @@ import com.dummyShop.dummyShop.dto.tagDTO.TagDTO;
 import com.dummyShop.dummyShop.model.Tag;
 import com.dummyShop.dummyShop.repository.TagRepository;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
+import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class TagService {
     public ResponseEntity<Map<String,Object>> getAllTagByName(String name){
         Pageable pageable = PageRequest.of(0,10);
 
-        List<Tag> tagList = new ArrayList<>();
+        List<Tuple> tagList = new ArrayList<>();
 
         if(name == null || name.isEmpty()){
             tagList = tagRepository.getAll(pageable);
@@ -33,7 +34,7 @@ public class TagService {
             tagList = tagRepository.getAllTagByName(name,pageable);
         }
 
-        List<String> tagDTOList = TagDTO.convertToDTO(tagList);
+        List<TagDTO> tagDTOList = TagDTO.convertToDTOtuple(tagList);
 
         if(tagList.isEmpty()){
             return responseEntityBuilder

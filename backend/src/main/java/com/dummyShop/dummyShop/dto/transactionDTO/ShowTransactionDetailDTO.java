@@ -14,6 +14,7 @@ public class ShowTransactionDetailDTO {
     private String seller;
     private String image;
     private int quantity;
+    private boolean isReviewed;
 
     public ShowTransactionDetailDTO(){}
 
@@ -65,6 +66,14 @@ public class ShowTransactionDetailDTO {
         this.quantity = quantity;
     }
 
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
+    }
+
     public static List<ShowTransactionDetailDTO> convertToDTO(List<TransactionDetail> transactionDetailList){
         return transactionDetailList.stream()
                 .map(transactionDetail -> {
@@ -75,6 +84,7 @@ public class ShowTransactionDetailDTO {
                     showTransactionDetailDTO.setSeller(transactionDetail.getProduct().getUser().getName());
                     showTransactionDetailDTO.setImage(transactionDetail.getProduct().getImage());
                     showTransactionDetailDTO.setQuantity(transactionDetail.getQuantity());
+                    showTransactionDetailDTO.setReviewed(transactionDetail.isReviewed());
                     return showTransactionDetailDTO;
                 })
                 .toList();

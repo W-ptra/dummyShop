@@ -108,6 +108,9 @@ public class ReviewService {
             );
         }
 
+        transactionDetail.setReviewed(true);
+        transactionDetailRepository.save(transactionDetail);
+
         Review review = new Review();
         review.setContent(createReviewDTO.getContent());
         review.setStar(createReviewDTO.getStar());

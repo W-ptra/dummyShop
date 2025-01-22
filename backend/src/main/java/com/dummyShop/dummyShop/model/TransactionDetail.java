@@ -28,6 +28,8 @@ public class TransactionDetail {
     @JsonManagedReference
     private Review review;
 
+    private boolean isReviewed;
+
     public TransactionDetail(){}
 
     public Long getId() {
@@ -68,5 +70,13 @@ public class TransactionDetail {
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
     }
 }

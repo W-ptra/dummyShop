@@ -83,7 +83,7 @@ public class TransactionService {
             transactionDetail.setQuantity(element.getQuantity());
             transactionDetail.setProduct(product);
             transactionDetail.setTransactionHeader(transactionHeader);
-
+            transactionDetail.setReviewed(false);
             transactionDetailList.add(transactionDetail);
         }
 
@@ -156,4 +156,5 @@ public class TransactionService {
 
         return product.get();
     }
+
 }

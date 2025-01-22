@@ -6,6 +6,7 @@ import { deletes, get, post } from "../utils/RequestAPI";
 
 type Product = {
     id: number,
+    productId:number,
     name: string,
     price: number,
     image: string,
@@ -55,7 +56,7 @@ function Cart() {
                 localStorage.removeItem("token");
                 return;
             }
-
+            console.log(result)
             setProducts(result.carts);
         };
         fetchData();
@@ -80,6 +81,13 @@ function Cart() {
             return prevProduct;
         });
 
+        const updatedSelectedProducts = selectedProduct.map((prevProduct) => {
+            if (prevProduct.id === id) {
+                return { ...prevProduct, quantity: prevProduct.quantity + 1 };
+            }
+            return prevProduct;
+        });
+        setSelectedProduct(updatedSelectedProducts);
         setProducts(updatedProducts);
     };
 
@@ -93,7 +101,14 @@ function Cart() {
             }
             return prevProduct;
         });
-
+        const updatedSelectedProducts = selectedProduct.map((prevProduct) => {
+            if (prevProduct.quantity < 2) return prevProduct;
+            if (prevProduct.id === id) {
+                return { ...prevProduct, quantity: prevProduct.quantity - 1 };
+            }
+            return prevProduct;
+        });
+        setSelectedProduct(updatedSelectedProducts);
         setProducts(updatedProducts);
     };
 
@@ -114,7 +129,7 @@ function Cart() {
 
     const handleCheckboxCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!products) return;
-
+        console.log(selectedProduct)
         const { checked } = event.target;
         const id = Number(event.currentTarget.getAttribute("data-id"));
         const product = products.find(element => {
@@ -157,12 +172,25 @@ function Cart() {
         if (token === null || token === "") {
             return;
         }
+        if(!selectedProduct)return;
+        
+        const productArray = selectedProduct.map((element)=>{
+            const newElement = {
+                id: element.productId,
+                name: element.name,
+                price: element.price,
+                image: element.image,
+                quantity: element.quantity
+            }
+            return newElement
+        })
+
         const payload = {
-            details : [...selectedProduct]
+            details : [...productArray]
         }
 
         const result = await post("/api/transaction",token,payload);
-
+        
         if(result === undefined){
             return;
         }
@@ -196,7 +224,7 @@ function Cart() {
                             <div className="basis-2/6 flex">
                                 <div className="basis-1/5 flex justify-center items-center">
                                     <input
-                                        className="w-4 h-4 cursor-pointer"
+                                        className="w-[0.9rem] md:w-4 h-[0.9rem] md:h-4 cursor-pointer"
                                         type="checkbox" name="" id="all"
                                         onChange={handleCheckAllCheckbox}
                                     />
@@ -241,7 +269,7 @@ function Cart() {
                                                 id="productCheck"
                                                 ref={(el) => (checkboxRef.current[product.id] = el!)}
                                                 data-id={product.id}
-                                                className="mr-1 md:mr-3 w-4 h-4 cursor-pointer"
+                                                className="mr-1 md:mr-3 w-[0.9rem] h-[0.9rem] md:w-4 md:h-4 cursor-pointer"
                                                 onChange={handleCheckboxCheck}
                                             />
                                             <label
@@ -251,12 +279,14 @@ function Cart() {
 
                                             </label>
                                         </div>
-                                        <img
-                                            src={product.image}
-                                            alt=""
-                                            className=" w-10 h-10 md:w-20 md:h-20 rounded basis-1/6"
-                                        />
-                                        <h2 className="ml-0.5 md:ml-2 font-bold text-gray-500 text-xs md:text-base basis-3/6">
+                                        <a href={`/product/${product.productId}`}>
+                                            <img
+                                                src={product.image}
+                                                alt=""
+                                                className=" w-[3.5rem] h-[3.5rem] md:w-20 md:h-20 rounded basis-1/6"
+                                            />
+                                        </a>
+                                        <h2 className="ml-0.5 md:ml-2 font-bold text-gray-500 text-[0.6rem] md:text-base basis-3/6">
                                             {product.name}
                                         </h2>
                                     </div>
@@ -268,13 +298,13 @@ function Cart() {
                                     </div>
                                     <div className="basis-1/6 flex justify-center text-gray-500">
                                         <button
-                                            className="text-[1.05rem] bg-blue-500 w-10 text-white font-bold"
+                                            className="text-[1.05rem] bg-blue-500 w-5 md:w-10 text-white font-bold"
                                             onClick={() => decrementChangeHandle(product.id)}
                                         >
                                             -
                                         </button>
                                         <input
-                                            className="border-blue-500 outline-none border pl-[0.4rem] w-[2.5rem]"
+                                            className="border-blue-500 outline-none border pl-[0.4rem] w-6 md:w-[2.5rem]"
                                             type="number"
                                             name=""
                                             id=""
@@ -284,7 +314,7 @@ function Cart() {
                                             onChange={handleQuantityChange}
                                         />
                                         <button
-                                            className="text-[1.05rem] bg-blue-500 w-10 text-white font-bold"
+                                            className="text-[1.05rem] bg-blue-500 w-5 md:w-10 text-white font-bold"
                                             onClick={() => incrementChangeHandle(product.id)}
                                         >
                                             +

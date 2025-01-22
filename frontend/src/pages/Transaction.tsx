@@ -6,6 +6,7 @@ import { get, post } from "../utils/RequestAPI";
 
 type TransactionDetail = {
     id:number,
+    userId:number,
     name: string,
     price: number,
     seller: string,
@@ -57,7 +58,6 @@ function Transaction() {
                 return;
             }
             const result = await get("/api/transaction", token);
-            console.log(result);
             if (result === undefined) {
                 return;
             }
@@ -157,7 +157,7 @@ function Transaction() {
                                 <div className="bg-gray-100 rounded-[1.5rem] mt-1">
                                     <div className="flex p-2 mx-5 my-2 border border-gray-100 border-b-gray-700">
                                         <div className="flex items-center gap-5 basis-5/6">
-                                            <a href={`/product/${product.id}`}>
+                                            <a href={`/product/${product.userId}`}>
                                                 <img
                                                     src={product.image}
                                                     alt={product.image}

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class DetailCartDTO {
     private Long id;
+    private Long productId;
     private String name;
     private Double price;
     private String image;
@@ -53,11 +54,20 @@ public class DetailCartDTO {
         this.quantity = quantity;
     }
 
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
     public static List<DetailCartDTO> convertToDTO(List<Cart> cartList){
         return cartList.stream()
                 .map( cart -> {
                     DetailCartDTO detailCartDTO = new DetailCartDTO();
                     detailCartDTO.setId(cart.getId());
+                    detailCartDTO.setProductId(cart.getProduct().getId());
                     detailCartDTO.setName(cart.getProduct().getName());
                     detailCartDTO.setPrice(cart.getProduct().getPrice());
                     detailCartDTO.setImage(cart.getProduct().getImage());

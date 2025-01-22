@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                             authorize
                                     .requestMatchers(HttpMethod.GET,"/api/product","/api/product/**").permitAll()
                                     .requestMatchers(HttpMethod.GET,"/api/tag").permitAll()
+                                    .requestMatchers(HttpMethod.GET,"/resource/**","/product/**").permitAll()
                                     .requestMatchers("/error").permitAll();
 
                             // fallback for other request

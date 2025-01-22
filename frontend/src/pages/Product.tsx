@@ -47,7 +47,7 @@ function Product() {
 
     const addToCart = async () => {
         
-        if(token === null){
+        if(token === null || token === ""){
             navigate("/login");
             return;
         }
@@ -62,6 +62,24 @@ function Product() {
             return;
         }
         window.location.reload();
+    }
+
+    const buyProduct = async () =>{
+        if(token === null || token === ""){
+            navigate("/login");
+            return;
+        }
+
+        const payload = {
+            productId:id,
+            quantity
+        }
+        const result = await post("/api/cart",token,payload);
+        if(result === undefined){
+            console.log("failed to add to cart");
+            return;
+        }
+        navigate("/cart");
     }
 
     return (
@@ -160,7 +178,10 @@ function Product() {
                                                 Add to Cart
                                             </span>
                                         </button>
-                                        <button className="bg-blue-500 rounded flex px-6 py-2 w-[10rem] h-10 hover:bg-blue-400 justify-center items-center ml-2.5 mr-5 basis-1/2">
+                                        <button 
+                                            className="bg-blue-500 rounded flex px-6 py-2 w-[10rem] h-10 hover:bg-blue-400 justify-center items-center ml-2.5 mr-5 basis-1/2"
+                                            onClick={buyProduct}
+                                        >
                                             <span className="text-white font-extrabold">
                                                 Buy
                                             </span>

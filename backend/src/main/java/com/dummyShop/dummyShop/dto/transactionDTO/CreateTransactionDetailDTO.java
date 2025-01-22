@@ -1,6 +1,9 @@
 package com.dummyShop.dummyShop.dto.transactionDTO;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class CreateTransactionDetailDTO {
+    @JsonAlias("id")
     private Long productId;
     private int quantity;
 

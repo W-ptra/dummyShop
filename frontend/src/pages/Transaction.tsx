@@ -2,11 +2,29 @@ import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { useEffect, useState } from "react";
 import ReviewInput from "../components/ReviewMenu";
+import { useNavigate } from "react-router-dom";
+import { get } from "../utils/RequestAPI";
+
+type TransactionDetail = {
+    name:string,
+    price:number,
+    seller:string,
+    image:string,
+    quantity:number
+}
+
+type TransactionHeader = {
+    date:string,
+    list:TransactionDetail[],
+    total:number,
+    status:string
+}
 
 function Transaction() {
-
+    const [transactionHeaders,settransactionHeaders] = useState<TransactionHeader[]>([]);
     const [reviewMenu,setReviewMenu] = useState(false);
-
+    const [token] = useState(localStorage.getItem("token"));
+    const navigate = useNavigate();
     const handleReviewMenuChange = () => {
         setReviewMenu((prev)=>!prev);
     }
@@ -24,74 +42,23 @@ function Transaction() {
         document.title = "Transaction";
     }, []);
 
-    const transactions = [
-        {
-            date: "2024-12-15T13:09:28.415+00:00",
-            list: [
-                {
-                    id:1,
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 2
-                },
-                {
-                    id:2,
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 1
-                }
-            ],
-            total: 38.7,
-            status: "complete"
-        },
-        {
-            date: "2024-12-15T13:09:28.415+00:00",
-            list: [
-                {
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 2
-                },
-                {
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 1
-                }
-            ],
-            total: 38.7,
-            status: "complete"
-        },
-        {
-            date: "2024-12-15T13:09:28.415+00:00",
-            list: [
-                {
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 2
-                },
-                {
-                    name: "trouser by H&M",
-                    price: 12.9,
-                    seller: "bimbab",
-                    image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-                    quantity: 1
-                }
-            ],
-            total: 38.7,
-            status: "complete"
-        }
-    ]
+    useEffect(()=>{
+        async function getTransactions(){
+            if(token === "" || token === null){
+                navigate("/login");
+                return;
+            }
+            const result = await get("/api/transaction",token);
+            console.log(result);
+            if(result === undefined){
+                return;
+            }
 
+            settransactionHeaders(result.transactions)
+        }
+        getTransactions();
+    },[]);
+    
     const formatDate = (dateString: string): string => {
         // Parse the date string into a Date object
         const date = new Date(dateString);
@@ -124,11 +91,13 @@ function Transaction() {
         return `${day}${ordinalSuffix} ${month} ${year}, ${hours}:${minutes} (UTC)`;
     };
 
+
+
     return (
         <>
             <Navbar />
             <div className="mt-20 mb-5 mx-3 md:mx-20">
-                { transactions.map((transaction)=>(
+                { transactionHeaders.length !== 0 ? transactionHeaders.map((transaction)=>(
                     <div className="flex flex-col my-5 py-5">
                         <div className="px-5 py-4 bg-gray-100 rounded-[1rem]">
                             <h4 className="flex flex-col md:flex-row justify-between ">
@@ -190,7 +159,20 @@ function Transaction() {
                     
                         </div>
                     </div>
-                ))}
+                )):(
+                    <div className="mt-[20vh] mb-[20vh] h-[55vh] flex flex-col justify-center items-center">
+                        <img
+                            className="w-20 h-20"
+                            src="https://img.icons8.com/windows/32/where-what-quest.png"
+                            alt="where-what-quest"
+                        />
+                        <p className="text-lg font-bold">
+                            Cart is Empty
+                        </p>
+                    </div>
+                )}
+
+                
             </div>
             { reviewMenu && (
                 <ReviewInput setReviewMenu={setReviewMenu}/>

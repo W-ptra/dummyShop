@@ -149,7 +149,7 @@ function Navbar({ searchParams }: SearchParams) {
 
   return (
     <>
-      <nav className="bg-white fixed left-0 right-0 top-0 z-10">
+      <nav className="bg-white fixed left-0 right-0 top-0 z-30">
         <div className="border border-b-black-100">
           <div className="m-4 flex flex-row ">
             <div className="flex basis-1/2 md:basis-1/3 items-center">

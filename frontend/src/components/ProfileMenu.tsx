@@ -22,7 +22,7 @@ function ProfileMenu({UserProfile}:userProfile){
       }
     return (
         <div 
-            className="flex flex-col fixed right-3 top-16 h-64 w-1/2 md:w-1/5 z-10 
+            className="flex flex-col fixed right-3 top-16 h-64 w-1/2 md:w-1/5 z-50 
             bg-white border-2 rounded-xl border-black-100"
         >
             <div className="basis-1/4 bg-gray-100">

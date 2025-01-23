@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                             // - prroduct
                             authorize
                                     .requestMatchers(HttpMethod.POST,"/api/product").hasRole("SELLER")
+                                    .requestMatchers(HttpMethod.POST,"/api/files").hasRole("SELLER")
                                     .requestMatchers(HttpMethod.PUT,"/api/product/**").hasRole("SELLER")
                                     .requestMatchers(HttpMethod.DELETE,"/api/product/**").hasRole("SELLER");
 

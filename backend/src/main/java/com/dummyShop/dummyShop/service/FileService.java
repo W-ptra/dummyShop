@@ -1,28 +1,31 @@
 package com.dummyShop.dummyShop.service;
 
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.dummyShop.dummyShop.utils.AzureBlobStorage;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
+import com.dummyShop.dummyShop.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 @Service
-public class FileUploadService {
+public class FileService {
 
-    @Value("${upload.directory}")
-    private String uploadDirectory;
     @Autowired
     ResponseEntityBuilder responseEntityBuilder;
+    @Autowired
+    Validation validation;
+    @Autowired
+    AzureBlobStorage azureBlobStorage;
 
-    public ResponseEntity<Map<String,Object>> uploadFile(
-            MultipartFile file
-    ){
-        if(file.isEmpty()){
+    public ResponseEntity<Map<String, Object>> uploadFile(MultipartFile file) {
+        if (file.isEmpty()) {
             return responseEntityBuilder.createResponse(
                     400,
                     "error",
@@ -30,12 +33,12 @@ public class FileUploadService {
             );
         }
 
-        try{
+        try {
             String uuid = UUID.randomUUID().toString();
             String originalFileName = file.getOriginalFilename();
             String extension = "";
 
-            if(originalFileName == null || !originalFileName.contains(".")){
+            if (originalFileName == null || !originalFileName.contains(".")) {
                 return responseEntityBuilder.createResponse(
                         400,
                         "error",
@@ -45,12 +48,7 @@ public class FileUploadService {
 
             extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 
-            List<String> allowedExtension = new ArrayList<>();
-            allowedExtension.add("png");
-            allowedExtension.add("jpeg");
-            allowedExtension.add("jpg");
-
-            if (!allowedExtension.contains(extension)) {
+            if (validation.isExtensionNotAllowed(extension)) {
                 return responseEntityBuilder.createResponse(
                         400,
                         "error",
@@ -59,30 +57,20 @@ public class FileUploadService {
             }
 
             String uniqueFileName = uuid + extension;
+            String url = azureBlobStorage.upload(uniqueFileName,file);
 
-            File destination = new File(
-                    uploadDirectory +
-                            File.separator +
-                            "product" +
-                            File.separator +
-                            uniqueFileName
-            );
-
-            destination.getParentFile().mkdirs();
-            file.transferTo(destination);
-            //uniqueFileName = "/"
             return responseEntityBuilder.createResponse(
                     200,
                     "link",
-                    uniqueFileName
+                    url
             );
-        } catch (IOException io){
+        } catch (IOException io) {
+            io.printStackTrace();
             return responseEntityBuilder.createResponse(
                     500,
                     "error",
                     "something went wrong, uploading file failed"
             );
         }
-
     }
 }

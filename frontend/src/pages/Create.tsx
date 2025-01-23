@@ -1,32 +1,32 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
+import { post } from "../utils/RequestAPI";
 
 function CreateUpdateProduct() {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [File,setFile] = useState<File|null> (null);
     const [tags, setTags] = useState("");
     const [price, setPrice] = useState(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState("");
+    const [token] = useState(localStorage.getItem("token"));
+    const [role] = useState(localStorage.getItem("role"));
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files ? event.target.files[0] : null;
-        if (file) {
-            setSelectedFile(file);
-            setImagePreview(URL.createObjectURL(file));
-            return;
-        }
-
-        setSelectedFile(null);
-        setImagePreview("");
-    }
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "Create Product";
-    }, []);
 
+        if(token === null || token === ""){
+            navigate("/login");
+            return;
+        }
+    }, []);
+    
     useEffect(() => {
         const imageUpload = document.getElementById("imageUpload");
         if (imageUpload) {
@@ -61,12 +61,49 @@ function CreateUpdateProduct() {
         setImagePreview("");
     }
 
-    const post = () => {
-        console.log(title);
-        console.log(description);
-        console.log(tags);
-        console.log(price);
-        console.log(imagePreview);
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files ? event.target.files[0] : null;
+        if (file) {
+            setFile(file);
+            setSelectedFile(file);
+            setImagePreview(URL.createObjectURL(file));
+            return;
+        }
+
+        setSelectedFile(null);
+        setImagePreview("");
+    }
+
+    const uploadImage = async () => {
+        if(!token || !File)return;
+
+        const formData = new FormData();
+        formData.append("file",File);
+
+        try{
+            const data = {
+                method:"POST",
+                headers:{
+                    "Authorization":`Bearer ${token}`
+                },
+                body:formData
+            }
+            const request = await fetch("/api/files",data);
+            const result = await request.json();
+            const link = result.link;
+            console.log(result.link);
+            const payload = {
+                name: title,
+                price,
+                description,
+                image:link,
+                tags: tags.split(" ")
+            }
+            const reponse = await post("/api/product",token,payload);
+            window.location.reload();
+        } catch(err:any){
+            console.log(err);
+        }
     }
 
     return (
@@ -164,7 +201,7 @@ function CreateUpdateProduct() {
                 <div className="flex justify-center items-center mt-5">
                     <button
                         className="p-2 px-10 hover:bg-blue-400 bg-blue-500 text-white font-extrabold rounded-lg"
-                        onClick={post}
+                        onClick={uploadImage}
                     >
                         Upload
                     </button>

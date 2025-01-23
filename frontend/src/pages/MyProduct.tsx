@@ -44,13 +44,14 @@ function MyProduct() {
                 return;
             }
             const result = await get(`/api/product/seller/${userResult.user.id}?page=${page}&size=${19}`);
-            
+            console.log(userResult);
             if(result === undefined){
                 localStorage.removeItem("role");
                 localStorage.removeItem("token");
                 navigate("/login");
                 return;
             }
+            
             setProducts(result)
             setTotalProductLength(result.products.totalLength)
             console.log(products,totalProductLength);
@@ -70,7 +71,7 @@ function MyProduct() {
                 </h1>
             </div>
 
-            {products ?(
+            {products.products !== null ?(
                 <>
                     <Card productList={products.products.list} newCard={true} />
                     <Pagination currentPage={{ page: page + 1, length: totalProductLength,size:19 }} path="my-product" />

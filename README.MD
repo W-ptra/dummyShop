@@ -77,3 +77,7 @@ mvn spring-boot:run
 npm install
 npm run dev
 ```
+5. Open browser and access following url
+```
+http://localhost:7000
+```

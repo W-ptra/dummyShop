@@ -49,7 +49,7 @@ A mockup e-commerce website with design draw inspiration from www.pixiv.net
 
 - Post Review page
 
-![img](https://drive.google.com/uc?export=view&id=1t2LY76I3DYQTM1qZky6oEQfARcIqax9N)
+![img](https://drive.google.com/uc?export=view&id=1a9mw2DwO-w6HosGt7v3A7anUWZnmh4KZ)
   
 - Profile Page
   

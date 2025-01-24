@@ -2,6 +2,7 @@ package com.dummyShop.dummyShop.service;
 
 import com.dummyShop.dummyShop.dto.userDTO.ChangePasswordUserDTO;
 import com.dummyShop.dummyShop.dto.userDTO.ProfileUserDTO;
+import com.dummyShop.dummyShop.dto.userDTO.UpdateImageAndBannerProfileDTO;
 import com.dummyShop.dummyShop.dto.userDTO.UpdateProfileUserDTO;
 import com.dummyShop.dummyShop.model.User;
 import com.dummyShop.dummyShop.repository.UserRepository;
@@ -83,6 +84,74 @@ public class UserService {
                         "message",
                         "user profile successfully updated"
                 );
+    }
+
+    public ResponseEntity<Map<String,Object>> changeImageProfile(
+        UpdateImageAndBannerProfileDTO updateImageAndBannerProfileDTO
+    ){
+        if(updateImageAndBannerProfileDTO.getImage() == null || updateImageAndBannerProfileDTO.getImage() == ""){
+            return responseEntityBuilder.createResponse(
+                    400,
+                    "error",
+                    "image link can't empty"
+            );
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long id = Long.valueOf(authentication.getName());
+
+        User user = userRepository.findById(id).get();
+        user.setImage(updateImageAndBannerProfileDTO.getImage());
+
+        userRepository.save(user);
+
+        return responseEntityBuilder.createResponse(
+                200,
+                "message",
+                "successfully update user image"
+        );
+    }
+
+    public ResponseEntity<Map<String,Object>> deleteBannerProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long id = Long.valueOf(authentication.getName());
+
+        User user = userRepository.findById(id).get();
+        user.setBanner(null);
+
+        userRepository.save(user);
+
+        return responseEntityBuilder.createResponse(
+                200,
+                "message",
+                "successfully delete user banner"
+        );
+    }
+
+    public ResponseEntity<Map<String,Object>> changeBannerProfile(
+            UpdateImageAndBannerProfileDTO updateImageAndBannerProfileDTO
+    ){
+        if(updateImageAndBannerProfileDTO.getImage() == null || updateImageAndBannerProfileDTO.getImage() == ""){
+            return responseEntityBuilder.createResponse(
+                    400,
+                    "error",
+                    "image link can't empty"
+            );
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long id = Long.valueOf(authentication.getName());
+
+        User user = userRepository.findById(id).get();
+        user.setBanner(updateImageAndBannerProfileDTO.getImage());
+
+        userRepository.save(user);
+
+        return responseEntityBuilder.createResponse(
+                200,
+                "message",
+                "successfully update user banner"
+        );
     }
 
     public ResponseEntity<Map<String,Object>> changePassword(

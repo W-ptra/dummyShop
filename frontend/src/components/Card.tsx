@@ -1,3 +1,5 @@
+import { Truncet } from "../utils/Truncet";
+
 interface Seller {
     id: number;
     image: string;
@@ -54,7 +56,7 @@ function Card({ productList, newCard }: CardProperty) {
 
                             <div className="space-y-0">
                                 <p className="text-base font-extrabold">
-                                    {product.name}
+                                    {Truncet(product.name,20)}
                                 </p>
                                 <p className="text-sm font-normal flex items-center gap-2 justify-between">
                                     <span className="font-bold" >{"$" + product.price}</span>
@@ -78,7 +80,7 @@ function Card({ productList, newCard }: CardProperty) {
                                         alt="user-male-circle--v1"
                                     />
                                     <span className="ml-1 text-base cursor-pointer font-bold">
-                                        {product.seller.name}
+                                        {Truncet(product.seller.name,15)}
                                     </span>
                                 </p>
                             </div>

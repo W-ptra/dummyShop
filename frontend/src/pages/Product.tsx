@@ -44,6 +44,15 @@ function Product() {
         document.title = `Product ${id}`;
     }, []);
 
+    useEffect(() => {
+        if (updateToggle) {
+            document.body.style.overflow = "hidden";
+            return;
+        }
+
+        document.body.style.overflow = "auto";
+    }, [updateToggle])
+
     const handleToggleUpdate = () => {
         setUpdateToggle((prev)=>!prev)
     }

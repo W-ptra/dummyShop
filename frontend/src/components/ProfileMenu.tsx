@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Truncet } from "../utils/Truncet";
 
 type profile = {
     id: number,
@@ -44,7 +45,7 @@ function ProfileMenu({UserProfile}:userProfile){
             </div>
             <ul className="basis-3/4 flex flex-col mt-9 mb-5 ml-5 mr-5 justify-between">
                     <li className="font-extrabold text-lg pl-1">
-                        {UserProfile?.name}
+                        { UserProfile && Truncet(UserProfile.name,20)}
                     </li>
                     <li className="font-bold text-xs text-gray-500 pl-1">
                         User Id: {UserProfile?.id}

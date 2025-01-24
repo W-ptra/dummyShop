@@ -58,7 +58,13 @@ function Transaction() {
                 return;
             }
             const result = await get("/api/transaction", token);
+
             if (result === undefined) {
+                return;
+            }
+
+            if(result.error === "jwt token is invalid"){
+                navigate("/login");
                 return;
             }
 

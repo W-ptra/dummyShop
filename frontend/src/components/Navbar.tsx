@@ -219,8 +219,8 @@ function Navbar({ searchParams }: SearchParams) {
                   onClick={profileMenuDropdown}
                 >
                   <img
-                    className="w-5 h-5"
-                    src="https://img.icons8.com/ios/50/user-male-circle--v1.png"
+                    className="w-5 h-5 bg-gray-500 rounded-full"
+                    src={userProfile.image?userProfile.image:"https://img.icons8.com/ios/50/user-male-circle--v1.png"}
                     alt="user-male-circle--v1"
                   />
                 </div>

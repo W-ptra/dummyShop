@@ -54,4 +54,26 @@ A mockup e-commerce website with design draw inspiration from www.pixiv.net
 - Profile Page
   
 ![img](https://drive.google.com/uc?export=view&id=1yX8M5O0XeVIwR6vX5qpi49WuLJCqtT3w)
-  
+
+## Prerequisite
+1. ``java 17``
+2. ``maven v3.9.9``
+3. ``node v 20.2.0``
+4. ``Microsoft Azure blob storage url and SAS token``
+
+## Installations
+1. clone this project
+```
+git clone https://github.com/W-ptra/dummyShop.git
+```
+2. modify ``application.property.example`` based on your setting, can be found at ``/dummyShop/backend/src/main/resources/application.property.example``. After modify remove the ``.example`` extension
+3. install spring boot dependency and run it using maven. ``inside backend directory``
+```
+mvn clean install
+mvn spring-boot:run
+```
+4. install npm package and run react. ``inside frontend directory``
+```
+npm install
+npm run dev
+```

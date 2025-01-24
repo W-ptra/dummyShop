@@ -1,6 +1,6 @@
 # DummyShop
 
-A mockup e-commerce website with design draw inspiration from www.pixiv.net
+A mockup e-commerce website with design draw inspiration from www.pixiv.net, built using react, spring-boot and postgreSQL.
 
 ## Technologies Used
 

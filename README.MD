@@ -16,22 +16,38 @@ A mockup e-commerce website with design draw inspiration from www.pixiv.net
 
 ## Features
 - Login & Register
+  
 ![img](https://drive.google.com/uc?export=view&id=1Mj2wtwBB10APEXAds6wtzpaLZQpFl5wM) 
+  
 - Home Page
+  
 ![img](https://drive.google.com/uc?export=view&id=1vaSq5t8Bvi4JB8A-_yVlS3p4C3HaMipm)
-![img](https://drive.google.com/uc?export=view&id=)1HmgQf3MTf3V9Hn62qTpPGjFGK-QuSZTX
+![img](https://drive.google.com/uc?export=view&id=1HmgQf3MTf3V9Hn62qTpPGjFGK-QuSZTX)
+  
 - Searching by name and Tags
+  
 ![img](https://drive.google.com/uc?export=view&id=1d68elm_ma2WuBQJKRLLabyUlwN3Gc-a4)
+  
 - Product page
+  
 ![img](https://drive.google.com/uc?export=view&id=1gfPk5n5BuYgjFRCmUlZfa_CaClV78Tks)
+![img](https://drive.google.com/uc?export=view&id=1E0pBkgqhDCt4V0bX7YDKQQ5oOg27OdaY)
 ![img](https://drive.google.com/uc?export=view&id=1q8SJiU6kvHxqqmQtQvfAaaKv7UBgzhT1)
-![img](https://drive.google.com/uc?export=view&id=)
+  
 - My Product pages (Seller)
+  
 ![img](https://drive.google.com/uc?export=view&id=1rzjr1XbwBNZbZG725lS3r8josdkWP3Ey)
+  
 - Cart page
+  
 ![img](https://drive.google.com/uc?export=view&id=1_6Oe4coIb54LcnjB6osvvMyY4dyevFMR)
 ![img](https://drive.google.com/uc?export=view&id=1c7AM7mOC6yTXRDiPMwSExPDwsqvfyEqF)
+  
 - Transactions Page
+  
 ![img](https://drive.google.com/uc?export=view&id=1t2LY76I3DYQTM1qZky6oEQfARcIqax9N)
+  
 - Profile Page
+  
 ![img](https://drive.google.com/uc?export=view&id=1yX8M5O0XeVIwR6vX5qpi49WuLJCqtT3w)
+  

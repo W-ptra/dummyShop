@@ -46,6 +46,10 @@ A mockup e-commerce website with design draw inspiration from www.pixiv.net
 - Transactions Page
   
 ![img](https://drive.google.com/uc?export=view&id=1t2LY76I3DYQTM1qZky6oEQfARcIqax9N)
+
+- Post Review page
+
+![img](https://drive.google.com/uc?export=view&id=1t2LY76I3DYQTM1qZky6oEQfARcIqax9N)
   
 - Profile Page
   

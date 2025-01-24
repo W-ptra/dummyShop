@@ -4,6 +4,7 @@ import NotFound from "./NotFound";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { get, post, put } from "../utils/RequestAPI";
+import { Truncet } from "../utils/Truncet";
 
 function Product() {
     const { id } = useParams<{ id?: string }>();
@@ -214,7 +215,7 @@ function Product() {
                                             </p>
                                             <div className="flex gap-x-3 gap-y-1 mt-3 flex-wrap">
                                                 {data.product.tags.map((tag: string) => (
-                                                    <a href={`/search?name=${tag}`}>
+                                                    <a href={`/search?query=@${tag}`}>
                                                         <span className="text-blue-600 font-bold">
                                                             {"#" + tag + " "}
                                                         </span>
@@ -297,12 +298,12 @@ function Product() {
                                                 </div>   
                                                 <div className="my-2 px-5 flex pb-2" key={data.product.seller.id}>
                                                     <img
-                                                        src={data.product.seller.image} alt=""
+                                                        src={data.product.seller.image? data.product.seller.image : "https://img.icons8.com/ios/50/user-male-circle--v1.png"} alt=""
                                                         className="w-16 h-16 rounded-full bg-gray-100"
                                                     />
                                                     <div className="flex flex-col justify-center items-center">
                                                         <h4 className="font-bold ml-5">
-                                                            {data.product.seller.name}
+                                                            {Truncet(data.product.seller.name,80)}
                                                         </h4>
                                                     </div>
                                                 </div>

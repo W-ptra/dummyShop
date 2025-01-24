@@ -9,22 +9,47 @@ type Tag = {
     total:number;
 }
 
+type Seller = {
+    userId:number,
+    name:string,
+    about:string,
+    image:string,
+    banner:string,
+    solds:number,
+    star:number
+}
+
 function Home() {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [data, setData] = useState<any>(null);
+    const [sellers,setSellers] = useState<Seller[]|null>(null);
     const [tags,setTags] = useState<Tag[]|null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
     useEffect(() => {
         const fetchData = async () => {
-            const data = await get("/api/product?page=0&size=10")
+            const data = await get("/api/product?page=4&size=10")
             if(!data){
                 setError('An unknown error occurred.');
                 return;
             }
             console.log(data)
             setData(data);
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await get("/api/user/top-sellers")
+            if(!data){
+                setError('An unknown error occurred.');
+                return;
+            }
+            console.log(data);
+            setSellers(data.sellers);
         };
 
         fetchData();
@@ -138,12 +163,12 @@ function Home() {
                 </h2>
             </div>
             <div className="grid mx-2 md:mx-20 grid-cols-2 md:grid-cols-4 gap-7 gap-y-5 m-5 mb-10">
-                {topSeller.map((seller) => (
+                { sellers && sellers.map((seller) => (
                     <div className="bg-gray-100 rounded-xl flex flex-col cursor-pointer">
                         <div className="basis-3/5 relative flex">
                             <img
                                 className="h-full w-full rounded-t-xl rounded-none"
-                                src={seller.banner}
+                                src={seller.banner ? seller.banner:""}
                                 alt=""
                             />
                             <div className="absolute inset-0 bg-white opacity-0 hover:opacity-25 transition-opacity duration-300 rounded-xl">
@@ -154,16 +179,20 @@ function Home() {
                             <div className="flex items-center">
                                 <img
                                     className="w-8 h-8 rounded-full"
-                                    src={seller.image}
+                                    src={seller.image?seller.image:""}
                                     alt=""
                                 />
                                 <p className="ml-1.5 text-base font-bold">
-                                    {truncateText(seller.name, 18, 10)}
+                                    {seller.name?truncateText(seller.name, 18, 10):""}
                                 </p>
                             </div>
-                            <span className="p-1 text-sm">
-                                {truncateText(seller.about, 63, 35)}
-                            </span>
+                            {seller.about?(
+                                <span className="p-1 text-sm">
+                                    {truncateText(seller.about, 30, 35)}
+                                </span>
+                            ):(
+                                <br />
+                            )}
                             <span className="p1 text-sm ml-1 flex justify-between mr-1">
                                 <div className="flex">
                                     <img className="w-5 h-5"
@@ -176,11 +205,12 @@ function Home() {
                                     </span>
                                 </div>
                                 <span className="">
-                                    {seller.sold + " sold"}
+                                    {seller.solds + " sold"}
                                 </span>
                             </span>
                         </div>
                     </div>
+                    
                 ))}
             </div>
 

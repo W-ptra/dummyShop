@@ -76,7 +76,7 @@ function Card({ productList, newCard }: CardProperty) {
                                 <p className="flex items-center" key={product.seller.id}>
                                     <img
                                         className="w-8 h-8 cursor-pointer rounded-full"
-                                        src={product.seller.image}
+                                        src={product.seller.image? product.seller.image : "https://img.icons8.com/ios/50/user-male-circle--v1.png" }
                                         alt="user-male-circle--v1"
                                     />
                                     <span className="ml-1 text-base cursor-pointer font-bold">

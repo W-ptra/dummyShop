@@ -1,19 +1,20 @@
 package com.dummyShop.dummyShop.service;
 
-import com.dummyShop.dummyShop.dto.userDTO.ChangePasswordUserDTO;
-import com.dummyShop.dummyShop.dto.userDTO.ProfileUserDTO;
-import com.dummyShop.dummyShop.dto.userDTO.UpdateImageAndBannerProfileDTO;
-import com.dummyShop.dummyShop.dto.userDTO.UpdateProfileUserDTO;
+import com.dummyShop.dummyShop.dto.userDTO.*;
 import com.dummyShop.dummyShop.model.User;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.Hashing;
 import com.dummyShop.dummyShop.utils.ResponseEntityBuilder;
+import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,6 +27,20 @@ public class UserService {
     private Hashing hashing;
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
+
+    public ResponseEntity<Map<String,Object>> getTop4Seller(){
+        Pageable pageable = PageRequest.of(0,4);
+
+        List<Tuple> sellerList = userRepository.getTopSeller(pageable);
+
+        List<TopSellerDTO> topSellerDTO = TopSellerDTO.cnvertToDTO(sellerList);
+
+        return responseEntityBuilder
+                .createResponse(200,
+                        "sellers",
+                        topSellerDTO
+                );
+    }
 
     public ResponseEntity<Map<String,Object>>  getProfileInfo(){
 

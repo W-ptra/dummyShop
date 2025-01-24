@@ -22,6 +22,11 @@ public class UserController {
         return userService.getProfileInfo();
     }
 
+    @GetMapping("/top-sellers")
+    public ResponseEntity<Map<String,Object>> getTop4Seller(){
+        return userService.getTop4Seller();
+    }
+
     @PutMapping("/profile")
     public ResponseEntity<Map<String,Object>> updateUserProfile(
             @RequestBody UpdateProfileUserDTO updateProfileUserDTO

@@ -49,7 +49,7 @@ function Cart() {
             if (token === null || token === "") {
                 return;
             }
-            const result = await get("/api/cart", token);
+            const result = await get(`${import.meta.env.VITE_API}/api/cart`, token);
             if (result === undefined || result.error) {
                 console.log("error can't get cart")
                 localStorage.removeItem("role");
@@ -67,7 +67,7 @@ function Cart() {
         if (token === null || token === "") {
             return;
         }
-        await deletes(`/api/cart/${productId}`, token);
+        await deletes(`${import.meta.env.VITE_API}/api/cart/${productId}`, token);
         window.location.reload();
     }
 
@@ -189,14 +189,14 @@ function Cart() {
             details : [...productArray]
         }
 
-        const result = await post("/api/transaction",token,payload);
+        const result = await post(`${import.meta.env.VITE_API}/api/transaction`,token,payload);
         
         if(result === undefined){
             return;
         }
 
         selectedProduct.forEach((element)=>{
-            deletes(`/api/cart/${element.id}`,token);
+            deletes(`${import.meta.env.VITE_API}/api/cart/${element.id}`,token);
         })
 
         await delay(1000);

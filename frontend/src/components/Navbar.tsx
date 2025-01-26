@@ -66,7 +66,7 @@ function Navbar({ searchParams }: SearchParams) {
     
     const fetchData = async () => {
 
-      const cart = await get("/api/cart/first4",token);
+      const cart = await get(`${import.meta.env.VITE_API}/api/cart/first4`,token);
       if(cart === undefined){
         console.log("error");
         return;
@@ -123,7 +123,7 @@ function Navbar({ searchParams }: SearchParams) {
         return;
       }
 
-      const result = await get("/api/cart/length",token)
+      const result = await get(`${import.meta.env.VITE_API}/api/cart/length`,token)
         if(result === undefined){
           return;
         }
@@ -138,7 +138,7 @@ function Navbar({ searchParams }: SearchParams) {
       if(token === null){
         return;
       }
-      const result = await get("/api/user/profile",token);
+      const result = await get(`${import.meta.env.VITE_API}/api/user/profile`,token);
       if(result === undefined){
         return;
       }

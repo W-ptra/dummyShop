@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { post } from "../utils/RequestAPI";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -39,20 +40,17 @@ function Login() {
                 },
                 body:JSON.stringify(payload)
             }
-            console.log(payload);
-            const respond = await fetch(`/api/auth/login`,data);
+
+            const respond = await fetch(`${import.meta.env.VITE_API}/api/auth/login`,data);
             if(!respond.ok){
                 setErrorMessage("Failed to register");
                 throw new Error("Failed to register");
             }
             const result = await respond.json();
-            console.log(result);
-            console.log(result.token);
+
             localStorage.setItem("token",result.success.token);
             localStorage.setItem("role",result.success.role);
-            // console.log("local: "+localStorage.getItem("token"));
-            // console.log("role: "+localStorage.getItem("role"));
-            
+
             navigate("/");
         } catch (err: any){
             console.log(err)

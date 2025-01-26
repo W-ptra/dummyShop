@@ -88,7 +88,7 @@ function CreateUpdateProduct() {
                 },
                 body:formData
             }
-            const request = await fetch("/api/files",data);
+            const request = await fetch(`${import.meta.env.VITE_API}/api/files`,data);
             const result = await request.json();
             const link = result.link;
             console.log(result.link);
@@ -99,7 +99,7 @@ function CreateUpdateProduct() {
                 image:link,
                 tags: tags.split(" ")
             }
-            const reponse = await post("/api/product",token,payload);
+            const reponse = await post(`${import.meta.env.VITE_API}/api/product`,token,payload);
             window.location.reload();
         } catch(err:any){
             console.log(err);

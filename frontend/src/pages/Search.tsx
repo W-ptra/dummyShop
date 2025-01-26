@@ -26,7 +26,7 @@ function Search() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`/api/product?search=${search}&page=${page}&size=${20}`);
+                const response = await fetch(`${import.meta.env.VITE_API}/api/product?search=${search}&page=${page}&size=${20}`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
                 }

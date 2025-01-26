@@ -39,7 +39,7 @@ function Profile() {
                 return;
             }
 
-            const result = await get("/api/user/profile", token);
+            const result = await get(`${import.meta.env.VITE_API}/api/user/profile`, token);
             if (result === undefined) {
                 localStorage.removeItem("role");
                 localStorage.removeItem("token");
@@ -78,7 +78,7 @@ function Profile() {
             about
         }
 
-        const result = await put("/api/user/profile", token, payload);
+        const result = await put(`${import.meta.env.VITE_API}/api/user/profile`, token, payload);
 
         if (result === undefined) {
             console.log("error cant update profile")
@@ -128,7 +128,7 @@ function Profile() {
                 },
                 body: formData
             }
-            const request = await fetch("/api/files", data);
+            const request = await fetch(`${import.meta.env.VITE_API}/api/files`, data);
             const result = await request.json();
             link = result.link;
             console.log("new image link: ", result.link);
@@ -142,7 +142,7 @@ function Profile() {
             const payload = {
                 image: link
             }
-            const result = await put("/api/user/banner", token, payload);
+            const result = await put(`${import.meta.env.VITE_API}/api/user/banner`, token, payload);
             console.log(result);
             if (result === undefined) {
                 console.log("cant update banner");
@@ -153,7 +153,7 @@ function Profile() {
         const payload = {
             image: link
         }
-        const result = await put("/api/user/image", token, payload);
+        const result = await put(`${import.meta.env.VITE_API}/api/user/image`, token, payload);
         if (result === undefined) {
             console.log("cant update image");
         }
@@ -164,7 +164,7 @@ function Profile() {
     const deleteBanner = async () => {
         if(token === "" || token === null)return;
 
-        const result = await deletes("/api/user/banner",token);
+        const result = await deletes(`${import.meta.env.VITE_API}/api/user/banner`,token);
         if(result === undefined)return;
         window.location.reload();
     }

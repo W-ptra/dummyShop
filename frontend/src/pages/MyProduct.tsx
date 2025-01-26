@@ -54,7 +54,7 @@ function MyProduct() {
             if(token === null || token === ""){
                 return;
             }
-            const userResult = await get("/api/user/profile",token);
+            const userResult = await get(`${import.meta.env.VITE_API}/api/user/profile`,token);
             
             if(userResult === undefined){
                 localStorage.removeItem("role");
@@ -62,7 +62,7 @@ function MyProduct() {
                 navigate("/login");
                 return;
             }
-            const result = await get(`/api/product/seller/${userResult.user.id}?page=${page}&size=${19}`);
+            const result = await get(`${import.meta.env.VITE_API}/api/product/seller/${userResult.user.id}?page=${page}&size=${19}`);
             setProducts(result.products.list)            
             setTotalProductLength(result.products.totalLength)
 

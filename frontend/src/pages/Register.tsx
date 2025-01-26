@@ -61,7 +61,7 @@ function Register() {
                 },
                 body:JSON.stringify(payload)
             }
-            const respond = await fetch(`/api/auth/register`,data);
+            const respond = await fetch(`${import.meta.env.VITE_API}/api/auth/register`,data);
             if(!respond.ok){
                 setErrorMessage("Failed to register");
                 throw new Error("Failed to register");

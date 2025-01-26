@@ -57,7 +57,7 @@ function Transaction() {
                 navigate("/login");
                 return;
             }
-            const result = await get("/api/transaction", token);
+            const result = await get(`${import.meta.env.VITE_API}/api/transaction`, token);
 
             if (result === undefined) {
                 return;
@@ -128,7 +128,7 @@ function Transaction() {
             transactionDetailId: selectedProductId
         }
 
-        const result = await post("/api/review", token, payload);
+        const result = await post(`${import.meta.env.VITE_API}/api/review`, token, payload);
 
         if (result === undefined) {
             console.log("error can't create review");

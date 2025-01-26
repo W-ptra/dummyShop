@@ -23,7 +23,7 @@ function Product() {
     const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
-            const result = await get(`/api/product/${id}`);
+            const result = await get(`${import.meta.env.VITE_API}/api/product/${id}`);
 
             if (result === undefined) {
                 setError("failed to retrive product")
@@ -83,7 +83,7 @@ function Product() {
             productId: id,
             quantity
         }
-        const result = await post("/api/cart", token, payload);
+        const result = await post(`${import.meta.env.VITE_API}/api/cart`, token, payload);
         if (result === undefined) {
             console.log("failed to add to cart");
             return;
@@ -101,7 +101,7 @@ function Product() {
             productId: id,
             quantity
         }
-        const result = await post("/api/cart", token, payload);
+        const result = await post(`${import.meta.env.VITE_API}/api/cart`, token, payload);
         if (result === undefined) {
             console.log("failed to add to cart");
             return;
@@ -147,7 +147,7 @@ function Product() {
                     },
                     body:formData
                 }
-                const request = await fetch("/api/files",data);
+                const request = await fetch(`${import.meta.env.VITE_API}/api/files`,data);
                 const result = await request.json();
                 console.log("new image link: ",result.link);
                 image = result.link;               
@@ -163,7 +163,7 @@ function Product() {
             image,
             tags
         }
-        const result = await put(`/api/product/${id}`,token,payload);
+        const result = await put(`${import.meta.env.VITE_API}/api/product/${id}`,token,payload);
         console.log(result);
 
         if(result === undefined){

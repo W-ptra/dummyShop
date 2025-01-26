@@ -29,7 +29,7 @@ function Home() {
     
     useEffect(() => {
         const fetchData = async () => {
-            const data = await get("/api/product?page=4&size=10")
+            const data = await get(`${import.meta.env.VITE_API}/api/product?page=4&size=10`)
             if(!data){
                 setError('An unknown error occurred.');
                 return;
@@ -43,7 +43,7 @@ function Home() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await get("/api/user/top-sellers")
+            const data = await get(`${import.meta.env.VITE_API}/api/user/top-sellers`)
             if(!data){
                 setError('An unknown error occurred.');
                 return;
@@ -57,7 +57,7 @@ function Home() {
 
     useEffect(() => {
         async function getTags(){
-            const result = await get("/api/tag");
+            const result = await get(`${import.meta.env.VITE_API}/api/tag`);
             if(result === undefined){
                 return;
             }

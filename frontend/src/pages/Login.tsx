@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { post } from "../utils/RequestAPI";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("$");
-    const [isInputEmpty,setIsInputEmpty] = useState(false);
-    const [errorMessage,setErrorMessage] = useState("");
+    const [errorMessage,setErrorMessage] = useState<string|null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +22,6 @@ function Login() {
     const proceedLogin = async () =>{
         if(email === "" || password === ""){
             setErrorMessage("Input can't empty");
-            setIsInputEmpty(true);
             return;
         }
 
@@ -42,21 +39,26 @@ function Login() {
             }
 
             const respond = await fetch(`${import.meta.env.VITE_API}/api/auth/login`,data);
-            if(!respond.ok){
-                setErrorMessage("Failed to register");
-                throw new Error("Failed to register");
-            }
             const result = await respond.json();
+            console.log(result);
+            if(!respond.ok){
+                setErrorMessage(result.error);
+                return;
+            }
 
             localStorage.setItem("token",result.success.token);
             localStorage.setItem("role",result.success.role);
+            localStorage.setItem("name",result.success.name);
+            localStorage.setItem("userId",result.success.userId);
+            localStorage.setItem("image",result.success.image);
+            localStorage.setItem("banner",result.success.banner);
 
             navigate("/");
         } catch (err: any){
             console.log(err)
         }
 
-        setIsInputEmpty(false);
+        setErrorMessage(null);
     }
 
     return (
@@ -94,7 +96,7 @@ function Login() {
                                     </p>
                                 </a>
                             </div>
-                            {isInputEmpty && (
+                            {errorMessage && (
                                 <p className="text-red-500 flex justify-center">
                                     {errorMessage}
                                 </p>

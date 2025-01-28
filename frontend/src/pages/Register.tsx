@@ -7,8 +7,7 @@ function Register() {
     const [role,setRole] = useState("buyer");
     const [password,setPassword] = useState("");
     const [confirmPassword,setConfirmPassword] = useState("");
-    const [isInputEmpty,setIsInputEmpty] = useState(false);
-    const [errorMessage,setErrorMessage] = useState("");
+    const [errorMessage,setErrorMessage] = useState<string|null>(null);
     const navigate = useNavigate();
     useEffect(() => {
         document.title = "Register";
@@ -37,13 +36,11 @@ function Register() {
     const proceedRegister = async () =>{
         if(name === "" || email === "" || password === "" || confirmPassword === ""){
             setErrorMessage("Input can't empty");
-            setIsInputEmpty(true);
             return;
         }
 
         if( password !== confirmPassword){
             setErrorMessage("Password and Confirm Password not match");
-            setIsInputEmpty(true);
             return;
         }
 
@@ -62,19 +59,19 @@ function Register() {
                 body:JSON.stringify(payload)
             }
             const respond = await fetch(`${import.meta.env.VITE_API}/api/auth/register`,data);
-            if(!respond.ok){
-                setErrorMessage("Failed to register");
-                throw new Error("Failed to register");
-            }
             const result = await respond.json();
+            if(!respond.ok){
+                setErrorMessage(result.error);
+                return;
+            }
             navigate("/login");
         } catch (err: any){
-            setIsInputEmpty(true);
+            setErrorMessage(err);
             
             return;
         }
 
-        setIsInputEmpty(false);
+        setErrorMessage(null);
     }
 
     return (
@@ -125,7 +122,7 @@ function Register() {
                                 className="bg-gray-50 px-5 py-2 mx-5 border-2 border-white focus:border-blue-500 outline-none rounded-lg font-semibold"
                                 onChange={confirmPasswordChangeHandler}
                             />
-                            {isInputEmpty && (
+                            {errorMessage && (
                                 <p className="text-red-500 flex justify-center">
                                     {errorMessage}
                                 </p>

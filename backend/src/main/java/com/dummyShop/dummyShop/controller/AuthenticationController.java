@@ -1,7 +1,7 @@
 package com.dummyShop.dummyShop.controller;
 
-import com.dummyShop.dummyShop.dto.userDTO.LoginUserDTO;
-import com.dummyShop.dummyShop.dto.userDTO.RegisterUserDTO;
+import com.dummyShop.dummyShop.dto.AuthDTO.LoginUserDTO;
+import com.dummyShop.dummyShop.dto.AuthDTO.RegisterUserDTO;
 import com.dummyShop.dummyShop.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

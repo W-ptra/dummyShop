@@ -48,8 +48,8 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
-                            "missing field 'productId' or 'quantity'" + createCartDTO.getQuantity()
+                            "error",
+                            "missing field productId or quantity" + createCartDTO.getQuantity()
                     );
         }
 
@@ -60,7 +60,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "productId or quantity can't 0, negative or above 999"
                     );
         }
@@ -70,7 +70,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             String.format("product with id %d is not found", createCartDTO.getProductId())
                     );
         }
@@ -133,7 +133,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             "cart is empty"
                     );
         }
@@ -160,7 +160,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             "cart is empty"
                     );
         }
@@ -200,7 +200,7 @@ public class CartService {
             return  responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "id or quantity can't 0, negative or above 999 for quantity and 100000000000 for id"
                     );
         }
@@ -211,7 +211,7 @@ public class CartService {
             return  responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             String.format("cart with id %d is not found",id)
                     );
         }
@@ -225,7 +225,7 @@ public class CartService {
             return  responseEntityBuilder
                     .createResponse(
                             409,
-                            "message",
+                            "error",
                             String.format("cart with id %d is not match with user with id %d",id,userId)
                     );
         }
@@ -250,7 +250,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "id can't 0 or negative"
                     );
         }
@@ -263,7 +263,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             String.format("cart with id %d is not found",id)
                     );
         }
@@ -274,7 +274,7 @@ public class CartService {
             return responseEntityBuilder
                     .createResponse(
                             403,
-                            "message",
+                            "error",
                             String.format("cart with is %d is not belong to user with id %d",id,userId)
                     );
         }

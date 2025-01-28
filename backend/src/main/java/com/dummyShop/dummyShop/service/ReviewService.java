@@ -46,7 +46,7 @@ public class ReviewService {
         if (isContentEmpty || isStarEmpty || isTransactionDetailIdEmpty){
             return responseEntityBuilder.createResponse(
                             400,
-                            "message",
+                            "error",
                             "missing field content, star or transactionDetailId"
                     );
         }
@@ -54,7 +54,7 @@ public class ReviewService {
         if (validation.isStarNotValid(createReviewDTO.getStar())){
             return responseEntityBuilder.createResponse(
                     400,
-                    "message",
+                    "error",
                     "star must between 1 - 5"
             );
         }
@@ -62,7 +62,7 @@ public class ReviewService {
         if(validation.isIdNotValid(createReviewDTO.getTransactionDetailId())){
             return responseEntityBuilder.createResponse(
                     400,
-                    "message",
+                    "error",
                     "transactionDetailId can't 0 or negative"
             );
         }
@@ -79,7 +79,7 @@ public class ReviewService {
         if(getTransactionDetail == null || getTransactionDetail.isEmpty()){
             return responseEntityBuilder.createResponse(
                     404,
-                    "message",
+                    "error",
                     String.format("transactionDetail with id %d is not found",createReviewDTO.getTransactionDetailId())
             );
         }
@@ -89,7 +89,7 @@ public class ReviewService {
         if(transactionDetail.getReview() != null){
             return responseEntityBuilder.createResponse(
                     409,
-                    "message",
+                    "error",
                     "review already exist"
             );
         }
@@ -100,7 +100,7 @@ public class ReviewService {
         if (isTransactionDetailAndUserNotMatch){
             return responseEntityBuilder.createResponse(
                     409,
-                    "message",
+                    "error",
                     String.format("transactionDetail with id %d is not match with user with id %d",
                             createReviewDTO.getTransactionDetailId(),
                             userId

@@ -1,8 +1,8 @@
 package com.dummyShop.dummyShop.service;
 
-import com.dummyShop.dummyShop.dto.userDTO.LoginTokenAndRole;
-import com.dummyShop.dummyShop.dto.userDTO.LoginUserDTO;
-import com.dummyShop.dummyShop.dto.userDTO.RegisterUserDTO;
+import com.dummyShop.dummyShop.dto.AuthDTO.LoginUserDTO;
+import com.dummyShop.dummyShop.dto.AuthDTO.RegisterUserDTO;
+import com.dummyShop.dummyShop.dto.AuthDTO.SuccessLoginDTO;
 import com.dummyShop.dummyShop.model.User;
 import com.dummyShop.dummyShop.repository.UserRepository;
 import com.dummyShop.dummyShop.utils.Hashing;
@@ -40,7 +40,7 @@ public class AuthService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "field 'name', 'email', 'role' and 'password' can't empty"
                     );
         }
@@ -52,7 +52,7 @@ public class AuthService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "role must be either 'seller' or 'buyer'"
                     );
         }
@@ -63,8 +63,8 @@ public class AuthService {
             return responseEntityBuilder
                     .createResponse(
                             409,
-                            "message",
-                            String.format("email: %s already registered",registerUserDTO.getEmail())
+                            "error",
+                            String.format("email %s already registered",registerUserDTO.getEmail())
                     );
         }
 
@@ -87,7 +87,7 @@ public class AuthService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             String.format("user with email %s is not found",loginUserDTO.getEmail())
                     );
         }
@@ -96,7 +96,7 @@ public class AuthService {
             return responseEntityBuilder
                     .createResponse(
                             401,
-                            "message",
+                            "error",
                             "password incorrect"
                     );
         }
@@ -106,15 +106,16 @@ public class AuthService {
                 user.get().getRole()
         );
 
-        LoginTokenAndRole loginTokenAndRole = new LoginTokenAndRole();
-        loginTokenAndRole.setToken(token);
-        loginTokenAndRole.setRole(user.get().getRole());
+        SuccessLoginDTO successLoginDTO = SuccessLoginDTO.convertToDTO(
+                token,
+                user.get()
+        );
 
         return responseEntityBuilder
                 .createResponse(
                         200,
                         "success",
-                        loginTokenAndRole
+                        successLoginDTO
                 );
     }
 }

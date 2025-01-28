@@ -69,7 +69,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             "products is empty or not found"
                     );
         }
@@ -99,7 +99,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             "products is empty"
                     );
         }
@@ -124,7 +124,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             String.format("product id %d is invalid",id)
                     );
         }
@@ -135,7 +135,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             String.format("product with id %s is not found",id)
                     );
         }
@@ -162,7 +162,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "missing field name, price, description, image or tags"
                     );
         }
@@ -171,7 +171,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "price can't below 0 or above 1000000000"
                     );
         }
@@ -180,7 +180,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "the number of tag exceed the maximum"
                     );
         }
@@ -223,7 +223,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "missing field name, price, description, image or tags"
                     );
         }
@@ -232,7 +232,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "price can't below 0 or above 1000000000"
                     );
         }
@@ -241,7 +241,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             400,
-                            "message",
+                            "error",
                             "the number of tag exceed the maximum"
                     );
         }
@@ -257,7 +257,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             409,
-                            "message",
+                            "error",
                             String.format(
                                     "product with id %d doesn't belong to user with id %d"
                                     ,productId
@@ -307,7 +307,7 @@ public class ProductService {
             return responseEntityBuilder
                     .createResponse(
                             409,
-                            "message",
+                            "error",
                             String.format(
                                     "product with id %d doesn't belong to user with id %d"
                                     ,productId
@@ -326,11 +326,15 @@ public class ProductService {
                 );
     }
 
-    private Set<String> removeDuplicate(List<String> stringList){
+    private Set<String> removeDuplicate(
+            List<String> stringList
+    ){
         return new HashSet<>(stringList);
     }
 
-    private Set<Tag> getTagList(List<String> stringList){
+    private Set<Tag> getTagList(
+            List<String> stringList
+    ){
         Set<Tag> tagList = new HashSet<>();
 
         tagList = tagRepository.getTagByMultipleName(removeDuplicate(stringList));

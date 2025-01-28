@@ -23,7 +23,9 @@ public class TagService {
     @Autowired
     private ResponseEntityBuilder responseEntityBuilder;
 
-    public ResponseEntity<Map<String,Object>> getAllTagByName(String name){
+    public ResponseEntity<Map<String,Object>> getAllTagByName(
+            String name
+    ){
         Pageable pageable = PageRequest.of(0,10);
 
         List<Tuple> tagList = new ArrayList<>();
@@ -40,7 +42,7 @@ public class TagService {
             return responseEntityBuilder
                     .createResponse(
                       404,
-                      "message",
+                      "error",
                       String.format("tag with name %s is not found",name)
                     );
         }

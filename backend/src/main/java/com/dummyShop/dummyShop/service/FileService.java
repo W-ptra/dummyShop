@@ -24,7 +24,9 @@ public class FileService {
     @Autowired
     AzureBlobStorage azureBlobStorage;
 
-    public ResponseEntity<Map<String, Object>> uploadFile(MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> uploadFile(
+            MultipartFile file
+    ) {
         if (file.isEmpty()) {
             return responseEntityBuilder.createResponse(
                     400,

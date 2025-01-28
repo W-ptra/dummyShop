@@ -74,7 +74,7 @@ public class TransactionService {
                 return responseEntityBuilder
                         .createResponse(
                                 404,
-                                "message",
+                                "error",
                                 String.format("product with id %d is not found",element.getProductId())
                         );
             }
@@ -129,7 +129,7 @@ public class TransactionService {
             return responseEntityBuilder
                     .createResponse(
                             404,
-                            "message",
+                            "error",
                             "transactions is empty"
                     );
         }

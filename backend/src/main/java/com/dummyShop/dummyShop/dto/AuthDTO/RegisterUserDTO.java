@@ -1,4 +1,4 @@
-package com.dummyShop.dummyShop.dto.userDTO;
+package com.dummyShop.dummyShop.dto.AuthDTO;
 
 import com.dummyShop.dummyShop.model.User;
 

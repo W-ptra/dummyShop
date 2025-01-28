@@ -4,6 +4,8 @@ import Card from "../components/Card";
 import { useEffect, useState } from "react";
 import {get} from "../utils/RequestAPI";
 
+
+
 type Tag = {
     name:string;
     total:number;
@@ -88,20 +90,6 @@ function Home() {
         const g = randomColorValue();
         const b = randomColorValue();
         return `rgb(${r}, ${g}, ${b})`;
-    }
-
-    const topSeller = []
-
-    for (let x = 1; x <= 4; x++) {
-        topSeller.push({
-            id: 1,
-            name: "extra shop by juan carlos",
-            banner: "https://img.freepik.com/free-photo/mythical-dragon-beast-anime-style_23-2151112819.jpg",
-            image: "https://img.freepik.com/free-photo/rendering-bee-anime-character_23-2150963632.jpg",
-            about: "i sell everything from material to meal, just call me aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            sold: 9715,
-            star: 4.8
-        });
     }
 
     const truncateText = (text: string, max: number, min: number): string => {

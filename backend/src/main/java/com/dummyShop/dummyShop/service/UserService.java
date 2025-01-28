@@ -179,7 +179,7 @@ public class UserService {
         if (isPasswordEmpty || isConfirmPasswordEmpty){
             return responseEntityBuilder
             .createResponse(400,
-                    "message",
+                    "error",
                     "missing field 'password' and 'confirmPassword'"
             );
         }
@@ -189,7 +189,7 @@ public class UserService {
         if (!isPasswordAndConfirmPasswordEqual){
             return responseEntityBuilder
                     .createResponse(400,
-                            "message",
+                            "error",
                             "password and confirmPassword are not match"
                     );
         }

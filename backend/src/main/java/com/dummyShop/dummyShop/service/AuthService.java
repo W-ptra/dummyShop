@@ -30,92 +30,70 @@ public class AuthService {
     public ResponseEntity<Map<String,Object>> register(
             RegisterUserDTO registerUserDTO
     ){
-
         boolean isNameEmpty = registerUserDTO.getName().isEmpty();
         boolean isEmailEmpty = registerUserDTO.getEmail().isEmpty();
         boolean isRoleEmpty = registerUserDTO.getRole().isEmpty();
         boolean isPasswordEmpty = registerUserDTO.getPassword().isEmpty();
 
-        if (isNameEmpty || isEmailEmpty || isRoleEmpty || isPasswordEmpty){
-            return responseEntityBuilder
-                    .createResponse(
-                            400,
-                            "error",
-                            "field 'name', 'email', 'role' and 'password' can't empty"
-                    );
-        }
+        if (isNameEmpty || isEmailEmpty || isRoleEmpty || isPasswordEmpty)
+            return responseEntityBuilder.BadRequest("field name, email, role and password can't empty");
 
-        boolean isRoleBuyer = registerUserDTO.getRole().equalsIgnoreCase("buyer");
-        boolean isRoleSeller = registerUserDTO.getRole().equalsIgnoreCase("seller");
 
-        if (!isRoleBuyer && !isRoleSeller){
-            return responseEntityBuilder
-                    .createResponse(
-                            400,
-                            "error",
-                            "role must be either 'seller' or 'buyer'"
-                    );
-        }
+        boolean isRoleNotBuyer = !registerUserDTO.getRole().equalsIgnoreCase("buyer");
+        boolean isRoleNotSeller = !registerUserDTO.getRole().equalsIgnoreCase("seller");
+
+        if (isRoleNotBuyer && isRoleNotSeller)
+            return responseEntityBuilder.BadRequest("role must be either seller or buyer");
+
 
         boolean isEmailExist = userRepository.isExistsByEmail(registerUserDTO.getEmail());
 
-        if (isEmailExist){
-            return responseEntityBuilder
-                    .createResponse(
-                            409,
-                            "error",
-                            String.format("email %s already registered",registerUserDTO.getEmail())
-                    );
-        }
+        if (isEmailExist)
+            return responseEntityBuilder.Conflict(
+                    String.format("email %s already registered",registerUserDTO.getEmail())
+            );
 
-        User user = RegisterUserDTO.ConvertToModel(registerUserDTO);
-        user.setPassword(hashing.getHash(user.getPassword()));
-        Long id = userRepository.save(user).getId();
-        return responseEntityBuilder
-                .createResponse(
-                        200,
-                        "message",
-                        String.format("successfully create new user with id: %d",id)
-                );
+
+        User newUser = RegisterUserDTO.ConvertToModel(registerUserDTO);
+        String hashedPassword = hashing.getHash(newUser.getPassword());
+        newUser.setPassword(hashedPassword);
+        Long newUserid = userRepository.save(newUser).getId();
+
+        return responseEntityBuilder.OK(
+                String.format("successfully create new user with id: %d",newUserid)
+        );
     }
 
     public ResponseEntity<Map<String,Object>> login(
             LoginUserDTO loginUserDTO
     ){
         Optional<User> user = userRepository.findByEmail(loginUserDTO.getEmail());
-        if (user.isEmpty()){
-            return responseEntityBuilder
-                    .createResponse(
-                            404,
-                            "error",
-                            String.format("user with email %s is not found",loginUserDTO.getEmail())
-                    );
-        }
+        boolean isUserEmpty = user.isEmpty();
 
-        if (!hashing.compareHash(loginUserDTO.getPassword(),user.get().getPassword())){
-            return responseEntityBuilder
-                    .createResponse(
-                            401,
-                            "error",
-                            "password incorrect"
-                    );
-        }
+        if (isUserEmpty)
+            return responseEntityBuilder.NotFound(
+                    String.format("user with email %s is not found",loginUserDTO.getEmail())
+            );
+
+
+        boolean isPasswordNotMatch = !hashing.compareHash(
+                loginUserDTO.getPassword(),
+                user.get().getPassword()
+        );
+
+        if (isPasswordNotMatch)
+            return responseEntityBuilder.UnAuthorized("password incorrect");
+
 
         String token = jwt.generateToken(
                 user.get().getId(),
                 user.get().getRole()
         );
-
         SuccessLoginDTO successLoginDTO = SuccessLoginDTO.convertToDTO(
                 token,
                 user.get()
         );
 
-        return responseEntityBuilder
-                .createResponse(
-                        200,
-                        "success",
-                        successLoginDTO
-                );
+        return responseEntityBuilder.OK(successLoginDTO);
     }
 }

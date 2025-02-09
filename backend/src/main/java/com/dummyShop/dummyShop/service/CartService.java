@@ -44,57 +44,42 @@ public class CartService {
         boolean isProductIdEmpty =  createCartDTO.getProductId() == null;
         boolean isQuantityZero = createCartDTO.getQuantity() == 0;
 
-        if (isProductIdEmpty || isQuantityZero){
-            return responseEntityBuilder
-                    .createResponse(
-                            400,
-                            "error",
-                            "missing field productId or quantity" + createCartDTO.getQuantity()
-                    );
-        }
+        if (isProductIdEmpty || isQuantityZero)
+            return responseEntityBuilder.BadRequest("missing field productId or quantity");
+
 
         boolean isProductIdNotValid =  createCartDTO.getProductId() < 1;
         boolean isQuantityNotValid = createCartDTO.getQuantity() < 1 || createCartDTO.getQuantity() > 999;
 
-        if (isProductIdNotValid || isQuantityNotValid){
-            return responseEntityBuilder
-                    .createResponse(
-                            400,
-                            "error",
-                            "productId or quantity can't 0, negative or above 999"
-                    );
-        }
+        if (isProductIdNotValid || isQuantityNotValid)
+            return responseEntityBuilder.BadRequest("productId or quantity can't 0, negative or above 999");
+
 
         Optional<Product> product = productRepository.findById(createCartDTO.getProductId());
-        if (product == null || product.isEmpty()){
-            return responseEntityBuilder
-                    .createResponse(
-                            404,
-                            "error",
-                            String.format("product with id %d is not found", createCartDTO.getProductId())
-                    );
-        }
+
+        if (product == null || product.isEmpty())
+            return responseEntityBuilder.NotFound(
+                    String.format("product with id %d is not found", createCartDTO.getProductId())
+            );
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        Optional<Cart> cart = cartRepository.
-                getCartByProductIdAndUserId(createCartDTO.getProductId(),userId);
+        Optional<Cart> cart = cartRepository.getCartByProductIdAndUserId(
+                createCartDTO.getProductId(),
+                userId
+        );
 
         if (cart.isPresent()){
-            Cart getCart = cart.get();
+            Cart PresentedCart = cart.get();
 
-            int quantity = getCart.getQuantity() + createCartDTO.getQuantity();
-            getCart.setQuantity(quantity);
+            int quantity = PresentedCart.getQuantity() + createCartDTO.getQuantity();
+            PresentedCart.setQuantity(quantity);
+            PresentedCart = cartRepository.save(PresentedCart);
 
-            getCart = cartRepository.save(getCart);
-
-            return responseEntityBuilder
-                    .createResponse(
-                            200,
-                            "message",
-                            String.format("successfully add new cart with id %d",getCart.getId())
-                    );
+            return responseEntityBuilder.OK(
+                    String.format("successfully add new cart with id %d",PresentedCart.getId())
+            );
         }
 
         Optional<User> user = userRepository.findById(userId);
@@ -103,40 +88,34 @@ public class CartService {
         newCart.setUser(user.get());
         newCart.setProduct(product.get());
         newCart.setQuantity(createCartDTO.getQuantity());
-
         newCart = cartRepository.save(newCart);
 
-        return responseEntityBuilder
-                .createResponse(
-                        200,
-                        "message",
-                        String.format("successfully add new cart with id %d",newCart.getId())
-                );
+        return responseEntityBuilder.OK(
+                String.format("successfully add new cart with id %d",newCart.getId())
+        );
     }
 
     public ResponseEntity<Map<String,Object>> getAllCart(
             int page,
             int size
     ){
-        if (size > generalConfiguration.getPAGINATION_MAX_SIZE()){
+        boolean isPageSizeExceedThreshold = size > generalConfiguration.getPAGINATION_MAX_SIZE();
+        if (isPageSizeExceedThreshold)
             size = 20;
-        }
 
         Pageable pageable = PageRequest.of(page,size);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(authentication.getName());
 
-        List<Cart> cartList = cartRepository.getCartByUserId(userId,pageable);
+        List<Cart> cartList = cartRepository.getCartByUserId(
+                userId,
+                pageable
+        );
 
-        if(cartList.isEmpty()){
-            return responseEntityBuilder
-                    .createResponse(
-                            404,
-                            "error",
-                            "cart is empty"
-                    );
-        }
+        if(cartList.isEmpty())
+            return responseEntityBuilder.NotFound("cart is empty");
+
 
         List<DetailCartDTO> detailCartDTOList = DetailCartDTO.convertToDTO(cartList);
 

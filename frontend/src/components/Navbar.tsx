@@ -28,10 +28,10 @@ type UserProfile = {
 function Navbar({ searchParams }: SearchParams) {
   const [token] = useState(localStorage.getItem("token"))
   const [role] = useState(localStorage.getItem("role"))
-  const [userId] = useState(localStorage.getItem("userId"))
-  const [name] = useState(localStorage.getItem("name"))
-  const [banner] = useState(localStorage.getItem("banner"))
-  const [image] = useState(localStorage.getItem("image"))
+  // const [userId] = useState(localStorage.getItem("userId"))
+  // const [name] = useState(localStorage.getItem("name"))
+  // const [banner] = useState(localStorage.getItem("banner"))
+  // const [image] = useState(localStorage.getItem("image"))
 
   const [isNavbarToggleActive, setIsNavbarToggleActive] = useState(false);
   const [isSearchbarToggleActive, setIsSearchbarToggleActive] = useState(false);
